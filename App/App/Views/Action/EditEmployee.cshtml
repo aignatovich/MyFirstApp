@@ -1,0 +1,53 @@
+﻿@model App.Models.Employee
+@using App.Models
+
+@{
+    ViewBag.Title = "EditEmployee";
+    PositionsEnum RoleContainer = new PositionsEnum();
+    Employee employee = Model;
+}
+
+<h2>Edit Employee</h2>
+
+@using (Html.BeginForm("EditConfirmed", "Action", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new employee.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Id, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Id, new { @class = "form-control", @placeholder = employee.Id })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = employee.Name })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Surname, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = employee.Surname })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Position, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Position, new SelectList(RoleContainer.GetRoles()), new { @class = "form-control", @placeholder = "-Select role-" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

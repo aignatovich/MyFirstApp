@@ -1,0 +1,40 @@
+﻿@using App.Models
+@model Employee
+@{
+    ViewBag.Title = "RemoveEmployee";
+    Employee employee = Model;
+}
+
+<h2>Remove Employee</h2>
+
+<br />
+
+<h4>Are you sure you want to remove this employee?</h4>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Position</th>           
+        </tr>
+    </thead>
+    <tbody>
+       
+            <tr>
+                <td>@employee.Name</td>
+                <td>@employee.Surname</td>
+                <td>@employee.Position</td>
+            </tr>       
+    </tbody>
+</table>
+
+
+
+<br /><br /><br /><br /><br />
+
+@Html.ActionLink("Yes", "RemoveConfirmed", "Action", new  { Id = employee.Id }, new { @class = "btn btn-default" })
+@Html.ActionLink("No, back to list", "ShowEmployees", "Action", "" , new { @class = "btn btn-default" })
+
+

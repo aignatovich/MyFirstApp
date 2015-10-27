@@ -274,6 +274,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Action\AddEmployee.cshtml" />
+    <Content Include="Views\Action\Apologize.cshtml" />
+    <Content Include="Views\Action\ShowEmployees.cshtml" />
+    <Content Include="Views\Action\EditEmployee.cshtml" />
+    <Content Include="Views\Action\RemoveEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
