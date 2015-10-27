@@ -8,28 +8,30 @@
 
 <h2>Add Employee</h2>
 
-@using (Html.BeginForm("CreateEmployee", "Action", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("CreateEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <h4>Create a new employee.</h4>
     <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes your name" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Surname, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Here goes your surname" })
+            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Position, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.Position, new SelectList(RoleContainer.GetRoles()), new { @class = "form-control", @placeholder = "-Select role-" })
+            @Html.DropDownListFor(m => m.Position, new SelectList(RoleContainer.GetRoles()), "-" , new { @class = "form-control", @placeholder = "-Select role-" })
+            @Html.ValidationMessageFor(m => m.Position, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

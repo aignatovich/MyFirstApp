@@ -170,9 +170,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ActionController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -273,11 +274,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Action\AddEmployee.cshtml" />
-    <Content Include="Views\Action\Apologize.cshtml" />
-    <Content Include="Views\Action\ShowEmployees.cshtml" />
-    <Content Include="Views\Action\EditEmployee.cshtml" />
-    <Content Include="Views\Action\RemoveEmployee.cshtml" />
+    <Content Include="Views\Employee\AddEmployee.cshtml" />
+    <Content Include="Views\Employee\Apologize.cshtml" />
+    <Content Include="Views\Employee\ShowEmployees.cshtml" />
+    <Content Include="Views\Employee\EditEmployee.cshtml" />
+    <Content Include="Views\Employee\RemoveEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
