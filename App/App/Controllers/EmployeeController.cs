@@ -5,14 +5,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using App.DAL;
+using CodeFirst;
 
 namespace App.Controllers
 {
     public class EmployeeController : Controller
     {
         private DatabaseModelContainer dbContext = new DatabaseModelContainer();
-        private EmployeeDAL DAL = new EmployeeDAL();
+        private EmployeeDAO DAO = new EmployeeDAO();
 
+        [HttpGet]
         public ActionResult AddEmployee()
         {
             return View();
@@ -21,40 +23,42 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult CreateEmployee(Employee employee)
         {
-            DAL.AddEmployee(employee);
+            DAO.AddEmployee(employee);
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<Employee> toTransfer = DAL.GetAllEmployees();
+            ICollection<Employee> toTransfer = DAO.GetAllEmployees();
             return View(toTransfer);
         }
 
         [HttpPost]
         public ActionResult RemoveEmployee(int id)
         {
-            Employee employee = DAL.GetSingleEmployee(id);
+            Employee employee = DAO.GetSingleEmployee(id);
             return View(employee);
         }
 
         [HttpPost]
         public ActionResult RemoveConfirmed(int id)
         {
-            DAL.RemoveEmployee(id);
+            DAO.RemoveEmployee(id);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public ActionResult EditEmployee(int id)
         {
-            return View(DAL.GetSingleEmployee(id));
+            Employee employee = DAO.GetSingleEmployee(id);
+            return View(employee);
         }
 
         [HttpPost]
         public ActionResult EditConfirmed(Employee employee)
         {
-            DAL.EditEmployee(employee);
+            DAO.EditEmployee(employee);
             return RedirectToAction("Index", "Home");          
         }
     }

@@ -24,8 +24,6 @@
     <tbody>
         @foreach (var item in EmployeeList)
         {
-            if (item.Deleted != true)
-            { 
             <tr>
                 <td>@item.Name</td>
                 <td>@item.Surname</td>
@@ -50,8 +48,7 @@
                         </div>
                     }
                 </td>
-            </tr>
-            }
+            </tr>           
         }
     </tbody>
 </table>

@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using CodeFirst;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,9 +8,10 @@ using System.Web;
 
 namespace App.DAL
 {
-    public class EmployeeDAL
+    public class EmployeeDAO
     {
         private DatabaseModelContainer dbContext;
+
         public void AddEmployee(Employee employee)
         {
             dbContext = new DatabaseModelContainer();
@@ -19,8 +21,11 @@ namespace App.DAL
 
         public void EditEmployee(Employee employee)
         {
-            dbContext.EmployeeSet.Attach(employee);
-            dbContext.Entry(employee).State = EntityState.Modified;
+            dbContext = new DatabaseModelContainer();
+            Employee editableEmployee = dbContext.EmployeeSet.Where(x => x.Id.Equals(employee.Id)).FirstOrDefault();
+            editableEmployee.Name = employee.Name;
+            editableEmployee.Surname = employee.Surname;
+            editableEmployee.Position = employee.Position;
             dbContext.SaveChanges();
         }
 
@@ -45,5 +50,15 @@ namespace App.DAL
             Employee employee = dbContext.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
             return employee;
         }
+
+        public bool Exists(Employee employee)
+        {
+            dbContext = new DatabaseModelContainer();
+            if (dbContext.EmployeeSet.Where(x => x.Equals(employee)).FirstOrDefault() == null)
+            {
+                return true;
+            }
+            return false;               
+       }
     }
 }
