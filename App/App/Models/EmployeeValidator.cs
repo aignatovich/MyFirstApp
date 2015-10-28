@@ -5,22 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using App.DAL;
+using static App.DAL.EmployeeDAO;
 
 namespace App.Validation
 {
     public class EmployeeValidator : AbstractValidator<Employee>
     {
-        private EmployeeDAO DAO = new EmployeeDAO();
 
         public EmployeeValidator()
         {
-            RuleFor(x => x).Must(BeValueUnique).WithMessage("This employee already exists");
+            RuleFor(x => x).Must(BeValueUnique).WithMessage("qwe");
+            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Surname).NotEmpty();
         }
 
         private bool BeValueUnique(Employee employee)
         {
-            if (DAO.Exists(employee))
+            if (!Exists(employee))
             {
                 return true;
             }

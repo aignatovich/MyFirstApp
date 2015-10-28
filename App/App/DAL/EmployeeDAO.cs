@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace App.DAL
 {
@@ -22,7 +23,7 @@ namespace App.DAL
         public void EditEmployee(Employee employee)
         {
             dbContext = new DatabaseModelContainer();
-            Employee editableEmployee = dbContext.EmployeeSet.Where(x => x.Id.Equals(employee.Id)).FirstOrDefault();
+            Employee editableEmployee = dbContext.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
@@ -51,14 +52,13 @@ namespace App.DAL
             return employee;
         }
 
-        public bool Exists(Employee employee)
+        public static bool Exists(Employee employee)
         {
-            dbContext = new DatabaseModelContainer();
-            if (dbContext.EmployeeSet.Where(x => x.Equals(employee)).FirstOrDefault() == null)
-            {
-                return true;
-            }
-            return false;               
-       }
+            DatabaseModelContainer dbContext = new DatabaseModelContainer();            
+            return dbContext.EmployeeSet.Any(x =>
+                               x.Name.Equals(employee.Name) &&
+                               x.Surname.Equals(employee.Surname) &&
+                               x.Position.Equals(employee.Position));
+       }       
     }
 }

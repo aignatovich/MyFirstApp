@@ -8,7 +8,7 @@ namespace CodeFirst
 
         public DatabaseModelContainer()           
         {
-
+            Database.SetInitializer<DatabaseModelContainer>(null);
         }
 
         public DbSet<Employee> EmployeeSet { get; set; }

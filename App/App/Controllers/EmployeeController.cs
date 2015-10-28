@@ -12,7 +12,7 @@ namespace App.Controllers
     public class EmployeeController : Controller
     {
         private DatabaseModelContainer dbContext = new DatabaseModelContainer();
-        private EmployeeDAO DAO = new EmployeeDAO();
+        private EmployeeDAO dataAccessObject = new EmployeeDAO();
 
         [HttpGet]
         public ActionResult AddEmployee()
@@ -23,42 +23,42 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult CreateEmployee(Employee employee)
         {
-            DAO.AddEmployee(employee);
+            dataAccessObject.AddEmployee(employee);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<Employee> toTransfer = DAO.GetAllEmployees();
+            ICollection<Employee> toTransfer = dataAccessObject.GetAllEmployees();
             return View(toTransfer);
         }
 
         [HttpPost]
         public ActionResult RemoveEmployee(int id)
         {
-            Employee employee = DAO.GetSingleEmployee(id);
+            Employee employee = dataAccessObject.GetSingleEmployee(id);
             return View(employee);
         }
 
         [HttpPost]
         public ActionResult RemoveConfirmed(int id)
         {
-            DAO.RemoveEmployee(id);
+            dataAccessObject.RemoveEmployee(id);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         public ActionResult EditEmployee(int id)
         {
-            Employee employee = DAO.GetSingleEmployee(id);
+            Employee employee = dataAccessObject.GetSingleEmployee(id);
             return View(employee);
         }
 
         [HttpPost]
         public ActionResult EditConfirmed(Employee employee)
         {
-            DAO.EditEmployee(employee);
+            dataAccessObject.EditEmployee(employee);
             return RedirectToAction("Index", "Home");          
         }
     }

@@ -1,10 +1,9 @@
 ﻿@model App.Models.Employee
 @using App.Models
-@using App.Validation
 
 @{
     ViewBag.Title = "Add Employee";
-    PositionsEnum RoleContainer = new PositionsEnum();
+    Positions RoleContainer = new Positions();
 }
 
 <h2>Add Employee</h2>
@@ -14,9 +13,9 @@
     @Html.AntiForgeryToken()
     <h4>Create a new employee.</h4>
     <hr />
-    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes your name" })
             @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })

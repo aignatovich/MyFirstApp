@@ -5,7 +5,7 @@ using System.Web;
 
 namespace App.Models
 {
-    public class PositionsEnum
+    public class Positions
     {
         private IEnumerable<String> Roles { get; set; } = new List<String> {"Dev", "BA", "QA", "PM", "Other" };
         public IEnumerable<String> GetRoles()
