@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "EditEmployee";
-    Positions RoleContainer = new Positions();
+    PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
     Employee employee = Model;
 }
 
@@ -35,7 +35,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Position, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.Position, new SelectList(RoleContainer.GetRoles()), new { @class = "form-control", @placeholder = "-Select role-" })
+            @Html.DropDownListFor(m => m.Position, RoleContainer.GetRoles(), "Options", new { @class = "form-control", @placeholder = "-Select role-" })
             @Html.ValidationMessageFor(m => m.Position, "", new { @class = "text-danger" })
         </div>
     </div>

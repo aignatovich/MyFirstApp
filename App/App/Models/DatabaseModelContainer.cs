@@ -9,10 +9,9 @@ namespace CodeFirst
         public DatabaseModelContainer()           
         {
             Database.SetInitializer<DatabaseModelContainer>(null);
+            Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
         }
 
-
-        //public StoredRole Roles { get; set; }
         public DbSet<Employee> EmployeeSet { get; set; }
     }
 }

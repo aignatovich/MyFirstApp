@@ -59,10 +59,9 @@ namespace App.DAL
             return (dbContext.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
-                               x.Position.Equals(employee.Position))) ||
+                               x.Position.ToString().Equals(employee.Position.ToString()))) ||
                                (employee.Name == null || 
-                               employee.Surname == null || 
-                               employee.Position == null);
+                               employee.Surname == null);
        }
     }
 }

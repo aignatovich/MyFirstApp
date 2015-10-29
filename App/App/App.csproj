@@ -190,9 +190,9 @@
     <Compile Include="Models\DatabaseModelContainer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Positions.cs" />
+    <Compile Include="DAL\PositionsDataAccessObject.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\StoredRole.cs" />
+    <Compile Include="Models\PositionsEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
