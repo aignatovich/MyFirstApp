@@ -4,18 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace App.DAL
 {
-    public class EmployeeDAO
+    public class EmployeeDataAccessObject
     {
         private DatabaseModelContainer dbContext;
 
         public void AddEmployee(Employee employee)
         {
-            dbContext = new DatabaseModelContainer();
+            dbContext = new DatabaseModelContainer();           
             dbContext.EmployeeSet.Add(employee);
             dbContext.SaveChanges();
         }
@@ -55,10 +56,13 @@ namespace App.DAL
         public static bool Exists(Employee employee)
         {
             DatabaseModelContainer dbContext = new DatabaseModelContainer();            
-            return dbContext.EmployeeSet.Any(x =>
+            return (dbContext.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
-                               x.Position.Equals(employee.Position));
-       }       
+                               x.Position.Equals(employee.Position))) ||
+                               (employee.Name == null || 
+                               employee.Surname == null || 
+                               employee.Position == null);
+       }
     }
 }

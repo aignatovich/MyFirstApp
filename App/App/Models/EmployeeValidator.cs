@@ -5,21 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using static App.DAL.EmployeeDAO;
+using static App.DAL.EmployeeDataAccessObject;
 
 namespace App.Validation
 {
-    public class EmployeeValidator : AbstractValidator<Employee>
+    public class EmployeeValidator
     {
-
-        public EmployeeValidator()
-        {
-            RuleFor(x => x).Must(BeValueUnique).WithMessage("qwe");
-            RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Surname).NotEmpty();
-        }
-
-        private bool BeValueUnique(Employee employee)
+        public static bool BeValueUnique(Employee employee)
         {
             if (!Exists(employee))
             {

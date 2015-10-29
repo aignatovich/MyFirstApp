@@ -181,7 +181,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="DAL\EmployeeDAO.cs" />
+    <Compile Include="DAL\EmployeeDataAccessObject.cs" />
     <Compile Include="Models\EmployeeValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -192,6 +192,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Positions.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\StoredRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

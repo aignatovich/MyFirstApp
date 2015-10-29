@@ -11,6 +11,8 @@ namespace CodeFirst
             Database.SetInitializer<DatabaseModelContainer>(null);
         }
 
+
+        //public StoredRole Roles { get; set; }
         public DbSet<Employee> EmployeeSet { get; set; }
     }
 }
