@@ -1,4 +1,5 @@
-﻿using FluentValidation.Mvc;
+﻿using CodeFirst;
+using FluentValidation.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,21 @@ namespace App
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected virtual void Application_BeginRequest()
+        {
+            HttpContext.Current.Items["_DatabaseModelContainer"] = new DatabaseModelContainer();
+        }
+
+        protected virtual void Application_EndRequest()
+        {
+            var entityContext = HttpContext.Current.Items["_DatabaseModelContainer"] as DatabaseModelContainer;
+            if (entityContext != null)
+            {
+                entityContext.SaveChanges();
+                entityContext.Dispose();
+            }
         }
     }
 }

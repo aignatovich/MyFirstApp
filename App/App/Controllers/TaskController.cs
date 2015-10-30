@@ -1,31 +1,32 @@
-﻿using App.Models;
+﻿using App.DAL;
+using App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using App.DAL;
-using CodeFirst;
-using static App.Validation.EmployeeValidator;
+using App.Validation;
+using static App.Validation.TaskValidator;
 
 namespace App.Controllers
 {
-    public class EmployeeController : Controller
+    public class TaskController : Controller
     {
-        private EmployeeDataAccessObject dataAccessObject = new EmployeeDataAccessObject();
+        private TaskDataAccessObject dataAccessObject = new TaskDataAccessObject();
 
         [HttpGet]
-        public ActionResult AddEmployee()
+        public ActionResult AddTask()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreateEmployee(Employee employee)
+        public ActionResult CreateTask(TaskViewModel taskViewModel)
         {
-            if (BeValueUnique(employee))
+            TaskModel task = taskViewModel.AsTask();
+            if (BeValueUnique(task))
             {
-                dataAccessObject.Add(employee);
+                dataAccessObject.Add(task);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -35,15 +36,15 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<Employee> toTransfer = dataAccessObject.GetAll();
+            ICollection<TaskModel> toTransfer = dataAccessObject.GetAll();
             return View(toTransfer);
         }
 
         [HttpPost]
         public ActionResult RemoveEmployee(int id)
         {
-            Employee employee = dataAccessObject.GetSingle(id);
-            return View(employee);
+            TaskModel task = dataAccessObject.GetSingle(id);
+            return View(task);
         }
 
         [HttpPost]
@@ -56,15 +57,15 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult EditEmployee(int id)
         {
-            Employee employee = dataAccessObject.GetSingle(id);
-            return View(employee);
+            TaskModel task = dataAccessObject.GetSingle(id);
+            return View(task);
         }
 
         [HttpPost]
-        public ActionResult EditConfirmed(Employee employee)
+        public ActionResult EditConfirmed(TaskModel task)
         {
-            dataAccessObject.Edit(employee);
-            return RedirectToAction("Index", "Home");          
+            dataAccessObject.Edit(task);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

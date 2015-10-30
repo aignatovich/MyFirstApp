@@ -1,11 +1,16 @@
 ﻿using App.Models;
 using System.Data.Entity;
+using System.Web;
 
 namespace CodeFirst
 {
     public class DatabaseModelContainer : DbContext
     {
 
+        public static DatabaseModelContainer Current
+        {
+            get { return HttpContext.Current.Items["_DatabaseModelContainer"] as DatabaseModelContainer; }
+        }
         public DatabaseModelContainer()           
         {
             Database.SetInitializer<DatabaseModelContainer>(null);
@@ -13,5 +18,8 @@ namespace CodeFirst
         }
 
         public DbSet<Employee> EmployeeSet { get; set; }
+        public DbSet<TaskModel> TaskSet { get; set; }
     }
+
+   
 }

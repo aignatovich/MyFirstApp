@@ -10,53 +10,42 @@ using Newtonsoft.Json;
 
 namespace App.DAL
 {
-    public class EmployeeDataAccessObject
+    public class EmployeeDataAccessObject:IOperations<Employee>
     {
-        private DatabaseModelContainer dbContext;
-
-        public void AddEmployee(Employee employee)
-        {
-            dbContext = new DatabaseModelContainer();           
-            dbContext.EmployeeSet.Add(employee);
-            dbContext.SaveChanges();
+        public void Add(Employee employee)
+        {                   
+            DatabaseModelContainer.Current.EmployeeSet.Add(employee);
         }
 
-        public void EditEmployee(Employee employee)
+        public void Edit(Employee employee)
         {
-            dbContext = new DatabaseModelContainer();
-            Employee editableEmployee = dbContext.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
+            Employee editableEmployee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
-            dbContext.SaveChanges();
         }
 
-        public void RemoveEmployee(int id)
+        public void Remove(int id)
         {
-            dbContext = new DatabaseModelContainer();
-            Employee employee = dbContext.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
-            dbContext.EmployeeSet.Remove(employee);
-            dbContext.SaveChanges();
+            Employee employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            DatabaseModelContainer.Current.EmployeeSet.Remove(employee);
         }
 
-        public ICollection<Employee> GetAllEmployees()
+        public ICollection<Employee> GetAll()
         {
-            dbContext = new DatabaseModelContainer();
-            ICollection<Employee> employeeList = dbContext.EmployeeSet.ToList();
+            ICollection<Employee> employeeList = DatabaseModelContainer.Current.EmployeeSet.ToList();
             return employeeList;
         }
 
-        public Employee GetSingleEmployee(int id)
+        public Employee GetSingle(int id)
         {
-            dbContext = new DatabaseModelContainer();
-            Employee employee = dbContext.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            Employee employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
             return employee;
         }
 
         public static bool Exists(Employee employee)
-        {
-            DatabaseModelContainer dbContext = new DatabaseModelContainer();            
-            return (dbContext.EmployeeSet.Any(x =>
+        {         
+            return (DatabaseModelContainer.Current.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
                                x.Position.ToString().Equals(employee.Position.ToString()))) ||

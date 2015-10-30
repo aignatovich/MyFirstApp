@@ -17,7 +17,6 @@ namespace App.Models
         [StringLength(60, MinimumLength = 3)]
         public string Surname { get; set; }
 
-        //required attribute is not available for enum types
         public RolesTemporary Position { get; set; }
     }
 }
