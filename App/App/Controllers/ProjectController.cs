@@ -24,6 +24,7 @@ namespace App.Controllers
         public ActionResult CreateProject(ProjectViewModel projectViewModel)
         {
             ProjectModel project = projectViewModel.AsProject();
+
             if (BeValueUnique(project))
             {
                 dataAccessObject.Add(project);
@@ -66,8 +67,14 @@ namespace App.Controllers
         public ActionResult EditConfirmed(ProjectViewModel project)
         {
             ProjectModel toTransfer = project.AsProject();
-            dataAccessObject.Edit(toTransfer);
-            return RedirectToAction("Index", "Home");
+
+            if (isDateValid(toTransfer))
+            {
+                dataAccessObject.Edit(toTransfer);
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View("Apologize");
         }
     }
 }
