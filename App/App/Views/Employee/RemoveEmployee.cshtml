@@ -1,8 +1,8 @@
 ﻿@using App.Models
-@model Employee
+@model EmployeeModel
 @{
     ViewBag.Title = "RemoveEmployee";
-    Employee employee = Model;
+    EmployeeModel employee = Model;
     PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
 }
 
@@ -26,7 +26,7 @@
             <tr>
                 <td>@employee.Name</td>
                 <td>@employee.Surname</td>
-                <td>@RoleContainer.GetStringValue(employee.Position)</td>
+                <td>@employee.Position</td>
             </tr>       
     </tbody>
 </table>

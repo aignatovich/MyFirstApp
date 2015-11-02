@@ -21,7 +21,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateEmployee(Employee employee)
+        public ActionResult CreateEmployee(EmployeeModel employee)
         {
             if (BeValueUnique(employee))
             {
@@ -35,14 +35,14 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<Employee> toTransfer = dataAccessObject.GetAll();
+            ICollection<EmployeeModel> toTransfer = dataAccessObject.GetAll();
             return View(toTransfer);
         }
 
         [HttpPost]
         public ActionResult RemoveEmployee(int id)
         {
-            Employee employee = dataAccessObject.GetSingle(id);
+            EmployeeModel employee = dataAccessObject.GetSingle(id);
             return View(employee);
         }
 
@@ -56,12 +56,12 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult EditEmployee(int id)
         {
-            Employee employee = dataAccessObject.GetSingle(id);
+            EmployeeModel employee = dataAccessObject.GetSingle(id);
             return View(employee);
         }
 
         [HttpPost]
-        public ActionResult EditConfirmed(Employee employee)
+        public ActionResult EditConfirmed(EmployeeModel employee)
         {
             dataAccessObject.Edit(employee);
             return RedirectToAction("Index", "Home");          

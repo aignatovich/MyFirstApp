@@ -6,7 +6,7 @@ using System.Web;
 
 namespace App.Models
 {
-    public class TaskModel
+    public class ProjectModel
     {
         public int Id { get; set; }
 

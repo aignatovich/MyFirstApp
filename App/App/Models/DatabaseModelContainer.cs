@@ -13,12 +13,12 @@ namespace CodeFirst
         }
         public DatabaseModelContainer()           
         {
-            Database.SetInitializer<DatabaseModelContainer>(null);
-            Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
+            //Database.SetInitializer<DatabaseModelContainer>(null);
+            //Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
         }
 
-        public DbSet<Employee> EmployeeSet { get; set; }
-        public DbSet<TaskModel> TaskSet { get; set; }
+        public DbSet<EmployeeModel> EmployeeSet { get; set; }
+        public DbSet<ProjectModel> ProjectSet { get; set; }
     }
 
    

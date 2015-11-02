@@ -13,5 +13,7 @@ namespace App.DAL
         void Remove(int id);
         ICollection<Type> GetAll();
         Type GetSingle(int id);
+
+        bool Exists(Type t);
     }
 }

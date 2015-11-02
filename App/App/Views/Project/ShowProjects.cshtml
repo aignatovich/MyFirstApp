@@ -1,8 +1,8 @@
 ﻿@using App.Models
-@model ICollection<EmployeeModel>
+@model ICollection<ProjectViewModel>
 @{
-    ViewBag.Title = "Show Employees";
-    ICollection<EmployeeModel> EmployeeList = Model;
+    ViewBag.Title = "Show Projects";
+    ICollection<ProjectViewModel> ProjectList = Model;
     PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
 }
 
@@ -16,21 +16,21 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Position</th>
+            <th>Name</th>
+            <th>Start date</th>
+            <th>End date</th>
             <th>Options</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in EmployeeList)
+        @foreach (var item in ProjectList)
         {
             <tr>
                 <td>@item.Name</td>
-                <td>@item.Surname</td>
-                <td>@item.Position</td>
-                <td>                 
-                    @using (Html.BeginForm("RemoveEmployee", "Employee", FormMethod.Post, new { @class = "btn", role = "form" }))
+                <td>@item.StartDate</td>             
+                <td>@item.EndDate</td>
+                <td>
+                    @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "btn", role = "form" }))
                     {
                         @Html.Hidden("id", item.Id);
                         <div class="form-group">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     }
-                    @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Post, new { @class = "btn", role = "form" }))
+                    @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "btn", role = "form" }))
                     {
                         @Html.Hidden("id", item.Id);
                         <div class="form-group">
@@ -49,7 +49,7 @@
                         </div>
                     }
                 </td>
-            </tr>           
+            </tr>
         }
     </tbody>
 </table>

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Models;
 
 namespace App.Models
 {
-    public class Employee
+    public class EmployeeModel : IViewModel<EmployeeModel>
     {
         public int Id { get; set; }
 
@@ -18,5 +19,10 @@ namespace App.Models
         public string Surname { get; set; }
 
         public RolesTemporary Position { get; set; }
+
+        public EmployeeModel ConvertToModel()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

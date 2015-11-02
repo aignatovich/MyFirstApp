@@ -10,16 +10,16 @@ using Newtonsoft.Json;
 
 namespace App.DAL
 {
-    public class EmployeeDataAccessObject:IOperations<Employee>
+    public class EmployeeDataAccessObject:IOperations<EmployeeModel>
     {
-        public void Add(Employee employee)
+        public void Add(EmployeeModel employee)
         {                   
             DatabaseModelContainer.Current.EmployeeSet.Add(employee);
         }
 
-        public void Edit(Employee employee)
+        public void Edit(EmployeeModel employee)
         {
-            Employee editableEmployee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
+            EmployeeModel editableEmployee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
@@ -27,23 +27,23 @@ namespace App.DAL
 
         public void Remove(int id)
         {
-            Employee employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
             DatabaseModelContainer.Current.EmployeeSet.Remove(employee);
         }
 
-        public ICollection<Employee> GetAll()
+        public ICollection<EmployeeModel> GetAll()
         {
-            ICollection<Employee> employeeList = DatabaseModelContainer.Current.EmployeeSet.ToList();
+            ICollection<EmployeeModel> employeeList = DatabaseModelContainer.Current.EmployeeSet.ToList();
             return employeeList;
         }
 
-        public Employee GetSingle(int id)
+        public EmployeeModel GetSingle(int id)
         {
-            Employee employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
             return employee;
         }
 
-        public static bool Exists(Employee employee)
+        public  bool Exists(EmployeeModel employee)
         {         
             return (DatabaseModelContainer.Current.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&

@@ -1,0 +1,61 @@
+﻿@model App.Models.ProjectViewModel
+@using App.Models
+
+@{
+    ViewBag.Title = "Add Project";
+}
+
+
+<h2>Add Project</h2>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="~/Content/bootstrap-datepicker3.min.css" />
+
+@using (Html.BeginForm("CreateProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Add new project.</h4>
+    <hr />
+    <div class="form-group">
+        <br /><br /><br /><br />
+        @Html.Label("Project name", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes project name" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Start date", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control datepicker", @placeholder = "Here goes start date" })
+            @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("End date", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control datepicker", @placeholder = "Here goes end date"})
+            @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Submit" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+}
+<script>
+    (function(){
+        $('.datepicker').datepicker()
+    })();
+</script>
+
+
+
+
