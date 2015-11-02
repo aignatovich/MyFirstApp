@@ -12,9 +12,8 @@ namespace App.Validation
     {
         private static ProjectDataAccessObject ProjectDataAccessObject = new ProjectDataAccessObject();
         public static bool BeValueUnique(ProjectModel project)
-        {
-          
-            if (!ProjectDataAccessObject.Exists(project))
+        {         
+            if (!ProjectDataAccessObject.Exists(project) && (project.EndDate == null || !(project.StartDate > project.EndDate)))
             {
                 return true;
             }
