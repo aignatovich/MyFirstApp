@@ -1,6 +1,8 @@
 ﻿@model App.Models.EmployeeModel
 @using App.Models
-
+@{
+   PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
+}
 @Html.AntiForgeryToken()
 <hr />
 @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })

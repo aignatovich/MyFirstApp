@@ -6,12 +6,7 @@
     PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
 }
 
-<h2>Employees</h2>
-
-<!-- TODO ADD TO BUNDLES-->
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<h2>Projects</h2>
 
 <table class="table">
     <thead>
@@ -29,28 +24,12 @@
                 <td>@item.Name</td>
                 <td>@item.StartDate</td>             
                 <td>@item.EndDate</td>
-                <td>
-                   @Html.ActionLink("Remove", "RemoveProject", new { id = item.Id }, new { @class = "" }) |
-                   @Html.ActionLink("Edit","EditProject", new { id = item.Id }, new { @class = "" })
-                </td>
+                   @Html.Partial("PartialRemoveAndEditForm", item)        
             </tr>
         }
     </tbody>
 </table>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
-}
-<script>
-    (function(){
-        $('.datepicker').datepicker()
-    })();
-    function submit(e) {
-        aler
-    }
-</script>
 
 
 

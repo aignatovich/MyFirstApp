@@ -335,10 +335,10 @@
     <Content Include="Views\Employee\RemoveEmployee.cshtml" />
     <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\ShowProjects.cshtml" />
-    <Content Include="Views\Project\RemoveProject.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
     <Content Include="Views\Project\ProjectPartialForm.cshtml" />
     <Content Include="Views\Employee\EmployeePartialForm.cshtml" />
+    <Content Include="Views\Project\PartialRemoveAndEditForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

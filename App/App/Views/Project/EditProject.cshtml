@@ -6,25 +6,12 @@
     ProjectViewModel project = Model;
 }
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="~/Content/bootstrap-datepicker3.min.css" />
-
 <h2>Edit project</h2>
 
 @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+    @Html.HiddenFor(x => x.Id, (Model == null ? default(int) : Model.Id))
     @Html.Partial("ProjectPartialForm")
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
-}
-<script>
-    (function(){
-        $('.datepicker').datepicker()
-    })();
-</script>
 
