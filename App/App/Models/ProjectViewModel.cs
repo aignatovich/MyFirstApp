@@ -21,7 +21,7 @@ namespace App.Models
         [Required]
         public string StartDate { get; set; }
 
-        [ProjectValidationAttribute]
+        [EndDateValidationAttribute]
         public string EndDate { get; set; }
 
         public ProjectViewModel()

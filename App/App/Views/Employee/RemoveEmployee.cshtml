@@ -33,7 +33,7 @@
 
 <br /><br /><br /><br /><br />
 <div class="form-inline">
-    @using (Html.BeginForm("RemoveConfirmed", "Employee", FormMethod.Post, new { @class = "", role = "" }))
+    @using (Html.BeginForm("RemoveEmployee", "Employee", FormMethod.Post, new { @class = "", role = "" }))
     {
         @Html.HiddenFor(x => x.Id, employee.Id);
         <div class="form-group">

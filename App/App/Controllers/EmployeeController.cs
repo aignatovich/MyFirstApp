@@ -38,7 +38,7 @@ namespace App.Controllers
             return View(toTransfer);
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult RemoveEmployee(int id)
         {
             EmployeeModel employee = dataAccessObject.GetSingle(id);
@@ -46,13 +46,13 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveConfirmed(int id)
+        public ActionResult RemoveEmployee(EmployeeModel employee)
         {
-            dataAccessObject.Remove(id);
+            dataAccessObject.Remove(employee.Id);
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult EditEmployee(int id)
         {
             EmployeeModel employee = dataAccessObject.GetSingle(id);
@@ -60,7 +60,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditConfirmed(EmployeeModel employee)
+        public ActionResult EditEmployee(EmployeeModel employee)
         {
             dataAccessObject.Edit(employee);
             return RedirectToAction("Index", "Home");          

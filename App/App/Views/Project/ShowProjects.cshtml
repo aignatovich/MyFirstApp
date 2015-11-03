@@ -30,24 +30,8 @@
                 <td>@item.StartDate</td>             
                 <td>@item.EndDate</td>
                 <td>
-                    @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "btn", role = "form" }))
-                    {
-                        @Html.Hidden("id", item.Id);
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" class="btn btn-default" value="Remove" id="item.Id" onsubmit="submit(e)" />
-                            </div>
-                        </div>
-                    }
-                    @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "btn", role = "form" }))
-                    {
-                        @Html.Hidden("id", item.Id);
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" class="btn btn-default" value="Edit" />
-                            </div>
-                        </div>
-                    }
+                   @Html.ActionLink("Remove", "RemoveProject", new { id = item.Id }, new { @class = "" }) |
+                   @Html.ActionLink("Edit","EditProject", new { id = item.Id }, new { @class = "" })
                 </td>
             </tr>
         }

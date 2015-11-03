@@ -41,7 +41,7 @@ namespace App.Controllers
             return View(toTransfer);
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult RemoveProject(int id)
         {
             ProjectViewModel project = new ProjectViewModel(dataAccessObject.GetSingle(id));
@@ -49,13 +49,13 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveConfirmed(int id)
+        public ActionResult RemoveProject(ProjectViewModel projectViewModel)
         {
-            dataAccessObject.Remove(id);
+            dataAccessObject.Remove(projectViewModel.Id);
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult EditProject(int id)
         {
             ProjectViewModel toTransfer = new ProjectViewModel(dataAccessObject.GetSingle(id));
@@ -63,7 +63,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditConfirmed(ProjectViewModel projectViewModel)
+        public ActionResult EditProject(ProjectViewModel projectViewModel)
         {
             ProjectModel toTransfer = projectService.AsProject(projectViewModel);
 
@@ -73,7 +73,7 @@ namespace App.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View("Apologize");
+            return View("EditProject");
         }
     }
 }

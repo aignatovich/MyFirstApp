@@ -10,7 +10,7 @@ using static App.DAL.ProjectDataAccessObject;
 
 namespace App.Validation
 {
-    public class ProjectValidationAttribute: ValidationAttribute
+    public class EndDateValidationAttribute: ValidationAttribute
     {
         private ProjectDataAccessObject ProjectDataAccessObject = new ProjectDataAccessObject();
         private ProjectService projectService = new ProjectService();
