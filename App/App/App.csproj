@@ -187,7 +187,7 @@
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
     <Compile Include="Models\IViewModel.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
-    <Compile Include="Validation\EmployeeValidator.cs" />
+    <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -195,13 +195,14 @@
     <Compile Include="Models\DatabaseModelContainer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="DAL\PositionsDataAccessObject.cs" />
+    <Compile Include="Service\PositionsService.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\PositionsEnum.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Validation\ProjectValidator.cs" />
+    <Compile Include="Validation\EmployeeValidationAttribute.cs" />
+    <Compile Include="Validation\ProjectValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
@@ -328,14 +329,12 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Employee\AddEmployee.cshtml" />
-    <Content Include="Views\Employee\Apologize.cshtml" />
+    <Content Include="Views\Employee\CreateEmployee.cshtml" />
     <Content Include="Views\Employee\ShowEmployees.cshtml" />
     <Content Include="Views\Employee\EditEmployee.cshtml" />
     <Content Include="Views\Employee\RemoveEmployee.cshtml" />
-    <Content Include="Views\Project\AddProject.cshtml" />
+    <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\ShowProjects.cshtml" />
-    <Content Include="Views\Project\Apologize.cshtml" />
     <Content Include="Views\Project\RemoveProject.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
   </ItemGroup>

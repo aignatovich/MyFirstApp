@@ -1,8 +1,8 @@
 ﻿@using App.Models
-@model ProjectModel 
+@model ProjectViewModel 
 @{
     ViewBag.Title = "Remove project";
-    ProjectModel project = Model;
+    ProjectViewModel project = Model;
 }
 
 <h2>Remove proejct</h2>
@@ -43,6 +43,8 @@
     }
     @Html.ActionLink("No, back to list", "ShowProjects", "Project", "", new { @class = "btn btn-default" })
 </div>
+
+
 
 
 

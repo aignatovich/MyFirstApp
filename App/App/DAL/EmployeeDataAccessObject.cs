@@ -44,13 +44,13 @@ namespace App.DAL
         }
 
         public  bool Exists(EmployeeModel employee)
-        {         
+        {
             return (DatabaseModelContainer.Current.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
                                x.Position.ToString().Equals(employee.Position.ToString()))) ||
-                               (employee.Name == null || 
+                               (employee.Name == null ||
                                employee.Surname == null);
-       }
+        }
     }
 }

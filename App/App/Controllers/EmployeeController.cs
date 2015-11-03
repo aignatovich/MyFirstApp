@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using App.DAL;
 using CodeFirst;
-using static App.Validation.EmployeeValidator;
 
 namespace App.Controllers
 {
@@ -15,7 +14,7 @@ namespace App.Controllers
         private EmployeeDataAccessObject dataAccessObject = new EmployeeDataAccessObject();
 
         [HttpGet]
-        public ActionResult AddEmployee()
+        public ActionResult CreateEmployee()
         {
             return View();
         }
@@ -23,13 +22,13 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult CreateEmployee(EmployeeModel employee)
         {
-            if (BeValueUnique(employee))
+            if (ModelState.IsValid)
             {
                 dataAccessObject.Add(employee);
                 return RedirectToAction("Index", "Home");
             }
 
-            return View("Apologize");
+            return View();
         }
 
         [HttpGet]

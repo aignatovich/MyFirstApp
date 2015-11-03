@@ -27,14 +27,14 @@
     <div class="form-group">
         @Html.Label("Start date", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control datepicker", @placeholder = "Here goes start date" })
+            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control datepicker", @placeholder = "Here goes start date", @data_date_format = "dd.mm.yyyy" })
             @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.Label("End date", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control datepicker", @placeholder = "Here goes end date"})
+            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control datepicker", @placeholder = "Here goes end date", @data_date_format = "dd.mm.yyyy"})
             @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
         </div>
     </div>

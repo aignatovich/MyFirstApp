@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using App.Validation;
-using static App.Validation.ProjectValidator;
+using App.Service;
 
 namespace App.Controllers
 {
     public class ProjectController : Controller
     {
         private ProjectDataAccessObject dataAccessObject = new ProjectDataAccessObject();
+        private ProjectService projectService = new ProjectService();
 
         [HttpGet]
-        public ActionResult AddProject()
+        public ActionResult CreateProject()
         {
             return View();
         }
@@ -23,28 +23,28 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult CreateProject(ProjectViewModel projectViewModel)
         {
-            ProjectModel project = projectViewModel.AsProject();
+            ProjectModel project = projectService.AsProject(projectViewModel);
 
-            if (BeValueUnique(project))
+            if (ModelState.IsValid)
             {
                 dataAccessObject.Add(project);
                 return RedirectToAction("Index", "Home");
             }
 
-            return View("Apologize");
+            return View();
         }
 
         [HttpGet]
         public ActionResult ShowProjects()
         {
-            ICollection<ProjectViewModel> toTransfer = dataAccessObject.GetAllViewModels();
+            ICollection<ProjectViewModel> toTransfer = projectService.GetAllViewModels();
             return View(toTransfer);
         }
 
         [HttpPost]
         public ActionResult RemoveProject(int id)
         {
-            ProjectModel project = dataAccessObject.GetSingle(id);
+            ProjectViewModel project = new ProjectViewModel(dataAccessObject.GetSingle(id));
             return View(project);
         }
 
@@ -58,17 +58,16 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult EditProject(int id)
         {
-            ProjectModel project = dataAccessObject.GetSingle(id);
-            ProjectViewModel toTransfer = new ProjectViewModel(project);
+            ProjectViewModel toTransfer = new ProjectViewModel(dataAccessObject.GetSingle(id));
             return View(toTransfer);
         }
 
         [HttpPost]
-        public ActionResult EditConfirmed(ProjectViewModel project)
+        public ActionResult EditConfirmed(ProjectViewModel projectViewModel)
         {
-            ProjectModel toTransfer = project.AsProject();
+            ProjectModel toTransfer = projectService.AsProject(projectViewModel);
 
-            if (isDateValid(toTransfer))
+            if (ModelState.IsValid)
             {
                 dataAccessObject.Edit(toTransfer);
                 return RedirectToAction("Index", "Home");
