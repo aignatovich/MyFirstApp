@@ -12,15 +12,15 @@
 {
     @Html.HiddenFor(x => x.Id, item.Id);
     <td>
-        <input type="submit" value="Remove" class="btn btn-primary" onsubmit="" />
+        <input type="submit" id="@(item.Id*2)" value="Remove" class="btn btn-primary" onclick="return ToSubmit(this)" />
     </td>
 }
 
-@using (Html.BeginForm("EditProject", "Project", FormMethod.Get, new { @class = "", role = "" , id = item.Id*2 + 1 }))
+@using (Html.BeginForm("EditProject", "Project", FormMethod.Get, new { @class = "", role = ""}))
 {
     @Html.HiddenFor(x => x.Id, item.Id);
     <td>
-        <input type="submit" id="@(item.Id*2 + 1)"  value="Edit" class="btn btn-primary" onclick="return ToSubmit(this)"/>
+        <input type="submit"  value="Edit" class="btn btn-primary"/>
     </td>
 }          
 

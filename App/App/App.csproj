@@ -332,13 +332,13 @@
     <Content Include="Views\Employee\CreateEmployee.cshtml" />
     <Content Include="Views\Employee\ShowEmployees.cshtml" />
     <Content Include="Views\Employee\EditEmployee.cshtml" />
-    <Content Include="Views\Employee\RemoveEmployee.cshtml" />
     <Content Include="Views\Project\CreateProject.cshtml" />
     <Content Include="Views\Project\ShowProjects.cshtml" />
     <Content Include="Views\Project\EditProject.cshtml" />
     <Content Include="Views\Project\ProjectPartialForm.cshtml" />
     <Content Include="Views\Employee\EmployeePartialForm.cshtml" />
-    <Content Include="Views\Project\PartialRemoveAndEditForm.cshtml" />
+    <Content Include="Views\Project\PartialDisplayForm.cshtml" />
+    <Content Include="Views\Employee\PartialDisplayForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
