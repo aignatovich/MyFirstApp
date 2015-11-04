@@ -12,6 +12,7 @@
 @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id, employee.Id)
     @Html.Partial("EmployeePartialForm")
 }
 

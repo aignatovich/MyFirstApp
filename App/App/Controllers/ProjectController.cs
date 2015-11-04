@@ -28,7 +28,7 @@ namespace App.Controllers
             if (ModelState.IsValid)
             {
                 dataAccessObject.Add(project);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ShowProjects");
             }
 
             return View();
@@ -52,7 +52,7 @@ namespace App.Controllers
         public ActionResult RemoveProject(ProjectViewModel projectViewModel)
         {
             dataAccessObject.Remove(projectViewModel.Id);
-            return RedirectToAction("Index", "Home");
+            return Redirect("ShowProjects");
         }
 
         [HttpGet]
@@ -70,10 +70,24 @@ namespace App.Controllers
             if (ModelState.IsValid)
             {
                 dataAccessObject.Edit(toTransfer);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ShowProjects");
             }
 
             return View("EditProject");
+        }
+
+        [HttpGet]
+        public ActionResult SetupProject(int id)
+        {
+            ProjectViewModel toTransfer = new ProjectViewModel(dataAccessObject.GetSingle(id));
+            return View(toTransfer);
+        }
+
+        [HttpPost]
+        public ActionResult SetupProject(string ids, int projectId)
+        {
+            projectService.EmployInProject(projectId, ids);
+            return RedirectToAction("ShowProjects");
         }
     }
 }

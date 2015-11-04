@@ -24,9 +24,11 @@ namespace App.Models
         [EndDateValidationAttribute]
         public string EndDate { get; set; }
 
+        public ICollection<EmployeeModel> CurrentEmployees { get; set; }
+
         public ProjectViewModel()
         {
-
+            CurrentEmployees = new List<EmployeeModel>();
         }
 
         public ProjectViewModel(ProjectModel project)
@@ -34,6 +36,7 @@ namespace App.Models
             Id = project.Id;
             Name = project.Name;
             StartDate = project.StartDate.ToShortDateString();
+            CurrentEmployees = project.CurrentEmployees;
 
             if (!(project.EndDate == null))
             {

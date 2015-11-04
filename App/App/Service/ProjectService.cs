@@ -10,6 +10,8 @@ namespace App.Service
     public class ProjectService
     {
         private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
+        private EmployeeService employeeService = new EmployeeService();
+
         public ICollection<ProjectViewModel> GetAllViewModels()
         {
             ICollection<ProjectModel> projectList = projectDataAccessObject.GetAll();
@@ -29,6 +31,7 @@ namespace App.Service
             DateTime temporaryDate = new DateTime();
             DateTime.TryParse(projectViewModel.StartDate, out temporaryDate);
             project.StartDate = temporaryDate;
+            project.CurrentEmployees = projectViewModel.CurrentEmployees;
 
             if (projectViewModel.EndDate != null)
             {
@@ -37,6 +40,20 @@ namespace App.Service
             }
 
             return project;
+        }
+
+        public void EmployInProject(int projectId, string employeeIds)
+        {
+            ProjectModel project = projectDataAccessObject.GetSingle(projectId);
+            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(employeeIds);
+            project.CurrentEmployees.Clear();
+            project.CurrentEmployees = employees;
+
+            foreach (EmployeeModel employee in project.CurrentEmployees)
+            {
+                employee.ActualProjects.Add(project);
+            }
+
         }
     }
 }

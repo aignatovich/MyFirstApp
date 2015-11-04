@@ -25,7 +25,7 @@ namespace App.Controllers
             if (ModelState.IsValid)
             {
                 dataAccessObject.Add(employee);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ShowEmployees");
             }
 
             return View();
@@ -49,7 +49,7 @@ namespace App.Controllers
         public ActionResult RemoveEmployee(EmployeeModel employee)
         {
             dataAccessObject.Remove(employee.Id);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ShowEmployees");
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace App.Controllers
         public ActionResult EditEmployee(EmployeeModel employee)
         {
             dataAccessObject.Edit(employee);
-            return RedirectToAction("Index", "Home");          
+            return RedirectToAction("ShowEmployees");          
         }
     }
 }

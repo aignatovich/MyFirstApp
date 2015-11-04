@@ -1,0 +1,15 @@
+﻿@using App.Models
+@model ProjectViewModel
+@{ 
+    ProjectViewModel project = Model;
+}
+
+
+
+<h1>@project.Name</h1>
+<h5>@("Start date - " + project.StartDate)</h5>
+<h5>@("End date - " + project.EndDate)</h5>
+<br /><br />
+
+@Html.Partial("PartialSelect", project)
+

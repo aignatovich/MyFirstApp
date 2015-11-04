@@ -10,6 +10,7 @@ namespace App.Models
     [EmployeeValidationAttribute]
     public class EmployeeModel : IViewModel<EmployeeModel>
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -21,6 +22,13 @@ namespace App.Models
         public string Surname { get; set; }
 
         public RolesTemporary Position { get; set; }
+
+        public virtual ICollection<ProjectModel> ActualProjects { get; set; }
+
+        public EmployeeModel()
+        {
+            ActualProjects = new List<ProjectModel>();
+        }
 
         public EmployeeModel ConvertToModel()
         {

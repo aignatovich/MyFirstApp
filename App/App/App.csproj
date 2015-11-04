@@ -187,6 +187,7 @@
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
     <Compile Include="Models\IViewModel.cs" />
     <Compile Include="Models\ProjectViewModel.cs" />
+    <Compile Include="Service\EmployeeService.cs" />
     <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -215,6 +216,8 @@
     <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\multiple-select.css" />
+    <Content Include="Content\prettify.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -292,6 +295,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.min.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\multiselect.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -339,6 +343,8 @@
     <Content Include="Views\Employee\EmployeePartialForm.cshtml" />
     <Content Include="Views\Project\PartialDisplayForm.cshtml" />
     <Content Include="Views\Employee\PartialDisplayForm.cshtml" />
+    <Content Include="Views\Project\SetupProject.cshtml" />
+    <Content Include="Views\Project\PartialSelect.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
