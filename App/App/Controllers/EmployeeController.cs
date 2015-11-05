@@ -6,12 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using App.DAL;
 using CodeFirst;
+using App.Service;
 
 namespace App.Controllers
 {
     public class EmployeeController : Controller
     {
-        private EmployeeDataAccessObject dataAccessObject = new EmployeeDataAccessObject();
+        private EmployeeService service = new EmployeeService();
 
         [HttpGet]
         public ActionResult CreateEmployee()
@@ -24,45 +25,44 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
-                dataAccessObject.Add(employee);
+                service.Add(employee);
                 return RedirectToAction("ShowEmployees");
             }
-
             return View();
         }
 
         [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<EmployeeModel> toTransfer = dataAccessObject.GetAll();
+            ICollection<EmployeeModel> toTransfer = service.GetAll();
             return View(toTransfer);
         }
 
         [HttpGet]
         public ActionResult RemoveEmployee(int id)
         {
-            EmployeeModel employee = dataAccessObject.GetSingle(id);
+            EmployeeModel employee = service.GetSingle(id);
             return View(employee);
         }
 
         [HttpPost]
         public ActionResult RemoveEmployee(EmployeeModel employee)
         {
-            dataAccessObject.Remove(employee.Id);
+            service.Remove(employee);
             return RedirectToAction("ShowEmployees");
         }
 
         [HttpGet]
         public ActionResult EditEmployee(int id)
         {
-            EmployeeModel employee = dataAccessObject.GetSingle(id);
+            EmployeeModel employee = service.GetSingle(id);
             return View(employee);
         }
 
         [HttpPost]
         public ActionResult EditEmployee(EmployeeModel employee)
         {
-            dataAccessObject.Edit(employee);
+            service.Edit(employee);
             return RedirectToAction("ShowEmployees");          
         }
     }

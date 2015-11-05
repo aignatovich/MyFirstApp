@@ -16,8 +16,10 @@ namespace App.DAL
 
         public void Edit(ProjectModel project)
         {
-            Remove(project.Id);
-            Add(project);
+            ProjectModel editableProject = DatabaseModelContainer.Current.ProjectSet.Where(x => x.Id == project.Id).FirstOrDefault();
+            editableProject.Name = project.Name;
+            editableProject.StartDate = project.StartDate;
+            editableProject.EndDate = project.EndDate;
         }
 
         public void Remove(int id)

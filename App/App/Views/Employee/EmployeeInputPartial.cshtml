@@ -1,7 +1,7 @@
 ﻿@model App.Models.EmployeeModel
 @using App.Models
 @{
-   PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
+    PositionsService RoleContainer = new PositionsService();
     EmployeeModel employee = Model;
 }
 @Html.AntiForgeryToken()

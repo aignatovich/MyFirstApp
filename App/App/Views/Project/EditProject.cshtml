@@ -11,7 +11,8 @@
 @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.HiddenFor(x => x.Id, (Model == null ? default(int) : Model.Id))
-    @Html.Partial("ProjectPartialForm")
+    @Html.Partial("ProjectInputPartial")
 }
+
 
 

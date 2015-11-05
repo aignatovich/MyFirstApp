@@ -53,7 +53,28 @@ namespace App.Service
             {
                 employee.ActualProjects.Add(project);
             }
+        }
 
+        public void Add(ProjectViewModel projectViewModel)
+        {
+            ProjectModel projectModel = AsProject(projectViewModel);
+            projectDataAccessObject.Add(projectModel);
+        }
+
+        public ProjectViewModel GetSingle(int id)
+        {
+            return new ProjectViewModel(projectDataAccessObject.GetSingle(id));
+        }
+
+        public void Edit(ProjectViewModel projectViewModel)
+        {
+            ProjectModel toEdit = AsProject(projectViewModel);
+            projectDataAccessObject.Edit(toEdit);
+        }
+
+        public void Remove(ProjectViewModel project)
+        {
+            projectDataAccessObject.Remove(project.Id);
         }
     }
 }

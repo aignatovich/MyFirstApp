@@ -1,7 +1,7 @@
 ﻿@using App.Models
-@model ProjectViewModel
+@model ExtendedProjectViewModel
 @{ 
-    ProjectViewModel project = Model;
+    ExtendedProjectViewModel project = Model;
 }
 
 
@@ -11,5 +11,4 @@
 <h5>@("End date - " + project.EndDate)</h5>
 <br /><br />
 
-@Html.Partial("PartialSelect", project)
-
+@Html.Partial("SelectPartial", project)

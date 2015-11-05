@@ -8,6 +8,7 @@ using System.Web;
 
 namespace App.Models
 {
+    [ExistanceProjectValidation]
     public class ProjectViewModel : IViewModel<ProjectModel>
     {
         private const string EMPTY_DATE_VALUE_PLACEHOLDER = "...";
@@ -21,7 +22,7 @@ namespace App.Models
         [Required]
         public string StartDate { get; set; }
 
-        [EndDateValidationAttribute]
+        [EndDateValidation]
         public string EndDate { get; set; }
 
         public ICollection<EmployeeModel> CurrentEmployees { get; set; }
@@ -41,6 +42,23 @@ namespace App.Models
             if (!(project.EndDate == null))
             {
                 EndDate = project.EndDate.Value.ToShortDateString();
+            }
+            else
+            {
+                EndDate = EMPTY_DATE_VALUE_PLACEHOLDER;
+            }
+        }
+
+        public ProjectViewModel(ProjectViewModel project)
+        {
+            Id = project.Id;
+            Name = project.Name;
+            StartDate = project.StartDate;
+            CurrentEmployees = project.CurrentEmployees;
+
+            if (!(project.EndDate == null))
+            {
+                EndDate = project.EndDate;
             }
             else
             {

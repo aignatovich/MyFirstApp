@@ -11,8 +11,8 @@ namespace App.Controllers
 {
     public class ProjectController : Controller
     {
-        private ProjectDataAccessObject dataAccessObject = new ProjectDataAccessObject();
         private ProjectService projectService = new ProjectService();
+        private EmployeeService employeeService = new EmployeeService();
 
         [HttpGet]
         public ActionResult CreateProject()
@@ -21,13 +21,11 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(ProjectViewModel projectViewModel)
+        public ActionResult CreateProject(ProjectViewModel project)
         {
-            ProjectModel project = projectService.AsProject(projectViewModel);
-
             if (ModelState.IsValid)
             {
-                dataAccessObject.Add(project);
+                projectService.Add(project);
                 return RedirectToAction("ShowProjects");
             }
 
@@ -44,32 +42,30 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult RemoveProject(int id)
         {
-            ProjectViewModel project = new ProjectViewModel(dataAccessObject.GetSingle(id));
+            ProjectViewModel project = projectService.GetSingle(id);
             return View(project);
         }
 
         [HttpPost]
-        public ActionResult RemoveProject(ProjectViewModel projectViewModel)
+        public ActionResult RemoveProject(ProjectViewModel project)
         {
-            dataAccessObject.Remove(projectViewModel.Id);
+            projectService.Remove(project);
             return Redirect("ShowProjects");
         }
 
         [HttpGet]
         public ActionResult EditProject(int id)
         {
-            ProjectViewModel toTransfer = new ProjectViewModel(dataAccessObject.GetSingle(id));
+            ProjectViewModel toTransfer = projectService.GetSingle(id);
             return View(toTransfer);
         }
 
         [HttpPost]
-        public ActionResult EditProject(ProjectViewModel projectViewModel)
+        public ActionResult EditProject(ProjectViewModel project)
         {
-            ProjectModel toTransfer = projectService.AsProject(projectViewModel);
-
             if (ModelState.IsValid)
             {
-                dataAccessObject.Edit(toTransfer);
+                projectService.Edit(project);
                 return RedirectToAction("ShowProjects");
             }
 
@@ -79,7 +75,7 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult SetupProject(int id)
         {
-            ProjectViewModel toTransfer = new ProjectViewModel(dataAccessObject.GetSingle(id));
+            ExtendedProjectViewModel toTransfer = new ExtendedProjectViewModel(employeeService.GetAll(), projectService.GetSingle(id));
             return View(toTransfer);
         }
 

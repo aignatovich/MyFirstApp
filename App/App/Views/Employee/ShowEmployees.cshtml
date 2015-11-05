@@ -3,15 +3,10 @@
 @{
     ViewBag.Title = "Show Employees";
     ICollection<EmployeeModel> EmployeeList = Model;
-    PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
+    PositionsService RoleContainer = new PositionsService();
 }
 
 <h2>Employees</h2>
-
-<!-- TODO ADD TO BUNDLES-->
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <table class="table">
     <thead>
@@ -29,11 +24,37 @@
                 <td>@item.Name</td>
                 <td>@item.Surname</td>
                 <td>@item.Position</td>               
-                   @Html.Partial("PartialDisplayForm", item)
+                   @Html.Partial("CommonOptions", item)
             </tr>           
         }
     </tbody>
 </table>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap-datepicker3.min.css" />
+}
+
+<script type="text/javascript">
+    (function () {
+    })();
+    function ToSubmit(o) {
+        event.preventDefault;
+        if (confirm("Are you sure you want to remove this employee?") == true) {
+            this.submit()
+        } else {
+            return false;
+        }
+    }
+</script>
 
 
 

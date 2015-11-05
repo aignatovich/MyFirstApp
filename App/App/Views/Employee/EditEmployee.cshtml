@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "EditEmployee";
-    PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
     EmployeeModel employee = Model;
 }
 
@@ -13,8 +12,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.Id, employee.Id)
-    @Html.Partial("EmployeePartialForm")
-}
+    @Html.Partial("EmployeeInputPartial")
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

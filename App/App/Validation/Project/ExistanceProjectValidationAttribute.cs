@@ -10,7 +10,7 @@ using static App.DAL.ProjectDataAccessObject;
 
 namespace App.Validation
 {
-    public class EndDateValidationAttribute: ValidationAttribute
+    public class ExistanceProjectValidationAttribute:ValidationAttribute
     {
         private ProjectDataAccessObject ProjectDataAccessObject = new ProjectDataAccessObject();
         private ProjectService projectService = new ProjectService();
@@ -19,16 +19,11 @@ namespace App.Validation
             ProjectViewModel projectViewModel = validationContext.ObjectInstance as ProjectViewModel;
             ProjectModel projectModel = projectService.AsProject(projectViewModel);
 
-            if (!ProjectDataAccessObject.Exists(projectModel) && isDateValid(projectModel))
+            if (!ProjectDataAccessObject.Exists(projectModel))
             {
                 return ValidationResult.Success;
             }
-            return new ValidationResult("Are you a timetraveller? Check if end date is valid");
-        }
-
-        public static bool isDateValid(ProjectModel project)
-        {
-            return (project.EndDate == null || !(project.StartDate > project.EndDate));
+            return new ValidationResult("Project already exists");
         }
     }
 }

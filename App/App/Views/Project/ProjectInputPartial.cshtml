@@ -8,7 +8,9 @@
 @Html.AntiForgeryToken()
 <hr />
 <div class="form-group">
-    <br /><br /><br /><br />
+    <br /><br />
+    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+    <br /><br />
     @Html.Label("Project name", new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes project name" })

@@ -4,11 +4,6 @@
     ProjectViewModel item = Model;
 }
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="~/Content/bootstrap-datepicker3.min.css" />
-
-
 @using (Html.BeginForm("SetupProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
 {
     @Html.HiddenFor(x => x.Id, item.Id);
@@ -21,7 +16,7 @@
 {
     @Html.HiddenFor(x => x.Id, item.Id);
     <td width="50">
-        <input type="submit"  value="Remove" class="btn btn-primary" onclick="return ToSubmit(this)" />
+        <input type="submit"  value="Remove" class="btn btn-primary remove" />
     </td>
 }
 
@@ -33,21 +28,3 @@
     </td>
 }          
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
-}      
-
-<script type="text/javascript">
-    (function () {
-    })();
-    function ToSubmit(o) {
-        event.preventDefault;
-        if (confirm("Are you sure you want to delete project?") == true) {
-            this.submit()
-        } else {
-            return false;
-        }
-    }
-</script>

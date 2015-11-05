@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Add Employee";
-    PositionsDataAccessObject RoleContainer = new PositionsDataAccessObject();
+    PositionsService RoleContainer = new PositionsService();
 }
 
 <h2>Add Employee</h2>
@@ -11,7 +11,7 @@
 @using (Html.BeginForm("CreateEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <h4>Create a new employee.</h4>
-    @Html.Partial("EmployeePartialForm")
+    @Html.Partial("EmployeeInputPartial")
 }
 
 @section Scripts {

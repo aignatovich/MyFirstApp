@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace App.Models
 {
-    public class PositionsDataAccessObject
+    public class PositionsService
     {
         public List<SelectListItem> GetRoles()
         {
