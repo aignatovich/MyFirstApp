@@ -42,10 +42,10 @@ namespace App.Service
             return project;
         }
 
-        public void EmployInProject(int projectId, string employeeIds)
+        public void EmployInProject(int projectId, IEnumerable<Int32> ids)
         {
             ProjectModel project = projectDataAccessObject.GetSingle(projectId);
-            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(employeeIds);
+            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 

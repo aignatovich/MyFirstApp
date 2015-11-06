@@ -45,7 +45,7 @@ namespace App.DAL
             return (DatabaseModelContainer.Current.ProjectSet.Any(x =>
                                x.Name.Equals(project.Name) &&
                                x.StartDate.Equals(project.StartDate) &&
-                               x.EndDate == (project.EndDate)));
+                               x.EndDate == (project.EndDate) && !(x.Id == project.Id)));
         }
     }
 }

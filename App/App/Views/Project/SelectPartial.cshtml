@@ -59,28 +59,26 @@
 @using (Html.BeginForm("SetupProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.Hidden("ids", "",  new { @id = "idList" })
-    @Html.Hidden("projectId", @project.Id, new { @id = "idList" })
+    @Html.Hidden("projectId", @project.Id, new { })
     <input type="submit" id="submit" class="btn btn-default" value="Confirm employment"/>
 }
 
 
 <script type="text/javascript">
     function ToSumbit(o) {
-        var hidden = document.getElementById("idList");
-        var select = document.getElementById("undo_redo_to");
-        var length = select.options.length;
-        console.log(1);
+        var hidden = $('#idList');
+        var select = $('#undo_redo_to');
+        var length = select.length();
+        console.log(length);
 
         for (var i = 0; i < length; i++) {
-            hidden.value += (" " + select.options[i].value);
+            hidden.val() += (" " + select.v);
         }
     };
 
     (function () {
-        $('#undo_redo').multiselect()
-        {
-            keepRenderingSort: true;
-        };
+        $('#undo_redo').multiselect();
+
         $('#submit').on("click", function () {
             ToSumbit(this);
         });

@@ -1,4 +1,6 @@
-﻿using CodeFirst;
+﻿using App.Binding;
+using App.Models;
+using CodeFirst;
 using FluentValidation.Mvc;
 using System;
 using System.Collections.Generic;

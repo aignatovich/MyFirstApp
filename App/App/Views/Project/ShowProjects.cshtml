@@ -6,6 +6,7 @@
 }
 
 <h2>Projects</h2>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <table class="table">
     <thead>
@@ -37,14 +38,15 @@
 
 <script type="text/javascript">
     (function () {
-        $('.remove').on("click", function () {
-            ToSumbit(this);
+        $('.remove').click (function () {
+             return ToSumbit();
         });
     })();
 
     function ToSubmit(o) {
+        event.preventDefault();
         if (confirm("Are you sure you want to delete project?") == true) {
-            this.submit()
+            this.submit();
         } else {
             return false;
         }

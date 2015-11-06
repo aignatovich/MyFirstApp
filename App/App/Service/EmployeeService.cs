@@ -10,18 +10,13 @@ namespace App.Service
     public class EmployeeService
     {
         EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
-        public ICollection<EmployeeModel> GetEmployeesByIds(string ids)
+        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
         {
             ICollection<EmployeeModel> employees = new List<EmployeeModel>();
-            string[] employeeIds = ids.Trim().Split(' ');
-            int id = 0;
 
-            foreach (string employeeId in employeeIds)
+            foreach (Int32 employeeId in ids)
             {
-                if (Int32.TryParse(employeeId, out id))
-                {
-                    employees.Add(employeeDataAccessObject.GetSingle(id));
-                }
+                employees.Add(employeeDataAccessObject.GetSingle(employeeId));
             }
 
             return employees;

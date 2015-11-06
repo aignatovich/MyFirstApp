@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using App.Service;
+using App.Binding;
 
 namespace App.Controllers
 {
@@ -79,8 +80,8 @@ namespace App.Controllers
             return View(toTransfer);
         }
 
-        [HttpPost]
-        public ActionResult SetupProject(string ids, int projectId)
+        [HttpPost, IntegerArrayFilter(ParameterName = "ids")]
+        public ActionResult SetupProject(ICollection<Int32> ids, int projectId)
         {
             projectService.EmployInProject(projectId, ids);
             return RedirectToAction("ShowProjects");
