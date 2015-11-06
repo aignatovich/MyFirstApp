@@ -1,9 +1,6 @@
 ﻿@model App.Models.ProjectViewModel
 @using App.Models
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="~/Content/bootstrap-datepicker3.min.css" />
 
 @Html.AntiForgeryToken()
 <hr />
@@ -51,9 +48,12 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datepicker")
+
+    <script>
+        (function(){
+            $('.datepicker').datepicker()
+        })();
+    </script>
 }
-<script>
-    (function(){
-        $('.datepicker').datepicker()
-    })();
-</script>
+

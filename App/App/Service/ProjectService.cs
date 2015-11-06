@@ -11,6 +11,7 @@ namespace App.Service
     {
         private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
         private EmployeeService employeeService = new EmployeeService();
+        private ProjectService projectService = new ProjectService();
 
         public ICollection<ProjectViewModel> GetAllViewModels()
         {
@@ -45,13 +46,13 @@ namespace App.Service
         public void EmployInProject(int projectId, IEnumerable<Int32> ids)
         {
             ProjectModel project = projectDataAccessObject.GetSingle(projectId);
-            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(ids);
+            ICollection<EmployeeViewModel> employees = employeeService.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 
-            foreach (EmployeeModel employee in project.CurrentEmployees)
+            foreach (EmployeeViewModel employee in project.CurrentEmployees)
             {
-                employee.ActualProjects.Add(project);
+                employee.ActualProjects.Add(new ProjectViewModel(project));
             }
         }
 

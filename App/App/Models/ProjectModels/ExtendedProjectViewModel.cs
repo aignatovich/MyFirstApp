@@ -1,36 +1,41 @@
-﻿using App.Models.ProjectModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using App.Models;
 
 namespace App.Models
 {
-    public class ExtendedProjectViewModel:ProjectViewModel
+    public class ExtendedProjectViewModel
     {
-        public ICollection<Tuple<String,Int32>> Employees { get; set; }
-        public ICollection<Tuple<String, Int32>> Current { get; set; }
+        public ProjectViewModel Project { get; set; }
+        public ICollection<ExtendedEmployeeViewModel> Unemployed { get; set; }
+        public ICollection<ExtendedEmployeeViewModel> Employed { get; set; }
 
         public ExtendedProjectViewModel()
         {
-            Employees = new List<Tuple<String, Int32>>();
-            Current = new List<Tuple<String, Int32>>();
+            Employed = new List<ExtendedEmployeeViewModel>();
+            Unemployed = new List<ExtendedEmployeeViewModel>();
+            Project = new ProjectViewModel();
         }
 
-        public ExtendedProjectViewModel(ICollection<EmployeeModel> employees, ProjectViewModel project):base(project)
+        public ExtendedProjectViewModel(ICollection<EmployeeViewModel> employees, ProjectViewModel project)
         {
-            Employees = new List<Tuple<String, Int32>>();
-            Current = new List<Tuple<String, Int32>>();
+            Employed = new List<ExtendedEmployeeViewModel>();
+            Unemployed = new List<ExtendedEmployeeViewModel>();
+            Project = project;
 
-            IEnumerable<EmployeeModel> employeeModels = employees.Except(project.CurrentEmployees, new EmployeeComparer());
-            foreach (EmployeeModel e in employeeModels)
+            IEnumerable<EmployeeViewModel> employeeModels = employees.Except(project.CurrentEmployees, new EmployeeComparer());
+
+            foreach (EmployeeViewModel e in employeeModels)
             {
-                Employees.Add(new Tuple<String,Int32>(String.Format("{2} - {0} {1}", e.Name, e.Surname, e.Position), e.Id));
+                Unemployed.Add(new ExtendedEmployeeViewModel(e));
             }
-            foreach (EmployeeModel e in project.CurrentEmployees)
+            foreach (EmployeeViewModel e in project.CurrentEmployees)
             {
-                Current.Add(new Tuple<String, Int32>(String.Format("{2} - {0} {1}", e.Name, e.Surname, e.Position), e.Id));
+                Employed.Add(new ExtendedEmployeeViewModel(e));
             }
         }
+
     }
 }

@@ -25,11 +25,11 @@ namespace App.Models
         [EndDateValidation]
         public string EndDate { get; set; }
 
-        public ICollection<EmployeeModel> CurrentEmployees { get; set; }
+        public ICollection<EmployeeViewModel> CurrentEmployees { get; set; }
 
         public ProjectViewModel()
         {
-            CurrentEmployees = new List<EmployeeModel>();
+            CurrentEmployees = new List<EmployeeViewModel>();
         }
 
         public ProjectViewModel(ProjectModel project)
@@ -42,23 +42,6 @@ namespace App.Models
             if (!(project.EndDate == null))
             {
                 EndDate = project.EndDate.Value.ToShortDateString();
-            }
-            else
-            {
-                EndDate = EMPTY_DATE_VALUE_PLACEHOLDER;
-            }
-        }
-
-        public ProjectViewModel(ProjectViewModel project)
-        {
-            Id = project.Id;
-            Name = project.Name;
-            StartDate = project.StartDate;
-            CurrentEmployees = project.CurrentEmployees;
-
-            if (!(project.EndDate == null))
-            {
-                EndDate = project.EndDate;
             }
             else
             {

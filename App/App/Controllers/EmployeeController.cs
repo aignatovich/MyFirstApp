@@ -21,7 +21,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateEmployee(EmployeeModel employee)
+        public ActionResult CreateEmployee(EmployeeViewModel employee)
         {
             if (ModelState.IsValid)
             {
@@ -34,19 +34,19 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult ShowEmployees()
         {
-            ICollection<EmployeeModel> toTransfer = service.GetAll();
+            ICollection<EmployeeViewModel> toTransfer = service.GetAll();
             return View(toTransfer);
         }
 
         [HttpGet]
         public ActionResult RemoveEmployee(int id)
         {
-            EmployeeModel employee = service.GetSingle(id);
+            EmployeeViewModel employee = service.GetSingle(id);
             return View(employee);
         }
 
         [HttpPost]
-        public ActionResult RemoveEmployee(EmployeeModel employee)
+        public ActionResult RemoveEmployee(EmployeeViewModel employee)
         {
             service.Remove(employee);
             return RedirectToAction("ShowEmployees");
@@ -55,12 +55,12 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult EditEmployee(int id)
         {
-            EmployeeModel employee = service.GetSingle(id);
+            EmployeeViewModel employee = service.GetSingle(id);
             return View(employee);
         }
 
         [HttpPost]
-        public ActionResult EditEmployee(EmployeeModel employee)
+        public ActionResult EditEmployee(EmployeeViewModel employee)
         {
             service.Edit(employee);
             return RedirectToAction("ShowEmployees");          

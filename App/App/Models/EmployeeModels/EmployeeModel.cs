@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using App.Models;
-using App.Validation;
+using System.Linq;
+using System.Web;
 
 namespace App.Models
 {
-    [EmployeeValidationAttribute]
-    public class EmployeeModel : IViewModel<EmployeeModel>
+    public class EmployeeModel
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(60, MinimumLength = 3)]
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(60, MinimumLength = 3)]
         public string Surname { get; set; }
 
         public RolesTemporary Position { get; set; }
@@ -29,10 +22,6 @@ namespace App.Models
         {
             ActualProjects = new List<ProjectModel>();
         }
-
-        public EmployeeModel ConvertToModel()
-        {
-            throw new NotImplementedException();
-        }
     }
+    
 }

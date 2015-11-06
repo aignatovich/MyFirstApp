@@ -24,10 +24,10 @@
 <div class="row">
     <div class="col-xs-5" style="width:26%;">
         <select name="from[]" id="undo_redo" class="form-control" size="13" multiple="multiple">
-            @foreach (Tuple<String,Int32> e in project.Employees)
+            @foreach (ExtendedEmployeeViewModel e in project.Unemployed)
             {
-                    <option value="@e.Item2">
-                        @e.Item1
+                    <option value="@e.Id">
+                        @e.Employee
                     </option>
             }
         </select>
@@ -44,12 +44,12 @@
    
     <div class="col-xs-5">
         <select name="to[]" id="undo_redo_to" class="form-control" size="13" multiple="multiple" >
-           @foreach (Tuple<String, Int32> e in project.Current)
-           {
-            <option value="@e.Item2">
-                @e.Item1
-            </option>
-           }
+            @foreach (ExtendedEmployeeViewModel e in project.Employed)
+            {
+                <option value="@e.Id">
+                    @e.Employee
+                </option>
+            }
         </select>
     </div>
 </div>
@@ -59,33 +59,24 @@
 @using (Html.BeginForm("SetupProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.Hidden("ids", "",  new { @id = "idList" })
-    @Html.Hidden("projectId", @project.Id, new { })
+    @Html.Hidden("projectId", @project.Project.Id, new { })
     <input type="submit" id="submit" class="btn btn-default" value="Confirm employment"/>
 }
 
+@section Scripts {
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/multiselect")
 
-<script type="text/javascript">
-    function ToSumbit(o) {
-        var hidden = $('#idList');
-        var select = $('#undo_redo_to');
-        var length = select.length();
-        console.log(length);
-
-        for (var i = 0; i < length; i++) {
-            hidden.val() += (" " + select.v);
-        }
-    };
-
+    <script type="text/javascript">
     (function () {
         $('#undo_redo').multiselect();
-
+        $('#idList').val(' ');
         $('#submit').on("click", function () {
-            ToSumbit(this);
-        });
-        $(document).ready(function()
-        {
-            var hidden = document.getElementById("idList");
-            hidden.value = "";
+            $("#undo_redo_to option").each(function () {
+                $('#idList').val($('#idList').val() + ' ' + $(this).val());
+            });
         });
     })();
 </script>
+}

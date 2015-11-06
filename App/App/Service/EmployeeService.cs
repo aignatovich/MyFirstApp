@@ -9,42 +9,71 @@ namespace App.Service
 {
     public class EmployeeService
     {
-        EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
-        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
+        private ProjectService projectService = new ProjectService();
+        private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
+
+
+        public ICollection<EmployeeViewModel> GetEmployeesByIds(IEnumerable<Int32> ids)
         {
-            ICollection<EmployeeModel> employees = new List<EmployeeModel>();
+            ICollection<EmployeeViewModel> employees = new List<EmployeeViewModel>();
 
             foreach (Int32 employeeId in ids)
             {
-                employees.Add(employeeDataAccessObject.GetSingle(employeeId));
+                employees.Add(new EmployeeViewModel(employeeDataAccessObject.GetSingle(employeeId)));
             }
 
             return employees;
         }
 
-        public void Add(EmployeeModel employee)
+        public void Add(EmployeeViewModel employee)
         {
-            employeeDataAccessObject.Add(employee);
+            employeeDataAccessObject.Add(AsEmployee(employee));
         }
 
-        public ICollection<EmployeeModel> GetAll()
+        public ICollection<EmployeeViewModel> GetAll()
         {
-            return employeeDataAccessObject.GetAll();
+            ICollection<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
+            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetAll();
+
+            foreach (EmployeeModel e in employees)
+            {
+                toTransfer.Add(new EmployeeViewModel(e));
+            }
+
+            return toTransfer;
         }
 
-        public EmployeeModel GetSingle(int id)
+        public EmployeeViewModel GetSingle(int id)
         {
-            return employeeDataAccessObject.GetSingle(id);
+            return new EmployeeViewModel (employeeDataAccessObject.GetSingle(id));
         }
 
-        public void Remove(EmployeeModel employee)
+        public void Remove(EmployeeViewModel employee)
         {
             employeeDataAccessObject.Remove(employee.Id);
         }
 
-        public void Edit(EmployeeModel employee)
+        public void Edit(EmployeeViewModel employee)
         {
-            employeeDataAccessObject.Edit(employee);
+            employeeDataAccessObject.Edit(AsEmployee(employee));
+        }
+
+        public EmployeeModel AsEmployee(EmployeeViewModel employee)
+        {
+            EmployeeModel toTransfer = new EmployeeModel();
+            toTransfer.Id = employee.Id;
+            toTransfer.Name = employee.Name;
+            toTransfer.Surname = employee.Surname;
+            toTransfer.Position = employee.Position;
+            ICollection<ProjectModel> projectList = new List<ProjectModel>();
+            foreach (ProjectViewModel project in employee.ActualProjects)
+            {
+                projectList.Add(projectService.AsProject(project));
+            }
+
+            toTransfer.ActualProjects = new List<ProjectModel>(projectList);
+
+            return toTransfer;
         }
     }
 }

@@ -34,24 +34,26 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
-}
 
 <script type="text/javascript">
-    (function () {
-        $('.remove').click (function () {
-             return ToSumbit();
-        });
-    })();
-
     function ToSubmit(o) {
-        event.preventDefault();
         if (confirm("Are you sure you want to delete project?") == true) {
-            this.submit();
+            o.submit();
         } else {
             return false;
         }
     }
+
+    (function () {
+        $('.remove').each (function () {
+            $(this).on("click", function () {
+                return ToSubmit(this);
+            })
+        });
+    })();
 </script>
+}
+
 
 
 

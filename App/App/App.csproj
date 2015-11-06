@@ -187,11 +187,15 @@
     <Compile Include="DAL\IOperations.cs" />
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseModelContainer.cs" />
-    <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
+    <Compile Include="Models\EmployeeModels\EmployeeModel.cs" />
+    <Compile Include="Models\EmployeeModels\EmployeeViewModel.cs" />
+    <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeComparer.cs" />
+    <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
     <Compile Include="Service\EmployeeService.cs" />
+    <Compile Include="Service\ExtendedProjectService.cs" />
     <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -200,7 +204,6 @@
     <Compile Include="Models\DefaultModels\IdentityModels.cs" />
     <Compile Include="Models\DefaultModels\ManageViewModels.cs" />
     <Compile Include="Service\PositionsService.cs" />
-    <Compile Include="Models\EmployeeModels\EmployeeModel.cs" />
     <Compile Include="Models\PositionsModels\PositionsEnum.cs" />
     <Compile Include="Models\ProjectModels\ProjectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

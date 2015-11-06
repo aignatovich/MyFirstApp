@@ -18,12 +18,12 @@ namespace App.Models
 
         public DateTime? EndDate { get; set; }
 
-        public virtual ICollection<EmployeeModel> CurrentEmployees { get; set; }
+        public virtual ICollection<EmployeeViewModel> CurrentEmployees { get; set; }
 
 
         public ProjectModel()
         {
-            CurrentEmployees = new List<EmployeeModel>();
+            CurrentEmployees = new List<EmployeeViewModel>();
         }
     }
 }

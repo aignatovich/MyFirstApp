@@ -14,6 +14,7 @@ namespace App.Controllers
     {
         private ProjectService projectService = new ProjectService();
         private EmployeeService employeeService = new EmployeeService();
+        private ExtendedProjectService extendedProjectService = new ExtendedProjectService();
 
         [HttpGet]
         public ActionResult CreateProject()
@@ -76,7 +77,7 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult SetupProject(int id)
         {
-            ExtendedProjectViewModel toTransfer = new ExtendedProjectViewModel(employeeService.GetAll(), projectService.GetSingle(id));
+            ExtendedProjectViewModel toTransfer = extendedProjectService.Create(id);
             return View(toTransfer);
         }
 

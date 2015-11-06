@@ -1,5 +1,6 @@
 ﻿using App.DAL;
 using App.Models;
+using App.Service;
 using CodeFirst;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace App.Validation
 {
     public class EmployeeValidationAttribute: ValidationAttribute
     {
-        private static EmployeeDataAccessObject EmployeeDataAccessObject = new EmployeeDataAccessObject();
+        private  EmployeeDataAccessObject EmployeeDataAccessObject = new EmployeeDataAccessObject();
+        private EmployeeService employeeService = new EmployeeService();
+
         protected override  ValidationResult IsValid(object value,  ValidationContext validationContext)
         {
-            if (!EmployeeDataAccessObject.Exists(validationContext.ObjectInstance as EmployeeModel))
+            if (!EmployeeDataAccessObject.Exists(employeeService.AsEmployee(validationContext.ObjectInstance as EmployeeViewModel)))
             {
                 return ValidationResult.Success;
             }

@@ -6,7 +6,7 @@
 
 @using (Html.BeginForm("SetupProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
 {
-    @Html.HiddenFor(x => x.Id, item.Id);
+    @Html.HiddenFor(x => x.Id);
     <td width="50">
         <input type="submit" value="Setup" class="btn btn-primary" />
     </td>
@@ -14,7 +14,7 @@
 
 @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "", role = "" }))
 {
-    @Html.HiddenFor(x => x.Id, item.Id);
+    @Html.HiddenFor(x => x.Id);
     <td width="50">
         <input type="submit"  value="Remove" class="btn btn-primary remove" />
     </td>
@@ -22,7 +22,7 @@
 
 @using (Html.BeginForm("EditProject", "Project", FormMethod.Get, new { @class = "", role = ""}))
 {
-    @Html.HiddenFor(x => x.Id, item.Id);
+    @Html.HiddenFor(x => x.Id);
     <td width="50">
         <input type="submit"  value="Edit" class="btn btn-primary"/>
     </td>

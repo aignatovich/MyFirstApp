@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace App.Models.ProjectModels
+namespace App.Models
 {
-    class EmployeeComparer : IEqualityComparer<EmployeeModel>
+    class EmployeeComparer : IEqualityComparer<EmployeeViewModel>
     {
-        public bool Equals(EmployeeModel x, EmployeeModel y)
+        public bool Equals(EmployeeViewModel x, EmployeeViewModel y)
         {
             return x.Id == y.Id;
         }
 
-        public int GetHashCode(EmployeeModel obj)
+        public int GetHashCode(EmployeeViewModel obj)
         {
             return obj.Id;
         }
