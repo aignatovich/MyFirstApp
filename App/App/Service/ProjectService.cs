@@ -1,5 +1,6 @@
 ﻿using App.DAL;
 using App.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;

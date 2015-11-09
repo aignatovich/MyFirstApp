@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using App.DAL;
 using CodeFirst;
 using App.Service;
+using PagedList;
 
 namespace App.Controllers
 {
@@ -32,9 +33,9 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowEmployees()
+        public ActionResult ShowEmployees(int? page, int? sorting)
         {
-            ICollection<EmployeeViewModel> toTransfer = service.GetAll();
+            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(page,sorting);
             return View(toTransfer);
         }
 

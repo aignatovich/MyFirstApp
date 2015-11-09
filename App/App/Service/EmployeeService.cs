@@ -1,5 +1,6 @@
 ﻿using App.DAL;
 using App.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace App.Service
     public class EmployeeService
     {
         private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
+        private int pageSize = 50;
 
         public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
         {
@@ -29,7 +31,7 @@ namespace App.Service
             employeeDataAccessObject.Add(toTransfer);
         }
 
-        public ICollection<EmployeeViewModel> GetAll()
+        public ICollection<EmployeeViewModel> GetAllViewModels()
         {
             ICollection<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
             ICollection<EmployeeModel> employees = employeeDataAccessObject.GetAll();
@@ -56,6 +58,13 @@ namespace App.Service
         {
             EmployeeModel toTransfer = employee.AsEmployeeModel();
             employeeDataAccessObject.Edit(toTransfer);
+        }
+
+        public IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? page, int? sorting)
+        {
+            int pageNumber = (page ?? 1);
+            ICollection<EmployeeViewModel> employees = GetAllViewModels();
+            return employees.ToPagedList(pageNumber, pageSize);
         }
     }
 }

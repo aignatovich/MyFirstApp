@@ -1,12 +1,25 @@
 ﻿@using App.Models
-@model ICollection<EmployeeViewModel>
+@using PagedList.Mvc;
+@model PagedList.IPagedList<EmployeeViewModel>
+
 @{
     ViewBag.Title = "Show Employees";
-    ICollection<EmployeeViewModel> EmployeeList = Model;
+    PagedList.IPagedList<EmployeeViewModel> EmployeeList = Model;
     PositionsService RoleContainer = new PositionsService();
 }
 
 <h2>Employees</h2>
+
+<br /><br />
+<!--incapsulate logic on server-side -->
+@Html.DropDownList("SortOptions", new List<SelectListItem>() {
+    new SelectListItem() {Text = "Position", Value = "1" },
+    new SelectListItem() {Text = "Name", Value = "2" },
+    new SelectListItem() {Text = "Surname", Value = "3" }
+
+}, "Sorting", new { @class = "form-control", id = "sort"})
+<br /><br />
+
 
 <table class="table">
     <thead>
@@ -30,6 +43,18 @@
     </tbody>
 </table>
 
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ShowEmployees", new { page, sort = ""}))
+
+
+@using (Html.BeginForm("ShowEmployees", "Employee", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.Hidden("page", Model.PageNumber)
+    @Html.Hidden("sort", "", new { @id = "sortval" })
+    <input type="submit" id="subsort" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
+       tabindex="-1" /> 
+}
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -47,6 +72,10 @@
                 }
             })
         });
+        $('#sort').on("change", function () {
+            $('#sortval').val($("#sort option:selected").val())
+            $('#subsort').click();
+});
     })();
 </script>
 }

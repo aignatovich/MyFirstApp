@@ -14,26 +14,32 @@ namespace App.Models
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (String role in RoleList)
             {
-                items.Add(new SelectListItem { Text = role, Value = ((int)Enum.Parse(typeof(RolesTemporary), role)).ToString() });
+                items.Add(new SelectListItem { Text = role, Value = ((int)Enum.Parse(typeof(Roles), role)).ToString() });
             }
 
             return items;
         }
 
+        public Roles GetValue(int value)
+        {
+            Roles roles = (Roles)value;
+            return roles;
+        }
+
         public string GetStringValue(int value)
         {
-            RolesTemporary roles = (RolesTemporary)value;
+            Roles roles = (Roles)value;
             return roles.ToString();
         }
 
         public IEnumerable<String> GetNames()
         {
-            IEnumerable<String> RoleList = Enum.GetNames(typeof(RolesTemporary)).ToList();
+            IEnumerable<String> RoleList = Enum.GetNames(typeof(Roles)).ToList();
             return RoleList;
         }
         public Array GetValues()
         {
-            Array RoleList = Enum.GetValues(typeof(RolesTemporary));
+            Array RoleList = Enum.GetValues(typeof(Roles));
             return RoleList;
         }
 
