@@ -9,17 +9,15 @@ namespace App.Service
 {
     public class EmployeeService
     {
-        private ProjectService projectService = new ProjectService();
         private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
 
-
-        public ICollection<EmployeeViewModel> GetEmployeesByIds(IEnumerable<Int32> ids)
+        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
         {
-            ICollection<EmployeeViewModel> employees = new List<EmployeeViewModel>();
+            ICollection<EmployeeModel> employees = new List<EmployeeModel>();
 
             foreach (Int32 employeeId in ids)
             {
-                employees.Add(new EmployeeViewModel(employeeDataAccessObject.GetSingle(employeeId)));
+                employees.Add(employeeDataAccessObject.GetSingle(employeeId));
             }
 
             return employees;
@@ -27,7 +25,8 @@ namespace App.Service
 
         public void Add(EmployeeViewModel employee)
         {
-            employeeDataAccessObject.Add(AsEmployee(employee));
+            EmployeeModel toTransfer = employee.AsEmployeeModel();
+            employeeDataAccessObject.Add(toTransfer);
         }
 
         public ICollection<EmployeeViewModel> GetAll()
@@ -55,25 +54,8 @@ namespace App.Service
 
         public void Edit(EmployeeViewModel employee)
         {
-            employeeDataAccessObject.Edit(AsEmployee(employee));
-        }
-
-        public EmployeeModel AsEmployee(EmployeeViewModel employee)
-        {
-            EmployeeModel toTransfer = new EmployeeModel();
-            toTransfer.Id = employee.Id;
-            toTransfer.Name = employee.Name;
-            toTransfer.Surname = employee.Surname;
-            toTransfer.Position = employee.Position;
-            ICollection<ProjectModel> projectList = new List<ProjectModel>();
-            foreach (ProjectViewModel project in employee.ActualProjects)
-            {
-                projectList.Add(projectService.AsProject(project));
-            }
-
-            toTransfer.ActualProjects = new List<ProjectModel>(projectList);
-
-            return toTransfer;
+            EmployeeModel toTransfer = employee.AsEmployeeModel();
+            employeeDataAccessObject.Edit(toTransfer);
         }
     }
 }

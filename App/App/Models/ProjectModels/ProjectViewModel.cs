@@ -37,7 +37,12 @@ namespace App.Models
             Id = project.Id;
             Name = project.Name;
             StartDate = project.StartDate.ToShortDateString();
-            CurrentEmployees = project.CurrentEmployees;
+            CurrentEmployees = new List<EmployeeViewModel>();
+
+            foreach (EmployeeModel e in project.CurrentEmployees)
+            {
+                CurrentEmployees.Add(new EmployeeViewModel(e));
+            }
 
             if (!(project.EndDate == null))
             {
@@ -47,6 +52,29 @@ namespace App.Models
             {
                 EndDate = EMPTY_DATE_VALUE_PLACEHOLDER;
             }
+        }
+
+        public ProjectModel AsProjectModel()
+        {
+            ProjectModel project = new ProjectModel();
+            project.Id = this.Id;
+            project.Name = this.Name;
+            DateTime temporaryDate = new DateTime();
+            DateTime.TryParse(this.StartDate, out temporaryDate);
+            project.StartDate = temporaryDate;
+
+            foreach (EmployeeViewModel e in this.CurrentEmployees)
+            {
+                project.CurrentEmployees.Add(e.AsEmployeeModel());
+            }
+
+            if (this.EndDate != null)
+            {
+                DateTime.TryParse(this.EndDate, out temporaryDate);
+                project.EndDate = temporaryDate;
+            }
+
+            return project;
         }
 
         public ProjectModel ConvertToModel()

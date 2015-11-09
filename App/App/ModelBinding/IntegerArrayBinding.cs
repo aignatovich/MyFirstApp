@@ -7,17 +7,16 @@ using System.Web.Mvc;
 
 namespace App.Binding
 {
-    public class IntegerArrayFilterAttribute : ActionFilterAttribute
+    public class IntegerArrayFilterAttribute : IModelBinder
     {
         public string ParameterName { get; set; }
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            ICollection<Int32> list  = new List<int>();
-            string[] idsSequence = filterContext.HttpContext.Request.Form["ids"]
-                .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            HttpRequestBase request = controllerContext.HttpContext.Request;
+            string[] idsSequence = request.Form.Get("ids").Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             string[] ids = idsSequence[0].Trim().Split(' ');
-
+            ICollection<Int32> list = new List<int>();
             foreach (string id in ids)
             {
                 int tmp;
@@ -26,7 +25,8 @@ namespace App.Binding
                     list.Add(tmp);
                 }
             }
-            filterContext.ActionParameters[ParameterName] = list;
+
+            return list;
         }
     }
 }

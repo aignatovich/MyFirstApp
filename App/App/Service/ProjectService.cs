@@ -10,8 +10,8 @@ namespace App.Service
     public class ProjectService
     {
         private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
+        private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
         private EmployeeService employeeService = new EmployeeService();
-        private ProjectService projectService = new ProjectService();
 
         public ICollection<ProjectViewModel> GetAllViewModels()
         {
@@ -24,41 +24,22 @@ namespace App.Service
             return toTransfer;
         }
 
-        public ProjectModel AsProject(ProjectViewModel projectViewModel)
-        {
-            ProjectModel project = new ProjectModel();
-            project.Id = projectViewModel.Id;
-            project.Name = projectViewModel.Name;
-            DateTime temporaryDate = new DateTime();
-            DateTime.TryParse(projectViewModel.StartDate, out temporaryDate);
-            project.StartDate = temporaryDate;
-            project.CurrentEmployees = projectViewModel.CurrentEmployees;
-
-            if (projectViewModel.EndDate != null)
-            {
-                DateTime.TryParse(projectViewModel.EndDate, out temporaryDate);
-                project.EndDate = temporaryDate;
-            }
-
-            return project;
-        }
-
         public void EmployInProject(int projectId, IEnumerable<Int32> ids)
         {
             ProjectModel project = projectDataAccessObject.GetSingle(projectId);
-            ICollection<EmployeeViewModel> employees = employeeService.GetEmployeesByIds(ids);
+            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 
-            foreach (EmployeeViewModel employee in project.CurrentEmployees)
+            foreach (EmployeeModel employee in project.CurrentEmployees)
             {
-                employee.ActualProjects.Add(new ProjectViewModel(project));
+                employee.ActualProjects.Add(project);
             }
         }
 
         public void Add(ProjectViewModel projectViewModel)
         {
-            ProjectModel projectModel = AsProject(projectViewModel);
+            ProjectModel projectModel = projectViewModel.AsProjectModel();
             projectDataAccessObject.Add(projectModel);
         }
 
@@ -69,7 +50,7 @@ namespace App.Service
 
         public void Edit(ProjectViewModel projectViewModel)
         {
-            ProjectModel toEdit = AsProject(projectViewModel);
+            ProjectModel toEdit =  projectViewModel.AsProjectModel();
             projectDataAccessObject.Edit(toEdit);
         }
 

@@ -64,11 +64,13 @@
 }
 
 @section Scripts {
+
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/multiselect")
 
-    <script type="text/javascript">
+}
+
+<script type="text/javascript">
     (function () {
         $('#undo_redo').multiselect();
         $('#idList').val(' ');
@@ -79,4 +81,3 @@
         });
     })();
 </script>
-}

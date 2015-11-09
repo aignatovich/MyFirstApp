@@ -1,7 +1,7 @@
 ﻿@using App.Models
-@model EmployeeModel
+@model EmployeeViewModel
 @{
-    EmployeeModel item = Model;
+    EmployeeViewModel item = Model;
 }
 
 @using (Html.BeginForm("RemoveEmployee", "Employee", FormMethod.Post, new { @class = "", role = "" }))

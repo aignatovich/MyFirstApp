@@ -14,7 +14,7 @@ namespace CodeFirst
         public DatabaseModelContainer()           
         {
             Database.SetInitializer<DatabaseModelContainer>(null);
-            Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
+           // Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
         }
 
         public DbSet<EmployeeModel> EmployeeSet { get; set; }

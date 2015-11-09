@@ -13,11 +13,10 @@ namespace App.Validation
     public class EmployeeValidationAttribute: ValidationAttribute
     {
         private  EmployeeDataAccessObject EmployeeDataAccessObject = new EmployeeDataAccessObject();
-        private EmployeeService employeeService = new EmployeeService();
 
         protected override  ValidationResult IsValid(object value,  ValidationContext validationContext)
         {
-            if (!EmployeeDataAccessObject.Exists(employeeService.AsEmployee(validationContext.ObjectInstance as EmployeeViewModel)))
+            if (!EmployeeDataAccessObject.Exists((validationContext.ObjectInstance as EmployeeViewModel).AsEmployeeModel()))
             {
                 return ValidationResult.Success;
             }

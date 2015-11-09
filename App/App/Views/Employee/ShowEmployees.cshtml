@@ -1,8 +1,8 @@
 ﻿@using App.Models
-@model ICollection<EmployeeModel>
+@model ICollection<EmployeeViewModel>
 @{
     ViewBag.Title = "Show Employees";
-    ICollection<EmployeeModel> EmployeeList = Model;
+    ICollection<EmployeeViewModel> EmployeeList = Model;
     PositionsService RoleContainer = new PositionsService();
 }
 

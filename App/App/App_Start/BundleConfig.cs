@@ -27,9 +27,10 @@ namespace App
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
+            /*
             bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.min.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/multiselect").Include("~/Scripts/multiselect.min.js"));
+            bundles.Add(new StyleBundle("~/bundles/multiselect").Include("~/Scripts/multiselect.min.js"));*/
 
         }
     }

@@ -1,4 +1,4 @@
-﻿using App.Binding;
+﻿using App.ModelBinding;
 using App.Models;
 using CodeFirst;
 using FluentValidation.Mvc;
@@ -20,6 +20,8 @@ namespace App
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());
         }
 
         protected virtual void Application_BeginRequest()

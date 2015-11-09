@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using static App.DAL.ProjectDataAccessObject;
 
 namespace App.Validation
 {
@@ -17,7 +16,7 @@ namespace App.Validation
         protected override ValidationResult IsValid(object project, ValidationContext validationContext)
         {
             ProjectViewModel projectViewModel = validationContext.ObjectInstance as ProjectViewModel;
-            ProjectModel projectModel = projectService.AsProject(projectViewModel);
+            ProjectModel projectModel = projectViewModel.AsProjectModel();
 
             if (!ProjectDataAccessObject.Exists(projectModel))
             {

@@ -1,8 +1,8 @@
-﻿@model App.Models.EmployeeModel
+﻿@model App.Models.EmployeeViewModel
 @using App.Models
 @{
     PositionsService RoleContainer = new PositionsService();
-    EmployeeModel employee = Model;
+    EmployeeViewModel employee = Model;
 }
 @Html.AntiForgeryToken()
 <hr />
