@@ -6,18 +6,19 @@
     ViewBag.Title = "Show Employees";
     PagedList.IPagedList<EmployeeViewModel> EmployeeList = Model;
     PositionsService RoleContainer = new PositionsService();
+    List<SelectListItem> sortingOptions =
+    new List<SelectListItem>() {
+    new SelectListItem() {Text = "Position", Value = "1" },
+    new SelectListItem() {Text = "Name", Value = "2" },
+    new SelectListItem() {Text = "Surname", Value = "3" }
+    };
 }
 
 <h2>Employees</h2>
 
 <br /><br />
 <!--incapsulate logic on server-side -->
-@Html.DropDownList("SortOptions", new List<SelectListItem>() {
-    new SelectListItem() {Text = "Position", Value = "1" },
-    new SelectListItem() {Text = "Name", Value = "2" },
-    new SelectListItem() {Text = "Surname", Value = "3" }
-
-}, "Sorting", new { @class = "form-control", id = "sort"})
+@Html.DropDownList("SortOptions", sortingOptions, "Sorting", new { @class = "form-control", id = "sort"})
 <br /><br />
 
 
@@ -44,7 +45,7 @@
 </table>
 
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("ShowEmployees", new { page, sort = ""}))
+@Html.PagedListPager(Model, page => Url.Action("ShowEmployees", new { page, sort = Request["sort"]}))
 
 
 @using (Html.BeginForm("ShowEmployees", "Employee", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
