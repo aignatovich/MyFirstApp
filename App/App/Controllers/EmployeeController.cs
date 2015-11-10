@@ -1,11 +1,5 @@
 ﻿using App.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using App.DAL;
-using CodeFirst;
 using App.Service;
 using PagedList;
 
@@ -65,6 +59,12 @@ namespace App.Controllers
         {
             service.Edit(employee);
             return RedirectToAction("ShowEmployees");          
+        }
+
+        [HttpGet]
+        public ActionResult Manage()
+        {
+            return View(service.GetAllViewModels());
         }
     }
 }

@@ -77,6 +77,16 @@ namespace App.Models
             return project;
         }
 
+        public static ProjectViewModel Create(ProjectModel project)
+        {
+            return new ProjectViewModel(project);
+        }
+
+        public static ProjectViewModel Create()
+        {
+            return new ProjectViewModel();
+        }
+
         public ProjectModel ConvertToModel()
         {
             throw new NotImplementedException();

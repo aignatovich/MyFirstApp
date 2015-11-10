@@ -5,6 +5,8 @@
     ExtendedProjectViewModel project = Model;
  }
 
+
+
 <link rel="stylesheet" href="~/Content/multiple-select.css" />
 <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -67,17 +69,17 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
-
 }
 
 <script type="text/javascript">
-    (function () {
-        $('#undo_redo').multiselect();
-        $('#idList').val(' ');
-        $('#submit').on("click", function () {
-            $("#undo_redo_to option").each(function () {
-                $('#idList').val($('#idList').val() + ' ' + $(this).val());
+        (function () {
+            $('#undo_redo').multiselect();
+            $('#idList').val(' ');
+            $('#submit').on("click", function () {
+                $("#undo_redo_to option").each(function () {
+                    $('#idList').val($('#idList').val() + ' ' + $(this).val());
+                });
             });
-        });
-    })();
+        })();
 </script>
+

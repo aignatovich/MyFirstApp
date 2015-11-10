@@ -209,6 +209,7 @@
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeComparer.cs" />
+    <Compile Include="Models\ManagingTableModels\ManagingTableModel.cs" />
     <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
     <Compile Include="Service\EmployeeService.cs" />
@@ -241,19 +242,30 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\multiple-select.css" />
+    <Content Include="Content\nice-select.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\prettify.css" />
+    <Content Include="Content\register_styles.css" />
+    <Content Include="Content\style-nice-select.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap-contextmenu.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\jquery.contextMenu.scss" />
+    <Content Include="Content\_icons.scss" />
+    <Content Include="Content\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.contextMenu.js" />
+    <Content Include="Scripts\jquery.nice-select.min.js" />
+    <Content Include="Scripts\jquery.ui.position.js" />
+    <Content Include="Scripts\jquery.ui.position.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -370,10 +382,10 @@
     <Content Include="Views\Employee\CommonOptions.cshtml" />
     <Content Include="Views\Project\SetupProject.cshtml" />
     <Content Include="Views\Project\SelectPartial.cshtml" />
+    <Content Include="Views\Employee\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Containers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -20,7 +20,7 @@ namespace App.Service
             ICollection<ProjectViewModel> toTransfer = new List<ProjectViewModel>();
             foreach (ProjectModel item in projectList)
             {
-                toTransfer.Add(new ProjectViewModel(item));
+                toTransfer.Add(ProjectViewModel.Create(item));
             }
             return toTransfer;
         }

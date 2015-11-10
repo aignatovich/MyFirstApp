@@ -1,0 +1,190 @@
+﻿@using App.Models
+@model ICollection<EmployeeViewModel>
+@{
+    int days = 31;
+    int stepback = 1;
+
+}
+
+<link rel="stylesheet" href="~/Content/nice-select.css" />
+<link rel="stylesheet" href="~/Content/register_styles.css" />
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.nice-select.min.js"></script>
+
+<h2>Employee Absence Register</h2>
+<div>
+    <br />
+    <br />
+</div>
+<div class="row pad5 clrWsm">
+    <div class="col-xs-5">
+        <select id="select1">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+    </div>
+    <div class="col-xs-5">
+        <h4>Dates of Absence</h4>
+    </div>
+    <div class="col-xs-1 pad5">
+        <select id="select2" style="">
+            <option value="2014">2014</option>
+            <option value="2013">2013</option>
+            <option value="2012">2012</option>
+        </select>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            @for (int i = 0; i < stepback; i++)
+            {
+                <th class="brdCell"></th>
+            }
+
+            @for (int j = 0; j < days; j++)
+            {
+                string dayValue = "";
+                int dayNumber = j % 7;
+                switch (dayNumber)
+                {
+                    case 0:
+                        dayValue = "Mon";
+                        break;
+                    case 1:
+                        dayValue = "Tue";
+                        break;
+                    case 2:
+                        dayValue = "Wed";
+                        break;
+                    case 3:
+                        dayValue = "Thu";
+                        break;
+                    case 4:
+                        dayValue = "Fri";
+                        break;
+                    case 5:
+                        dayValue = "Sat";
+                        break;
+                    case 6:
+                        dayValue = "Sun";
+                        break;
+                }
+                if (j % 2 == 0)
+                {
+                    <td class="dCellW" style="padding: 0px;">@(dayValue)</td>
+                }
+                else
+                {
+                    <td class="dCellG" style="padding: 0px;">@(dayValue)</td>
+                }
+            }
+            @for (int i = 0; i < stepback; i++)
+            {
+                <th class="brdCell"></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr class="lbrdRow">
+            <td class="lbrdCell" style="padding: 0px;">@("Employee name")</td>
+            @for (int i = 0; i < days; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <th class="dayCell" style="padding: 0px;">@(i+1)</th>
+                }
+                else
+                {
+                    <th class="dayCell" style="padding: 0px;">@(i+1)</th>
+                }
+            }
+            <th class="rbrdCell" style="padding: 0px;">@("Total Days")</th>
+        </tr>
+
+        @{
+            int k = 0;
+            foreach (EmployeeViewModel e in Model)
+            {
+                <tr class="lbrdRow">
+                    <td class="empNameCell" style="padding: 3px;">@String.Format("{0} {1}", e.Surname, e.Name)</td>
+
+                    @for (int i = 0; i < days; i++)
+                    {
+                        if (k % 2 == 0)
+                        {
+                            <td class="cell wCell" style="padding: 3px;"></td>
+                        }
+                        else
+                        {
+                            <td class="gCell cell" style="padding: 3px;"></td>
+                        }
+                    }
+
+                    <td class="resWCell " style="padding: 3px;"></td>
+                </tr>
+                k++;
+            }
+
+        }
+
+        <tr id="horizontal_rez" class="lbrdRow">
+            <td class="monthTotal">@("MonthName Total")</td>
+
+            @for (int i = 0; i < days; i++)
+            {
+                <td class="greenCell" style="padding: 0px;"></td>
+            }
+
+            <td class="bigGreenCell" id="totalDays"></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<script>
+    (function () {
+        $('#select1').niceSelect();
+        $('#select2').niceSelect();
+        $('#select').css("background-color", "whitesmoke");
+
+        function AddTo(o) {
+            if (o.text().length == 0) {
+                o.text(parseFloat(1))
+            }
+            else {
+                o.text(parseFloat(o.text()) + parseFloat(1))
+            }
+        }
+
+        $('.cell').on('click', function () {
+            $(this).css("background-color", "#600000");
+            $(this).text("V");
+
+            var column = $(this).parent().children().index(this);
+            var row = $(this).parent().parent().children().index(this.parentNode);
+            var hcell = $('#horizontal_rez').find('td').eq(column);
+            var vcell = $(this).parent().find('td:last');
+            var total = $('#totalDays');
+            AddTo(vcell);
+            AddTo(hcell);
+            AddTo(total);
+
+        })
+    })();
+
+
+
+
+</script>

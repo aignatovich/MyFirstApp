@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using App.Models.ManagingTableModels;
 using System.Data.Entity;
 using System.Web;
 
@@ -19,6 +20,7 @@ namespace CodeFirst
 
         public DbSet<EmployeeModel> EmployeeSet { get; set; }
         public DbSet<ProjectModel> ProjectSet { get; set; }
+        public DbSet<ManagingTableModel> ManagingTableSet { get; set; }
     }
 
    

@@ -52,8 +52,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 {
     @Html.Hidden("page", Model.PageNumber)
     @Html.Hidden("sort", "", new { @id = "sortval" })
-    <input type="submit" id="subsort" style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-       tabindex="-1" /> 
+    <input type="submit" id="subsort" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /> 
 }
 
 

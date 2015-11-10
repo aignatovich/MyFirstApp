@@ -1,0 +1,142 @@
+﻿.pad5 {
+    padding: 5px;
+}
+
+.clrWsm {
+    background-color: whitesmoke;
+}
+
+.brdCell {
+    width: 10%;
+    padding: 2px;
+    background-color: whitesmoke;
+    color: white;
+}
+
+.dCellG {
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color: lightgrey;
+    text-align: center;
+    width: 2%;
+    padding: 0px;
+}
+
+.dCellW {
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color: whitesmoke;
+    text-align: center;
+    width: 2%;
+    padding: 0px;
+}
+
+.lbrdRow {
+    background-color: white;
+    height: 80%;
+    width: 200%;
+}
+
+.lbrdCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    text-align: left;
+}
+
+.dayCell {
+    width: 2%;
+    padding: 2px;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    background-color: darkred;
+    text-align: center;
+    color: white;
+}
+
+.rbrdCell {
+    width: 2%;
+    padding: 2px;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    background-color: olive;
+    text-align: center;
+    color: white;
+}
+
+.monthTotal {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+
+.empNameCell {
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+.wCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: whitesmoke;
+    text-align: center;
+    color: white;
+    width: 2%;
+}
+
+.gCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: lightgrey;
+    text-align: center;
+    width: 2%;
+    color: white;
+}
+
+.resWCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid lightgrey;
+    border-bottom: 1.5px solid lightgrey;
+    background-color: white;
+    text-align: center;
+    width: 10%;
+}
+
+.greenCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: darkseagreen;
+    text-align: center;
+    width: 2%;
+    color: white;
+}
+
+.bigGreenCell {
+    color:white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    background-color: darkseagreen;
+    text-align: center;
+    width: 10%;
+}
