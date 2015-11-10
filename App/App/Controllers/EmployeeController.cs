@@ -33,9 +33,9 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowEmployees(int? page, int? sorting)
+        public ActionResult ShowEmployees(int? page, int? sort)
         {
-            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(page,sorting);
+            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(page,sort);
             return View(toTransfer);
         }
 

@@ -63,8 +63,22 @@ namespace App.Service
         public IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? page, int? sorting)
         {
             int pageNumber = (page ?? 1);
-            ICollection<EmployeeViewModel> employees = GetAllViewModels();
-            return employees.ToPagedList(pageNumber, pageSize);
+            int sortingOrder = (sorting ?? 2);
+            List<EmployeeViewModel> employees = GetAllViewModels().ToList();
+            List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
+            switch (sortingOrder)
+            {
+                case 1:
+                    toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
+                    break;
+                case 2:
+                    toTransfer = employees.OrderBy(x => x.Name).ToList();
+                    break;
+                case 3:
+                    toTransfer = employees.OrderBy(x => x.Surname).ToList();
+                    break;
+            }
+            return toTransfer.ToPagedList(pageNumber, pageSize);
         }
     }
 }
