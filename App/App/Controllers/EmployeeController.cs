@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using App.Service;
 using PagedList;
+using System;
+using System.Web;
 
 namespace App.Controllers
 {
@@ -27,9 +29,9 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowEmployees(int? page, int? sort)
+        public ActionResult ShowEmployees(int? page, int? sort, int? month, int? year)
         {
-            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(page,sort);
+            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(month,year, page,sort);
             return View(toTransfer);
         }
 
@@ -62,9 +64,22 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        public ActionResult Manage(int? month, int? year, int ? page, int? sort)
+        {
+            return View(service.GetAllAsIPagedList(month, year, page,sort));
+        }
+
+        [HttpPost]
         public ActionResult Manage()
         {
-            return View(service.GetAllViewModels());
+            return View();
+        }
+
+        [HttpPost]
+        public void ApplyChanges()
+        {
+            HttpRequestBase request = Request;
+            service.ApplyAbsence(request);
         }
     }
 }

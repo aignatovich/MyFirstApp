@@ -25,9 +25,12 @@ namespace App.Models
 
         public  ICollection<ProjectViewModel> ActualProjects { get; set; }
 
+        public ICollection<ManagingDateModel> AbsenceList { get; set; }
+
         public EmployeeViewModel()
         {
             ActualProjects = new List<ProjectViewModel>();
+            AbsenceList = new List<ManagingDateModel>();
         }
 
         public EmployeeViewModel(EmployeeModel employee)
@@ -36,6 +39,7 @@ namespace App.Models
             Name = employee.Name;
             Surname = employee.Surname;
             Position = employee.Position;
+            AbsenceList = new List<ManagingDateModel>(employee.AbsenceList);
 
             foreach (ProjectModel project in employee.ActualProjects)
             {
@@ -53,6 +57,7 @@ namespace App.Models
             toTransfer.Name = this.Name;
             toTransfer.Surname = this.Surname;
             toTransfer.Position = this.Position;
+            toTransfer.AbsenceList = new List<ManagingDateModel>(this.AbsenceList);
             ICollection<ProjectModel> projectList = new List<ProjectModel>();
             foreach (ProjectViewModel project in this.ActualProjects)
             {

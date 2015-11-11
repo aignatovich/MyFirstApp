@@ -12,7 +12,8 @@ namespace App.Migrations
         PositionsService positionsService = new PositionsService();
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            //AutomaticMigrationDataLossAllowed = true;
             ContextKey = "CodeFirst.DatabaseModelContainer";
         }
 
@@ -24,7 +25,8 @@ namespace App.Migrations
                     Name = "qwe" + i.ToString(),
                     Surname = "zxc" + i.ToString(),
                     Position = positionsService.GetValue(i % 5),
-                    ActualProjects = new List<ProjectModel>()               
+                    ActualProjects = new List<ProjectModel>(),
+                    AbsenceList = new List<ManagingDateModel>()               
                 });
             }
         }

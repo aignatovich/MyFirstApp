@@ -18,9 +18,12 @@ namespace App.Models
 
         public virtual ICollection<ProjectModel> ActualProjects { get; set; }
 
+        public virtual ICollection<ManagingDateModel> AbsenceList { get; set; }
+
         public EmployeeModel()
         {
             ActualProjects = new List<ProjectModel>();
+            AbsenceList = new List<ManagingDateModel>();
         }
     }
     

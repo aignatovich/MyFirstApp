@@ -1,15 +1,18 @@
 ﻿@using App.Models
-@model ICollection<EmployeeViewModel>
+@using PagedList.Mvc;
+@using System.Globalization;
+@model PagedList.IPagedList<EmployeeViewModel>
 @{
     int days = 31;
     int stepback = 1;
-
+    ICollection<String> yearList = new List<String>() { "2015", "2014", "2013", "2012" };
 }
 
 <link rel="stylesheet" href="~/Content/nice-select.css" />
 <link rel="stylesheet" href="~/Content/register_styles.css" />
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.nice-select.min.js"></script>
+<script src="~/Scripts/jquery.nice-select.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
 <h2>Employee Absence Register</h2>
 <div>
@@ -18,7 +21,7 @@
 </div>
 <div class="row pad5 clrWsm">
     <div class="col-xs-5">
-        <select id="select1">
+        <select id="selectMonth">
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
@@ -37,10 +40,18 @@
         <h4>Dates of Absence</h4>
     </div>
     <div class="col-xs-1 pad5">
-        <select id="select2" style="">
-            <option value="2014">2014</option>
-            <option value="2013">2013</option>
-            <option value="2012">2012</option>
+        <select id="selectYear" style="">
+            @if (Request["year"] != null)
+            {
+                <option value="@Request["year"]">@Request["year"]</option>
+            }
+            @foreach (string s in yearList)
+            {
+                if (s != Request["year"])
+                {
+                    <option value="@s">@s</option>
+                }
+            }
         </select>
     </div>
 </div>
@@ -98,7 +109,7 @@
     <tbody>
 
         <tr class="lbrdRow">
-            <td class="lbrdCell" style="padding: 0px;">@("Employee name")</td>
+            <td class="lbrdCell" id="days" style="padding: 0px;">@("Employee name")</td>
             @for (int i = 0; i < days; i++)
             {
                 if (i % 2 == 0)
@@ -118,19 +129,33 @@
             foreach (EmployeeViewModel e in Model)
             {
                 <tr class="lbrdRow">
+                    @Html.Hidden("id", @e.Id, new { @id = @String.Format("{0}{1}", e.Surname, e.Name) })
                     <td class="empNameCell" style="padding: 3px;">@String.Format("{0} {1}", e.Surname, e.Name)</td>
 
-                    @for (int i = 0; i < days; i++)
+                    @for (int i = 1; i < days + 1; i++)
                     {
-                        if (k % 2 == 0)
+                        if (!e.AbsenceList.Any(x => x.Day == i))
                         {
-                            <td class="cell wCell" style="padding: 3px;"></td>
+                            if (k % 2 == 0)
+                            {
+                                <td class="cell wCell" style="padding: 3px;"></td>
+                            }
+                            else
+                            {
+                                <td class="gCell cell" style="padding: 3px;"></td>
+                            }
                         }
                         else
                         {
-                            <td class="gCell cell" style="padding: 3px;"></td>
+                            if (e.AbsenceList.First(x => x.Day == i).Reason == 1)
+                            {
+                                <td class="gCell cell" style="padding: 3px; background-color:#600000;">V</td>
+                            }
                         }
                     }
+
+
+                   
 
                     <td class="resWCell " style="padding: 3px;"></td>
                 </tr>
@@ -152,12 +177,32 @@
     </tbody>
 </table>
 
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Manage", new { month = Request["month"], year = Request["year"], page, sort = Request["sort"] }))
+
+
+@using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { }))
+{
+    @Html.Hidden("month", Request["month"], new { @id = "monthBox" })
+    @Html.Hidden("year", Request["year"], new { @id = "yearBox" })
+   <input type="submit" id="datepickSub" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /> 
+}
+
+
+@using (Ajax.BeginForm("ApplyChanges",  new AjaxOptions{ HttpMethod = "Post"}))
+{
+    @Html.Hidden("userId", "", new { @id = "userIdBox" })
+    @Html.Hidden("dayValue", "", new { @id = "dayValueBox" })
+    @Html.Hidden("monthValue", "", new { @id = "monthValueBox" })
+    @Html.Hidden("yearValue", "", new { @id = "yearValueBox" })
+    @Html.Hidden("reasonValue", "", new { @id = "reasonValueBox" })
+    <input type="submit" id="applyChanges" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+}
 
 <script>
     (function () {
-        $('#select1').niceSelect();
-        $('#select2').niceSelect();
-        $('#select').css("background-color", "whitesmoke");
+        $('#selectMonth').niceSelect();
+        $('#selectYear').niceSelect();
 
         function AddTo(o) {
             if (o.text().length == 0) {
@@ -168,23 +213,72 @@
             }
         }
 
-        $('.cell').on('click', function () {
-            $(this).css("background-color", "#600000");
-            $(this).text("V");
+        function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
 
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+        $('.cell').each(function () {
+            var column = $(this).parent().children().index(this);
+            var row = $(this).parent().parent().children().index(this.parentNode);
+            var hcell = $('#horizontal_rez').find('td').eq(column-1);
+            var vcell = $(this).parent().find('td:last');
+            var total = $('#totalDays');
+            if ($(this).text() == 'V') {
+                AddTo(vcell);
+                AddTo(hcell);
+                AddTo(total);
+            }
+        })
+
+
+        $('.cell').on('click', function () {
             var column = $(this).parent().children().index(this);
             var row = $(this).parent().parent().children().index(this.parentNode);
             var hcell = $('#horizontal_rez').find('td').eq(column);
             var vcell = $(this).parent().find('td:last');
             var total = $('#totalDays');
-            AddTo(vcell);
-            AddTo(hcell);
-            AddTo(total);
+            if ($(this).text() != 'V') {
+                AddTo(vcell);
+                AddTo(hcell);
+                AddTo(total);
+            }
+            $(this).css("background-color", "#600000");
+            $(this).text("V");
+            var val = $(this).parent().find('td:first').text().replace(" ", "");
+            var id = $("#" + val).val()
+            $('#userIdBox').val(id);
+            $('#monthValueBox').val(getUrlParameter('month'));
+            $('#yearValueBox').val(getUrlParameter('year'));
+            $('#dayValueBox').val(column - 1);
+            $('#reasonValueBox').val(1);
+            $('#applyChanges').click();
 
         })
+
+        $('select').on('change', function () {
+            setTimeout(
+            function () {
+
+            }, 3000);
+                $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));          
+                $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
+            $('#datepickSub').click();
+
+        })
+
+      
+
     })();
-
-
-
-
 </script>
+
