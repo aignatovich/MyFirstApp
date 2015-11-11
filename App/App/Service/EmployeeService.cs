@@ -64,28 +64,31 @@ namespace App.Service
         {
             int pageNumber = (page ?? 1);
             int sortingOrder = (sorting ?? 2);
-            int month = (monthTransfered ?? 1);
-            int year = (yearTransfered ?? 2015);
+            int month = (monthTransfered ?? -1);
+            int year = (yearTransfered ?? -1);
             List<EmployeeViewModel> employees = GetAllViewModels().ToList();
             List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
-            switch (sortingOrder)
-            {
-                case 1:
-                    toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
-                    break;
-                case 2:
-                    toTransfer = employees.OrderBy(x => x.Name).ToList();
-                    break;
-                case 3:
-                    toTransfer = employees.OrderBy(x => x.Surname).ToList();
-                    break;
-            }
 
-            foreach (EmployeeViewModel e in toTransfer)
+            if (month != -1 && year != -1)
             {
-               e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
-            }
+                switch (sortingOrder)
+                {
+                    case 1:
+                        toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
+                        break;
+                    case 2:
+                        toTransfer = employees.OrderBy(x => x.Name).ToList();
+                        break;
+                    case 3:
+                        toTransfer = employees.OrderBy(x => x.Surname).ToList();
+                        break;
+                }
 
+                foreach (EmployeeViewModel e in toTransfer)
+                {
+                    e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
+                }
+            }            
             return toTransfer.ToPagedList(pageNumber, pageSize);
         }
 

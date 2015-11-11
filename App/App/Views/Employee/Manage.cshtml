@@ -14,6 +14,7 @@
 <script src="~/Scripts/jquery.nice-select.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
+
 <h2>Employee Absence Register</h2>
 <div>
     <br />
@@ -138,11 +139,13 @@
                         {
                             if (k % 2 == 0)
                             {
-                                <td class="cell wCell" style="padding: 3px;"></td>
+                                <td class="cell wCell" style="padding: 3px;">
+                                </td>
                             }
                             else
                             {
-                                <td class="gCell cell" style="padding: 3px;"></td>
+                                <td class="gCell cell" style="padding: 3px;">                  
+                                </td>
                             }
                         }
                         else
@@ -153,15 +156,10 @@
                             }
                         }
                     }
-
-
-                   
-
                     <td class="resWCell " style="padding: 3px;"></td>
                 </tr>
                 k++;
-            }
-
+           }
         }
 
         <tr id="horizontal_rez" class="lbrdRow">
@@ -199,6 +197,13 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     <input type="submit" id="applyChanges" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
 }
 
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
+    <li id="vac" style="background-color:#600000;"><a style="color:white;" tabindex="-1">Vacation</a></li>
+    <li style="background-color:#339933;"><a style="color:white;" tabindex="-1" href="#">Sick</a></li>
+    <li style="background-color:#FFCC66;"><a style="color:white;" tabindex="-1" href="#">Personal</a></li>
+
+</ul>
+
 <script>
     (function () {
         $('#selectMonth').niceSelect();
@@ -231,15 +236,16 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         $('.cell').each(function () {
             var column = $(this).parent().children().index(this);
             var row = $(this).parent().parent().children().index(this.parentNode);
-            var hcell = $('#horizontal_rez').find('td').eq(column-1);
+            var hcell = $('#horizontal_rez').find('td').eq(column - 1);
             var vcell = $(this).parent().find('td:last');
             var total = $('#totalDays');
+
             if ($(this).text() == 'V') {
                 AddTo(vcell);
                 AddTo(hcell);
                 AddTo(total);
-            }
-        })
+            }          
+        });
 
 
         $('.cell').on('click', function () {
@@ -264,20 +270,81 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             $('#reasonValueBox').val(1);
             $('#applyChanges').click();
 
-        })
+            $(this).triggerHandler('contextMenu');
+        });
 
+      
         $('select').on('change', function () {
             setTimeout(
             function () {
 
             }, 3000);
-                $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));          
-                $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
+            $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));
+            $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
             $('#datepickSub').click();
 
-        })
+        });
 
+        (function ($, window) {
+
+            $.fn.contextMenu = function (settings) {
+
+                return this.each(function () {
+
+                    // Open context menu
+                    $(this).on("contextmenu", function (e) {
+                        // return native menu if pressing control
+                        if (e.ctrlKey) return;
+
+                        //open menu
+                        var $menu = $(settings.menuSelector)
+                            .data("invokedOn", $(e.target))
+                            .show()
+                            .css({
+                                position: "absolute",
+                                left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
+                                top: getMenuPosition(e.clientY, 'height', 'scrollTop')
+                            })
+                            .off('click')
+                            .on('click', 'a', function (e) {
+                                $menu.hide();
+
+                                var $invokedOn = $menu.data("invokedOn");
+                                var $selectedMenu = $(e.target);
+
+                                settings.menuSelected.call(this, $invokedOn, $selectedMenu);
+                            });
+
+                        return false;
+                    });
+
+                    //make sure menu closes on any click
+                    $(document).click(function () {
+                        $(settings.menuSelector).hide();
+                    });
+                });
+
+                function getMenuPosition(mouse, direction, scrollDir) {
+                    var win = $(window)[direction](),
+                        scroll = $(window)[scrollDir](),
+                        menu = $(settings.menuSelector)[direction](),
+                        position = mouse + scroll;
+
+                    // opening menu would pass the side of the page
+                    if (mouse + menu > win && menu < mouse)
+                        position -= menu;
+
+                    return position;
+                }
+
+            };
+        })(jQuery, window);
       
+        $(".cell").contextMenu({
+            menuSelector: "#contextMenu",
+            menuSelected: function (invokedOn, selectedMenu) {             
+            }
+        });
 
     })();
 </script>
