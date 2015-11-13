@@ -44,6 +44,8 @@ namespace App
                 "~/Scripts/jquery.unobtrusive-ajax.min.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-3.3.0.js"));
+
         }
     }
 }

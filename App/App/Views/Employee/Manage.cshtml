@@ -7,41 +7,20 @@
     int stepback = 1;
     int startYear = Model.StartYear;
 }
+<script src="~/Scripts/knockout-3.3.0.js"></script>
 
 <div>
     <br />
 </div>
 <div class="row pad5 clrWsm">
     <div class="col-xs-5">
-        <select id="selectMonth">
-            <option value="@((int)Model.Month)">@Model.Month</option>
-            @for (int i = 1; i < 13; i++)
-            {
-                if (i != (int)Model.Month)
-                {
-                   <option value="@i">@((Month)i)</option>
-                }
-            }
-                   
-        </select>
+        <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month, optionsCaption: month"></select>
     </div>
     <div class="col-xs-5">
         <h4>Dates of Absence</h4>
     </div>
     <div class="col-xs-1 pad5">
-        <select id="selectYear" style="">
-            @if (Request["year"] != null)
-            {
-                <option value="@Request["year"]">@Request["year"]</option>
-            }
-            @for(int year = DateTime.Now.Year; year >= Model.StartYear; year--)
-            {
-                if (!year.ToString().Equals(Request["year"]))
-                {
-                    <option value="@year">@year</option>
-                }
-            }
-        </select>
+        <select id="selectYear" data-bind="options: years, optionsText: 'Name', optionsValue: 'Name', value: year.Name, optionsCaption: year.Name"></select>
     </div>
 </div>
 <table class="table">
@@ -54,7 +33,7 @@
 
             @for (int j = (int)Model.FirstDay; j < days + (int)Model.FirstDay; j++)
             {
-                string dayValue =  ((DayEnum)(j%7)).ToString();
+                string dayValue = ((DayEnum)(j % 7)).ToString();
                 int dayNumber = j % 7;
 
 
@@ -81,11 +60,11 @@
             {
                 if (i % 2 == 0)
                 {
-                    <th class="dayCell" style="padding: 0px;">@(i+1)</th>
+                    <th class="dayCell" style="padding: 0px;">@(i + 1)</th>
                 }
                 else
                 {
-                    <th class="dayCell" style="padding: 0px;">@(i+1)</th>
+                    <th class="dayCell" style="padding: 0px;">@(i + 1)</th>
                 }
             }
             <th class="rbrdCell" style="padding: 0px;">@("Total Days")</th>
@@ -105,13 +84,11 @@
                         {
                             if (k % 2 == 0)
                             {
-                                <td class="cell wCell" style="padding: 3px;">
-                                </td>
+                                <td class="cell wCell" style="padding: 3px;"></td>
                             }
                             else
                             {
-                                <td class="gCell cell" style="padding: 3px;">                  
-                                </td>
+                                <td class="gCell cell" style="padding: 3px;"></td>
                             }
                         }
                         else
@@ -133,7 +110,7 @@
                     <td class="resWCell " style="padding: 3px;"></td>
                 </tr>
                 k++;
-           }
+            }
         }
 
         <tr id="horizontal_rez" class="lbrdRow">
@@ -148,8 +125,6 @@
         </tr>
     </tbody>
 </table>
-
-Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employees.PageNumber) of @Model.Employees.PageCount
 @Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = Request["month"], year = Request["year"], page, sort = Request["sort"] }))
 
 
@@ -157,220 +132,252 @@ Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employ
 {
     @Html.Hidden("month", Request["month"], new { @id = "monthBox" })
     @Html.Hidden("year", Request["year"], new { @id = "yearBox" })
-   <input type="submit" class="hiddn" id="datepickSub"  tabindex="-1" /> 
+    <input type="submit" class="hiddn" id="datepickSub" tabindex="-1" />
 }
 
 @Html.Partial("DataTransferPartial", new ManagingDateModel())
 
 
-<ul  id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
     <li id="vac" class="vacclr"><a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a></li>
-    <li id="sic" class="sickclr"><a class="cmenufont" style="color:white;"  tabindex="-1" href="#">Sick</a></li>
-    <li id="per" class="perclr"><a class="cmenufont" style="color:white;"  tabindex="-1" href="#">Personal</a></li>
+    <li id="sic" class="sickclr"><a class="cmenufont" style="color:white;" tabindex="-1" href="#">Sick</a></li>
+    <li id="per" class="perclr"><a class="cmenufont" style="color:white;" tabindex="-1" href="#">Personal</a></li>
 </ul>
 @section Scripts{
     @Scripts.Render("~/bundles/jq")
     @Styles.Render("~/Content/nice-select-styles")
     @Styles.Render("~/Content/register-styles")
     @Scripts.Render("~/bundles/register")
+    @Scripts.Render("~/bundles/knockout")
 
-<script>
-    (function () {
-        $('#selectMonth').niceSelect();
-        $('#selectYear').niceSelect();
+    <script>
+        (function () {
+            $('#selectMonth').niceSelect();
+            $('#selectYear').niceSelect();
 
-        function AddTo(o) {
-            if (o.text().length == 0) {
-                o.text(parseFloat(1))
-            }
-            else {
-                o.text(parseFloat(o.text()) + parseFloat(1))
-            }
-        }
-
-        function getUrlParameter(sParam) {
-            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                sURLVariables = sPageURL.split('&'),
-                sParameterName,
-                i;
-            for (i = 0; i < sURLVariables.length; i++) {
-                sParameterName = sURLVariables[i].split('=');
-                if (sParameterName[0] === sParam) {
-                    return sParameterName[1] === undefined ? true : sParameterName[1];
+            function AddTo(o) {
+                if (o.text().length == 0) {
+                    o.text(parseFloat(1))
+                }
+                else {
+                    o.text(parseFloat(o.text()) + parseFloat(1))
                 }
             }
-        };
 
-        $('.cell').each(function () {
-            var column = $(this).parent().children().index(this);
-            var row = $(this).parent().parent().children().index(this.parentNode);
-            var hcell = $('#horizontal_rez').find('td').eq(column - 1);
-            var vcell = $(this).parent().find('td:last');
-            var total = $('#totalDays');
+            $('.cell').each(function () {
+                var column = $(this).parent().children().index(this);
+                var row = $(this).parent().parent().children().index(this.parentNode);
+                var hcell = $('#horizontal_rez').find('td').eq(column - 1);
+                var vcell = $(this).parent().find('td:last');
+                var total = $('#totalDays');
 
-            if ($(this).text() == 'V' || $(this).text() == 'P' || $(this).text() == 'S') {
-                AddTo(vcell);
-                AddTo(hcell);
-                AddTo(total);
+                if ($(this).text() == 'V' || $(this).text() == 'P' || $(this).text() == 'S') {
+                    AddTo(vcell);
+                    AddTo(hcell);
+                    AddTo(total);
+                }
+            });
+
+            var column;
+            var row;
+            var cell;
+
+            function setDataFields(id, val)
+            {
+                $('#userIdBox').val(id);
+                $('#monthValueBox').val("@((int)(Model.Month))");
+                $('#yearValueBox').val("@Model.Year");
+                $('#dayValueBox').val(column - 1);
+                $('#reasonValueBox').val(val);
+                $('#applyChanges').click();
             }
-        });
 
-        var column;
-        var row;
-        var cell;
-
-        function setDataFields(id, val)
-        {
-            $('#userIdBox').val(id);
-            $('#monthValueBox').val("@((int)(Model.Month))");
-            $('#yearValueBox').val("@Model.Year");
-            $('#dayValueBox').val(column - 1);
-            $('#reasonValueBox').val(val);
-            $('#applyChanges').click();
-        }
-
-        function cellClickVacation(o) {
-            var hcell = $('#horizontal_rez').find('td').eq(column);
-            var vcell = $(o).parent().find('td:last');
-            var total = $('#totalDays');
-            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
-                AddTo(vcell);
-                AddTo(hcell);
-                AddTo(total);
-            }
-            $(o).css("background-color", "#600000");
-            $(o).text("V");
-            var val = $(o).parent().find('td:first').text().replace(" ", "");
-            var id = $("#" + val).val()
-            setDataFields(id,1);
-        }
-
-        function cellClickSick(o) {
-            var hcell = $('#horizontal_rez').find('td').eq(column);
-            var vcell = $(o).parent().find('td:last');
-            var total = $('#totalDays');
-            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
-                AddTo(vcell);
-                AddTo(hcell);
-                AddTo(total);
-                $(o).css("background-color", "#339933");
-                $(o).text("S");
+            function cellClickVacation(o) {
+                var hcell = $('#horizontal_rez').find('td').eq(column);
+                var vcell = $(o).parent().find('td:last');
+                var total = $('#totalDays');
+                if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                    AddTo(vcell);
+                    AddTo(hcell);
+                    AddTo(total);
+                }
+                $(o).css("background-color", "#600000");
+                $(o).text("V");
                 var val = $(o).parent().find('td:first').text().replace(" ", "");
                 var id = $("#" + val).val()
-                setDataFields(id,2);
+                setDataFields(id,1);
             }
 
-        }
-
-        function cellClickPersonal(o) {
-            var hcell = $('#horizontal_rez').find('td').eq(column);
-            var vcell = $(o).parent().find('td:last');
-            var total = $('#totalDays');
-            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
-                AddTo(vcell);
-                AddTo(hcell);
-                AddTo(total);
-                $(o).css("background-color", "#FFCC66");
-                $(o).text("P");
-                var val = $(o).parent().find('td:first').text().replace(" ", "");
-                var id = $("#" + val).val()
-                setDataFields(id,3);
-            }
-        }
-
-
-        $('.cell').on('click', function () {
-            $(this).contextmenu();
-        });
-
-        $('select').on('change', function () {
-            $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));
-            $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
-            $('#datepickSub').click();
-
-        });
-
-        (function ($, window) {
-
-            $.fn.contextMenu = function (settings) {
-
-                return this.each(function () {
-
-                    // Open context menu
-                    $(this).on("contextmenu", function (e) {
-                        // return native menu if pressing control
-                        if (e.ctrlKey) return;
-
-                        //open menu
-                        var $menu = $(settings.menuSelector)
-                            .data("invokedOn", $(e.target))
-                            .show()
-                            .css({
-                                position: "absolute",
-                                trigger: 'left',
-                                left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
-                                top: getMenuPosition(e.clientY, 'height', 'scrollTop')
-                            })
-                            .off('click')
-                            .on('click', 'a', function (e) {
-                                $menu.hide();
-
-                                var $invokedOn = $menu.data("invokedOn");
-                                var $selectedMenu = $(e.target);
-
-                                settings.menuSelected.call(this, $invokedOn, $selectedMenu);
-                            });
-
-                        return false;
-                    });
-
-                    //make sure menu closes on any click
-                    $(document).click(function () {
-                        $(settings.menuSelector).hide();
-                    });
-                });
-
-                function getMenuPosition(mouse, direction, scrollDir) {
-                    var win = $(window)[direction](),
-                        scroll = $(window)[scrollDir](),
-                        menu = $(settings.menuSelector)[direction](),
-                        position = mouse + scroll;
-
-                    // opening menu would pass the side of the page
-                    if (mouse + menu > win && menu < mouse)
-                        position -= menu;
-
-                    return position;
+            function cellClickSick(o) {
+                var hcell = $('#horizontal_rez').find('td').eq(column);
+                var vcell = $(o).parent().find('td:last');
+                var total = $('#totalDays');
+                if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                    AddTo(vcell);
+                    AddTo(hcell);
+                    AddTo(total);
+                    $(o).css("background-color", "#339933");
+                    $(o).text("S");
+                    var val = $(o).parent().find('td:first').text().replace(" ", "");
+                    var id = $("#" + val).val()
+                    setDataFields(id,2);
                 }
 
-            };
-        })(jQuery, window);
-
-        $(".cell").contextMenu({
-            menuSelector: "#contextMenu",
-            menuSelected: function (invokedOn, selectedMenu) {
             }
+
+            function cellClickPersonal(o) {
+                var hcell = $('#horizontal_rez').find('td').eq(column);
+                var vcell = $(o).parent().find('td:last');
+                var total = $('#totalDays');
+                if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                    AddTo(vcell);
+                    AddTo(hcell);
+                    AddTo(total);
+                    $(o).css("background-color", "#FFCC66");
+                    $(o).text("P");
+                    var val = $(o).parent().find('td:first').text().replace(" ", "");
+                    var id = $("#" + val).val()
+                    setDataFields(id,3);
+                }
+            }
+
+
+            $('.cell').on('click', function () {
+                $(this).contextmenu();
+            });
+
+            $('select').on('change', function () {
+                $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));
+                $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
+                $('#datepickSub').click();
+
+            });
+
+            (function ($, window) {
+
+                $.fn.contextMenu = function (settings) {
+
+                    return this.each(function () {
+
+                        // Open context menu
+                        $(this).on("contextmenu", function (e) {
+                            // return native menu if pressing control
+                            if (e.ctrlKey) return;
+
+                            //open menu
+                            var $menu = $(settings.menuSelector)
+                                .data("invokedOn", $(e.target))
+                                .show()
+                                .css({
+                                    position: "absolute",
+                                    trigger: 'left',
+                                    left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
+                                    top: getMenuPosition(e.clientY, 'height', 'scrollTop')
+                                })
+                                .off('click')
+                                .on('click', 'a', function (e) {
+                                    $menu.hide();
+
+                                    var $invokedOn = $menu.data("invokedOn");
+                                    var $selectedMenu = $(e.target);
+
+                                    settings.menuSelected.call(this, $invokedOn, $selectedMenu);
+                                });
+
+                            return false;
+                        });
+
+                        //make sure menu closes on any click
+                        $(document).click(function () {
+                            $(settings.menuSelector).hide();
+                        });
+                    });
+
+                    function getMenuPosition(mouse, direction, scrollDir) {
+                        var win = $(window)[direction](),
+                            scroll = $(window)[scrollDir](),
+                            menu = $(settings.menuSelector)[direction](),
+                            position = mouse + scroll;
+
+                        // opening menu would pass the side of the page
+                        if (mouse + menu > win && menu < mouse)
+                            position -= menu;
+
+                        return position;
+                    }
+
+                };
+            })(jQuery, window);
+
+            $(".cell").contextMenu({
+                menuSelector: "#contextMenu",
+                menuSelected: function (invokedOn, selectedMenu) {
+                }
+            });
+
+            $(".cell").on("contextmenu", function () {
+                column = $(this).parent().children().index(this);
+                row = $(this).parent().parent().children().index(this.parentNode);
+                cell = $(this);
+            })
+            $('#vac').on("click", function () {
+                cellClickVacation(cell);
+            })
+
+            $('#sic').on("click", function () {
+                cellClickSick(cell);
+            })
+
+            $('#per').on("click", function () {
+                cellClickPersonal(cell);
+            })
+        })();
+    </script>
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    ko.observableArray.fn.find = function (prop, data) {
+        var valueToMatch = data[prop];
+        return ko.utils.arrayFirst(this(), function (item) {
+            return item[prop] === valueToMatch;
         });
+    };
 
-        $(".cell").on("contextmenu", function () {
-             column = $(this).parent().children().index(this);
-             row = $(this).parent().parent().children().index(this.parentNode);
-             cell = $(this);
-        })
-        $('#vac').on("click", function () {
-            cellClickVacation(cell);
-        })
+    var month = { Name: "@(Model.Month)", Code: "@((int)Model.Month)" };
+    var year = { Name: "@(Model.Year)" };
+    var years = [];
 
-        $('#sic').on("click", function () {
-            cellClickSick(cell);
-        })
+    for (var i = @Model.StartYear; i <= @DateTime.Now.Year; i++)
+    {
+        years.push({Name: i});
+    }
+    years = years.reverse();
 
-        $('#per').on("click", function () {
-            cellClickPersonal(cell);
-        })
+        var months = [
+    { Name: "@((Month)(1))", Code: "1" },
+    { Name: "@((Month)(2))", Code: "2" },
+    { Name: "@((Month)(3))", Code: "3" },
+    { Name: "@((Month)(4))", Code: "4" },
+    { Name: "@((Month)(5))", Code: "5" },
+    { Name: "@((Month)(6))", Code: "6" },
+    { Name: "@((Month)(7))", Code: "7" },
+    { Name: "@((Month)(8))", Code: "8" },
+    { Name: "@((Month)(9))", Code: "9" },
+    { Name: "@((Month)(10))", Code: "10" },
+    { Name: "@((Month)(11))", Code: "11" },
+    { Name: "@((Month)(12))", Code: "12" }
+    ];
 
-    })();
+        function ViewModel() {
+            this.months = ko.observableArray($.grep(months, function(e){ return e.Code != month.Code }));
+            this.month = month.Name;
+            this.year = year;
+            this.years =  ko.observableArray($.grep(years, function(e){ return e.Name != year.Name }));
+    };
+     ko.applyBindings(new ViewModel());
+
 </script>
- }
+
 
 
