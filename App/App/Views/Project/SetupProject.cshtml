@@ -5,10 +5,27 @@
 }
 
 
-
 <h1>@project.Name</h1>
 <h5>@("Start date - " + project.StartDate)</h5>
 <h5>@("End date - " + project.EndDate)</h5>
 <br /><br />
 
 @Html.Partial("SelectPartial", Model)
+
+@section Scripts {
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jq")
+    @Styles.Render("~/Content/multiselect-styles")
+    @Scripts.Render("~/bundles/multiselect")
+    <script type="text/javascript">
+            (function () {
+                $('#undo_redo').multiselect();
+                $('#idList').val(' ');
+                $('#submit').on("click", function () {
+                    $("#undo_redo_to option").each(function () {
+                        $('#idList').val($('#idList').val() + ' ' + $(this).val());
+                    });
+                });
+            })();
+  </script>
+}

@@ -1,23 +1,15 @@
-﻿@using App.Models
+﻿@using App.Models.ManagingTableModels
 @using PagedList.Mvc;
+@using App.Models;
 @using System.Globalization;
-@model PagedList.IPagedList<EmployeeViewModel>
+@model TableData
 @{
-    int days = 31;
+    int days = Model.DayLimit;
     int stepback = 1;
-    ICollection<String> yearList = new List<String>() { "2015", "2014", "2013", "2012" };
+    ICollection<String> yearList = Model.YearList;
 }
 
-<link rel="stylesheet" href="~/Content/nice-select.css" />
-<link rel="stylesheet" href="~/Content/register_styles.css" />
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.nice-select.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-
-
-<h2>Employee Absence Register</h2>
 <div>
-    <br />
     <br />
 </div>
 <div class="row pad5 clrWsm">
@@ -64,34 +56,12 @@
                 <th class="brdCell"></th>
             }
 
-            @for (int j = 0; j < days; j++)
+            @for (int j = (int)Model.FirstDay; j < days + (int)Model.FirstDay; j++)
             {
-                string dayValue = "";
+                string dayValue =  ((Day)(j%7)).ToString();
                 int dayNumber = j % 7;
-                switch (dayNumber)
-                {
-                    case 0:
-                        dayValue = "Mon";
-                        break;
-                    case 1:
-                        dayValue = "Tue";
-                        break;
-                    case 2:
-                        dayValue = "Wed";
-                        break;
-                    case 3:
-                        dayValue = "Thu";
-                        break;
-                    case 4:
-                        dayValue = "Fri";
-                        break;
-                    case 5:
-                        dayValue = "Sat";
-                        break;
-                    case 6:
-                        dayValue = "Sun";
-                        break;
-                }
+
+
                 if (j % 2 == 0)
                 {
                     <td class="dCellW" style="padding: 0px;">@(dayValue)</td>
@@ -127,7 +97,7 @@
 
         @{
             int k = 0;
-            foreach (EmployeeViewModel e in Model)
+            foreach (EmployeeViewModel e in Model.Employees)
             {
                 <tr class="lbrdRow">
                     @Html.Hidden("id", @e.Id, new { @id = @String.Format("{0}{1}", e.Surname, e.Name) })
@@ -154,6 +124,14 @@
                             {
                                 <td class="gCell cell" style="padding: 3px; background-color:#600000;">V</td>
                             }
+                            else if (e.AbsenceList.First(x => x.Day == i).Reason == 2)
+                            {
+                                <td class="gCell cell" style="padding: 3px; background-color:#339933;">S</td>
+                            }
+                            else if (e.AbsenceList.First(x => x.Day == i).Reason == 3)
+                            {
+                                <td class="gCell cell" style="padding: 3px; background-color:#FFCC66;">P</td>
+                            }
                         }
                     }
                     <td class="resWCell " style="padding: 3px;"></td>
@@ -163,7 +141,7 @@
         }
 
         <tr id="horizontal_rez" class="lbrdRow">
-            <td class="monthTotal">@("MonthName Total")</td>
+            <td class="monthTotal" style="padding: 0px;">@("Month total")</td>
 
             @for (int i = 0; i < days; i++)
             {
@@ -175,15 +153,15 @@
     </tbody>
 </table>
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Manage", new { month = Request["month"], year = Request["year"], page, sort = Request["sort"] }))
+Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employees.PageNumber) of @Model.Employees.PageCount
+@Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = Request["month"], year = Request["year"], page, sort = Request["sort"] }))
 
 
 @using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { }))
 {
     @Html.Hidden("month", Request["month"], new { @id = "monthBox" })
     @Html.Hidden("year", Request["year"], new { @id = "yearBox" })
-   <input type="submit" id="datepickSub" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /> 
+   <input type="submit" class="hiddn" id="datepickSub"  tabindex="-1" /> 
 }
 
 
@@ -194,15 +172,19 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     @Html.Hidden("monthValue", "", new { @id = "monthValueBox" })
     @Html.Hidden("yearValue", "", new { @id = "yearValueBox" })
     @Html.Hidden("reasonValue", "", new { @id = "reasonValueBox" })
-    <input type="submit" id="applyChanges" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+    <input type="submit" id="applyChanges"class="hiddn" tabindex="-1" />
 }
 
-<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none">
-    <li id="vac" style="background-color:#600000;"><a style="color:white;" tabindex="-1">Vacation</a></li>
-    <li style="background-color:#339933;"><a style="color:white;" tabindex="-1" href="#">Sick</a></li>
-    <li style="background-color:#FFCC66;"><a style="color:white;" tabindex="-1" href="#">Personal</a></li>
-
+<ul  id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
+    <li id="vac" class="vacclr"><a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a></li>
+    <li id="sic" class="sickclr"><a class="cmenufont" style="color:white;"  tabindex="-1" href="#">Sick</a></li>
+    <li id="per" class="perclr"><a class="cmenufont" style="color:white;"  tabindex="-1" href="#">Personal</a></li>
 </ul>
+@section Scripts{
+    @Scripts.Render("~/bundles/jq")
+    @Styles.Render("~/Content/nice-select-styles")
+    @Styles.Render("~/Content/register-styles")
+    @Scripts.Render("~/bundles/register")
 
 <script>
     (function () {
@@ -218,15 +200,14 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             }
         }
 
+
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
                 sURLVariables = sPageURL.split('&'),
                 sParameterName,
                 i;
-
             for (i = 0; i < sURLVariables.length; i++) {
                 sParameterName = sURLVariables[i].split('=');
-
                 if (sParameterName[0] === sParam) {
                     return sParameterName[1] === undefined ? true : sParameterName[1];
                 }
@@ -240,45 +221,82 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
             var vcell = $(this).parent().find('td:last');
             var total = $('#totalDays');
 
-            if ($(this).text() == 'V') {
-                AddTo(vcell);
-                AddTo(hcell);
-                AddTo(total);
-            }          
-        });
-
-
-        $('.cell').on('click', function () {
-            var column = $(this).parent().children().index(this);
-            var row = $(this).parent().parent().children().index(this.parentNode);
-            var hcell = $('#horizontal_rez').find('td').eq(column);
-            var vcell = $(this).parent().find('td:last');
-            var total = $('#totalDays');
-            if ($(this).text() != 'V') {
+            if ($(this).text() == 'V' || $(this).text() == 'P' || $(this).text() == 'S') {
                 AddTo(vcell);
                 AddTo(hcell);
                 AddTo(total);
             }
-            $(this).css("background-color", "#600000");
-            $(this).text("V");
-            var val = $(this).parent().find('td:first').text().replace(" ", "");
-            var id = $("#" + val).val()
+        });
+
+        var column;
+        var row;
+        var cell;
+
+        function setDataFields(id, val)
+        {
             $('#userIdBox').val(id);
             $('#monthValueBox').val(getUrlParameter('month'));
             $('#yearValueBox').val(getUrlParameter('year'));
             $('#dayValueBox').val(column - 1);
-            $('#reasonValueBox').val(1);
+            $('#reasonValueBox').val(val);
             $('#applyChanges').click();
+        }
 
-            $(this).triggerHandler('contextMenu');
+        function cellClickVacation(o) {
+            var hcell = $('#horizontal_rez').find('td').eq(column);
+            var vcell = $(o).parent().find('td:last');
+            var total = $('#totalDays');
+            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                AddTo(vcell);
+                AddTo(hcell);
+                AddTo(total);
+            }
+            $(o).css("background-color", "#600000");
+            $(o).text("V");
+            var val = $(o).parent().find('td:first').text().replace(" ", "");
+            var id = $("#" + val).val()
+            setDataFields(id,1);  
+        }
+
+        function cellClickSick(o) {
+            var hcell = $('#horizontal_rez').find('td').eq(column);
+            var vcell = $(o).parent().find('td:last');
+            var total = $('#totalDays');
+            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                AddTo(vcell);
+                AddTo(hcell);
+                AddTo(total);
+                $(o).css("background-color", "#339933");
+                $(o).text("S");
+                var val = $(o).parent().find('td:first').text().replace(" ", "");
+                var id = $("#" + val).val()
+                setDataFields(id,2);
+            }
+
+        }
+
+        function cellClickPersonal(o) {
+            var hcell = $('#horizontal_rez').find('td').eq(column);
+            var vcell = $(o).parent().find('td:last');
+            var total = $('#totalDays');
+            if ($(o).text() != 'V' || $(o).text() != 'P' || $(o).text() != 'S') {
+                AddTo(vcell);
+                AddTo(hcell);
+                AddTo(total);
+                $(o).css("background-color", "#FFCC66");
+                $(o).text("P");
+                var val = $(o).parent().find('td:first').text().replace(" ", "");
+                var id = $("#" + val).val()
+                setDataFields(id,3);
+            }
+        }
+
+
+        $('.cell').on('click', function () {
+            $(this).contextmenu();
         });
 
-      
         $('select').on('change', function () {
-            setTimeout(
-            function () {
-
-            }, 3000);
             $('#monthBox').val($(".option.selected").eq(0).attr('data-value'));
             $('#yearBox').val($(".option.selected").eq(1).attr('data-value'));
             $('#datepickSub').click();
@@ -302,6 +320,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                             .show()
                             .css({
                                 position: "absolute",
+                                trigger: 'left',
                                 left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
                                 top: getMenuPosition(e.clientY, 'height', 'scrollTop')
                             })
@@ -339,13 +358,32 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
             };
         })(jQuery, window);
-      
+
         $(".cell").contextMenu({
             menuSelector: "#contextMenu",
-            menuSelected: function (invokedOn, selectedMenu) {             
+            menuSelected: function (invokedOn, selectedMenu) {
             }
         });
 
+        $(".cell").on("contextmenu", function () {
+             column = $(this).parent().children().index(this);
+             row = $(this).parent().parent().children().index(this.parentNode);
+             cell = $(this);
+        })
+        $('#vac').on("click", function () {
+            cellClickVacation(cell);
+        })
+
+        $('#sic').on("click", function () {
+            cellClickSick(cell);
+        })
+
+        $('#per').on("click", function () {
+            cellClickPersonal(cell);
+        })
+
     })();
 </script>
+ }
+
 

@@ -209,7 +209,9 @@
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeComparer.cs" />
+    <Compile Include="Models\ManagingTableModels\Date.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingDateModel.cs" />
+    <Compile Include="Models\ManagingTableModels\TableData.cs" />
     <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
     <Compile Include="Service\EmployeeService.cs" />

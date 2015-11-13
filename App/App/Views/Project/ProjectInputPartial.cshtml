@@ -5,9 +5,6 @@
 @Html.AntiForgeryToken()
 <hr />
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<link rel="stylesheet" href="~/Content/bootstrap-datepicker.min.css" />
-<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
 
 <div class="form-group">
     <br /><br />
@@ -49,17 +46,4 @@
     </div>
 </div>
 
-@section Scripts {
-
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
-
-}
-
-<script>
-    (function () {
-        $('.datepicker').datepicker();
-    })();
-</script>
 

@@ -27,10 +27,22 @@ namespace App
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            /*
-            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jq").Include("~/Scripts/jquery-1.10.2.min.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/multiselect").Include("~/Scripts/multiselect.min.js"));*/
+            
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.min.js"));
+            bundles.Add(new StyleBundle("~/Content/datepicker-styles").Include("~/Content/bootstrap-datepicker.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/multiselect").Include("~/Scripts/multiselect.min.js"));
+            bundles.Add(new StyleBundle("~/Content/multiselect-styles").Include("~/Content/multiselect.css"));
+
+            bundles.Add(new StyleBundle("~/Content/nice-select-styles").Include("~/Content/nice-select.css"));
+            bundles.Add(new StyleBundle("~/Content/register-styles").Include("~/Content/register_styles.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/register").Include(
+                "~/Scripts/jquery.nice-select.js",
+                "~/Scripts/jquery.unobtrusive-ajax.min.js"
+                ));
 
         }
     }

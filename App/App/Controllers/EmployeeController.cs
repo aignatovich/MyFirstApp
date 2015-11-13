@@ -64,9 +64,10 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult Manage(int? month, int? year, int ? page, int? sort)
+        public ActionResult Manage(int? data)
         {
-            return View(service.GetAllAsIPagedList(month, year, page,sort));
+            HttpRequestBase request = Request;
+            return View(service.GetTableData(request));
         }
 
         [HttpPost]

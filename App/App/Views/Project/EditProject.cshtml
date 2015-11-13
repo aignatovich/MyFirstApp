@@ -6,6 +6,7 @@
     ProjectViewModel project = Model;
 }
 
+
 <h2>Edit project</h2>
 
 @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -14,5 +15,18 @@
     @Html.Partial("ProjectInputPartial")
 }
 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jq")
+    @Scripts.Render("~/bundles/datepicker")
+    @Styles.Render("~/Content/datepicker-styles")
+    <script>
+        (function () {
+            $('.datepicker').datepicker();
+        })();
+    </script>
+}
 
 

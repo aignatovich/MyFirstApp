@@ -4,6 +4,7 @@
 
 .clrWsm {
     background-color: whitesmoke;
+    border-radius:2px;
 }
 
 .brdCell {
@@ -71,7 +72,7 @@
 }
 
 .monthTotal {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     padding: 0px;
     border-bottom: 1px solid lightgrey;
@@ -139,4 +140,26 @@
     background-color: darkseagreen;
     text-align: center;
     width: 10%;
+}
+
+.hiddn {
+    display:none;
+}
+
+.cmenufont {
+    font-family:Consolas; 
+    font-weight:bold;
+    color:white;
+}
+
+.vacclr {
+    background-color:#600000;
+}
+
+.sickclr {
+    background-color:#339933;
+}
+
+.perclr {
+    background-color:#FFCC66;
 }
