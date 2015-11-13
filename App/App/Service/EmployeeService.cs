@@ -65,12 +65,12 @@ namespace App.Service
         {
             int pageNumber = (page ?? 1);
             int sortingOrder = (sorting ?? 2);
-            int month = (monthTransfered ?? 9);
-            int year = (yearTransfered ?? 2015);
+            int month = (monthTransfered ?? 0);
+            int year = (yearTransfered ?? 0);
             List<EmployeeViewModel> employees = GetAllViewModels().ToList();
             List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
 
-            if (month != -1 && year != -1)
+            if (month != 0 && year != 0)
             {
                 switch (sortingOrder)
                 {
@@ -95,26 +95,21 @@ namespace App.Service
 
         public TableData GetTableData(HttpRequestBase request)
         {
-            int year = Convert.ToInt32(request["year"]);
-            if (year == 0)
-            {
-                year = 2015;
-            }
+            int year = Convert.ToInt32(request["year"]);          
             int month = Convert.ToInt32(request["month"]);
-            if (month == 0)
-            {
-                month = 1;
-            }
-            int page = (Convert.ToInt32(request["page"]));
+            int? page = (Convert.ToInt32(request["page"]));
+            int? sorting = Convert.ToInt32(request["sorting"]);
+
             if (page == 0)
             {
-                page = 1;
+                page = null;
             }
-            int sorting = Convert.ToInt32(request["sorting"]);
+          
             if (sorting == 0)
             {
-                sorting = 1;
+                sorting = null;
             }
+
             return new TableData(GetAllAsIPagedList(month, year, page, sorting), request);
         }
 
