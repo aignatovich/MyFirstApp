@@ -208,9 +208,11 @@
     <Compile Include="Models\EmployeeModels\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
-    <Compile Include="Models\EmployeeModels\EmployeeComparer.cs" />
-    <Compile Include="Models\ManagingTableModels\Date.cs" />
-    <Compile Include="Models\ManagingTableModels\ManagingDateModel.cs" />
+    <Compile Include="Models\ManagingTableModels\DayEnum.cs" />
+    <Compile Include="Models\ManagingTableModels\ManagingParamsModel.cs" />
+    <Compile Include="Models\ManagingTableModels\ManagingRequest.cs" />
+    <Compile Include="Models\ManagingTableModels\MonthEnum.cs" />
+    <Compile Include="Models\ManagingTableModels\Reason.cs" />
     <Compile Include="Models\ManagingTableModels\TableData.cs" />
     <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
@@ -425,6 +427,7 @@
     <Content Include="Views\Project\SetupProject.cshtml" />
     <Content Include="Views\Project\SelectPartial.cshtml" />
     <Content Include="Views\Employee\Manage.cshtml" />
+    <Content Include="Views\Employee\DataTransferPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

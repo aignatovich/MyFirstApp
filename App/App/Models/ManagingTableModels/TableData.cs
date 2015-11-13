@@ -16,34 +16,25 @@ namespace App.Models.ManagingTableModels
 
         public int DayLimit { get; set; }
 
-        public Day FirstDay { get; set; }
+        public DayEnum FirstDay { get; set; }
 
-        public ICollection<String> YearList { get; set; }
+        public int StartYear { get; set; }
 
         public TableData()
         {
-           YearList = new List<String>() { "2015", "2014", "2013", "2012" };
         }
 
-        public  TableData(IPagedList<EmployeeViewModel> employees, HttpRequestBase request)
+        public  TableData(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
         {
-            int year = Convert.ToInt32(request["year"]);
-            int month = Convert.ToInt32(request["month"]);
-            if (year == 0)
-            {
-                year = 2015;
-            }
-            if (month == 0)
-            {
-                month = 1;
-            }
+            int year = (request.Year ?? DateTime.Now.Year);
+            int month = (request.Month ?? DateTime.Now.Month);
 
-            YearList = new List<String>() { "2015", "2014", "2013", "2012", "2011" };
             Employees = employees;
             Month = (Month)month;
             Year = year;
             DayLimit = DateTime.DaysInMonth(year, month);
-            FirstDay = (Day)(int)(new DateTime(year, month, 1)).DayOfWeek;
+            FirstDay = (DayEnum)(int)(new DateTime(year, month, 1)).DayOfWeek;
+            StartYear = 2010;
         }
     }
 }

@@ -15,6 +15,8 @@ namespace App.Models
 
         public int Year { get; set; }
 
-        public int Reason { get; set; }
+        public  Reason Reason { get; set; }
+
+        public int UserId { get; set; }
     }
 }

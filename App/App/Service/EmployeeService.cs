@@ -47,7 +47,7 @@ namespace App.Service
 
         public EmployeeViewModel GetSingle(int id)
         {
-            return new EmployeeViewModel (employeeDataAccessObject.GetSingle(id));
+            return new EmployeeViewModel(employeeDataAccessObject.GetSingle(id));
         }
 
         public void Remove(EmployeeViewModel employee)
@@ -61,70 +61,73 @@ namespace App.Service
             employeeDataAccessObject.Edit(toTransfer);
         }
 
+        public IPagedList<EmployeeViewModel> GetAllAsIPagedList(ManagingRequest request)
+        {
+            int pageNumber = (request.Page ?? 1);
+            int sortingOrder = (request.Sort ?? 2);
+            int month = (request.Month ?? DateTime.Now.Month);
+            int year = (request.Year ?? DateTime.Now.Year);
+
+            return GetIPagedList(month, year, pageNumber, sortingOrder);
+        }
+
         public IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? monthTransfered, int? yearTransfered, int? page, int? sorting)
         {
             int pageNumber = (page ?? 1);
             int sortingOrder = (sorting ?? 2);
             int month = (monthTransfered ?? 0);
             int year = (yearTransfered ?? 0);
+
+            return GetIPagedList(month, year, pageNumber, sortingOrder);
+
+        }
+
+        public IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder)
+        {
             List<EmployeeViewModel> employees = GetAllViewModels().ToList();
             List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
 
-            if (month != 0 && year != 0)
+            switch (sortingOrder)
             {
-                switch (sortingOrder)
-                {
-                    case 1:
-                        toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
-                        break;
-                    case 2:
-                        toTransfer = employees.OrderBy(x => x.Name).ToList();
-                        break;
-                    case 3:
-                        toTransfer = employees.OrderBy(x => x.Surname).ToList();
-                        break;
-                }
+                case 1:
+                    toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
+                    break;
+                case 2:
+                    toTransfer = employees.OrderBy(x => x.Name).ToList();
+                    break;
+                case 3:
+                    toTransfer = employees.OrderBy(x => x.Surname).ToList();
+                    break;
+            }
 
-                foreach (EmployeeViewModel e in toTransfer)
-                {
-                    e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
-                }
-            }            
-            return toTransfer.ToPagedList(pageNumber, pageSize);
+            foreach (EmployeeViewModel e in toTransfer)
+            {
+                e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
+            }       
+            return toTransfer.ToPagedList(page, pageSize);
         }
 
-        public TableData GetTableData(HttpRequestBase request)
+        public TableData GetTableData(ManagingRequest request)
         {
-            int year = Convert.ToInt32(request["year"]);          
-            int month = Convert.ToInt32(request["month"]);
-            int? page = (Convert.ToInt32(request["page"]));
-            int? sorting = Convert.ToInt32(request["sorting"]);
+            int? year = request.Year;          
+            int? month = request.Month;
+            int? page = request.Page;
+            int? sorting = request.Sort;
 
-            if (page == 0)
-            {
-                page = null;
-            }
-          
-            if (sorting == 0)
-            {
-                sorting = null;
-            }
-
-            return new TableData(GetAllAsIPagedList(month, year, page, sorting), request);
+            return new TableData(GetAllAsIPagedList(request),request);
         }
 
 
-        public void ApplyAbsence(HttpRequestBase request)
+        public void ApplyAbsence(ManagingDateModel model)
         {
-            HttpRequestBase r = request;
-            int id = Convert.ToInt32(r["userId"]);
+            int id = model.UserId;
 
             EmployeeModel employee = employeeDataAccessObject.GetSingle(id);
             employee.AbsenceList.Add(new ManagingDateModel {
-                Day = Convert.ToInt32(r["dayValue"]),
-                Month = Convert.ToInt32(r["monthValue"]),
-                Year = Convert.ToInt32(r["yearValue"]),
-                Reason = Convert.ToInt32(r["reasonValue"])
+                Day = model.Day,
+                Month = model.Month,
+                Year = model.Year,
+                Reason = (Reason)model.Reason
             });
         }
     }

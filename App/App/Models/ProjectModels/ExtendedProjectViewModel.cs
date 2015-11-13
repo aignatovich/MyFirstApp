@@ -24,8 +24,7 @@ namespace App.Models
             Employed = new List<ExtendedEmployeeViewModel>();
             Unemployed = new List<ExtendedEmployeeViewModel>();
             Project = project;
-
-            IEnumerable<EmployeeViewModel> employeeModels = employees.Except(project.CurrentEmployees, new EmployeeComparer());
+            IEnumerable<EmployeeViewModel> employeeModels = employees.Where(x => (!project.CurrentEmployees.Contains(x)));
 
             foreach (EmployeeViewModel e in employeeModels)
             {

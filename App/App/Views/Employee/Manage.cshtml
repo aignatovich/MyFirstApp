@@ -1,12 +1,11 @@
 ﻿@using App.Models.ManagingTableModels
 @using PagedList.Mvc;
 @using App.Models;
-@using System.Globalization;
 @model TableData
 @{
     int days = Model.DayLimit;
     int stepback = 1;
-    ICollection<String> yearList = Model.YearList;
+    int startYear = Model.StartYear;
 }
 
 <div>
@@ -35,11 +34,11 @@
             {
                 <option value="@Request["year"]">@Request["year"]</option>
             }
-            @foreach (string s in yearList)
+            @for(int year = DateTime.Now.Year; year >= Model.StartYear; year--)
             {
-                if (s != Request["year"])
+                if (!year.ToString().Equals(Request["year"]))
                 {
-                    <option value="@s">@s</option>
+                    <option value="@year">@year</option>
                 }
             }
         </select>
@@ -55,7 +54,7 @@
 
             @for (int j = (int)Model.FirstDay; j < days + (int)Model.FirstDay; j++)
             {
-                string dayValue =  ((Day)(j%7)).ToString();
+                string dayValue =  ((DayEnum)(j%7)).ToString();
                 int dayNumber = j % 7;
 
 
@@ -117,17 +116,17 @@
                         }
                         else
                         {
-                            if (e.AbsenceList.First(x => x.Day == i).Reason == 1)
+                            if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 1)
                             {
-                                <td class="gCell cell" style="padding: 3px; background-color:#600000;">V</td>
+                                <td class="gCell cell vacclr" style="padding: 3px;;">V</td>
                             }
-                            else if (e.AbsenceList.First(x => x.Day == i).Reason == 2)
+                            else if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 2)
                             {
-                                <td class="gCell cell" style="padding: 3px; background-color:#339933;">S</td>
+                                <td class="gCell sickclr cell" style="padding: 3px;">S</td>
                             }
-                            else if (e.AbsenceList.First(x => x.Day == i).Reason == 3)
+                            else if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 3)
                             {
-                                <td class="gCell cell" style="padding: 3px; background-color:#FFCC66;">P</td>
+                                <td class="gCell cell perclr" style="padding: 3px">P</td>
                             }
                         }
                     }
@@ -161,16 +160,8 @@ Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employ
    <input type="submit" class="hiddn" id="datepickSub"  tabindex="-1" /> 
 }
 
+@Html.Partial("DataTransferPartial", new ManagingDateModel())
 
-@using (Ajax.BeginForm("ApplyChanges",  new AjaxOptions{ HttpMethod = "Post"}))
-{
-    @Html.Hidden("userId", "", new { @id = "userIdBox" })
-    @Html.Hidden("dayValue", "", new { @id = "dayValueBox" })
-    @Html.Hidden("monthValue", "", new { @id = "monthValueBox" })
-    @Html.Hidden("yearValue", "", new { @id = "yearValueBox" })
-    @Html.Hidden("reasonValue", "", new { @id = "reasonValueBox" })
-    <input type="submit" id="applyChanges"class="hiddn" tabindex="-1" />
-}
 
 <ul  id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
     <li id="vac" class="vacclr"><a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a></li>
@@ -196,7 +187,6 @@ Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employ
                 o.text(parseFloat(o.text()) + parseFloat(1))
             }
         }
-
 
         function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -232,8 +222,8 @@ Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employ
         function setDataFields(id, val)
         {
             $('#userIdBox').val(id);
-            $('#monthValueBox').val(getUrlParameter('month'));
-            $('#yearValueBox').val(getUrlParameter('year'));
+            $('#monthValueBox').val("@((int)(Model.Month))");
+            $('#yearValueBox').val("@Model.Year");
             $('#dayValueBox').val(column - 1);
             $('#reasonValueBox').val(val);
             $('#applyChanges').click();
@@ -252,7 +242,7 @@ Page @(Model.Employees.PageCount < Model.Employees.PageNumber ? 0 : Model.Employ
             $(o).text("V");
             var val = $(o).parent().find('td:first').text().replace(" ", "");
             var id = $("#" + val).val()
-            setDataFields(id,1);  
+            setDataFields(id,1);
         }
 
         function cellClickSick(o) {

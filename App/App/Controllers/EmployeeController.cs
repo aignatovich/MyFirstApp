@@ -64,9 +64,8 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult Manage(int? data)
+        public ActionResult Manage(ManagingRequest request)
         {
-            HttpRequestBase request = Request;
             return View(service.GetTableData(request));
         }
 
@@ -77,10 +76,9 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public void ApplyChanges()
+        public void ApplyChanges(ManagingDateModel model)
         {
-            HttpRequestBase request = Request;
-            service.ApplyAbsence(request);
+            service.ApplyAbsence(model);
         }
     }
 }
