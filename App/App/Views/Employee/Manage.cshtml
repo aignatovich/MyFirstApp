@@ -4,7 +4,6 @@
 @model TableData
 @{
     int days = Model.DayLimit;
-    int stepback = 1;
     int startYear = Model.StartYear;
 }
 <script src="~/Scripts/knockout-3.3.0.js"></script>
@@ -26,112 +25,55 @@
 <table class="table">
     <thead>
         <tr>
-            @for (int i = 0; i < stepback; i++)
-            {
-                <th class="brdCell"></th>
-            }
-
-            @for (int j = (int)Model.FirstDay; j < days + (int)Model.FirstDay; j++)
-            {
-                string dayValue = ((DayEnum)(j % 7)).ToString();
-                int dayNumber = j % 7;
-
-
-                if (j % 2 == 0)
-                {
-                    <td class="dCellW" style="padding: 0px;">@(dayValue)</td>
-                }
-                else
-                {
-                    <td class="dCellG" style="padding: 0px;">@(dayValue)</td>
-                }
-            }
-            @for (int i = 0; i < stepback; i++)
-            {
-                <th class="brdCell"></th>
-            }
+             <th class="brdCell"></th>
+                        
+            <!-- ko foreach: daysToDisplay  -->
+               <td style="padding:0px;" data-bind="attr: {'class': Style == '1' ? 'dCellW' : 'dCellG'}, text: Name"></td>
+            <!-- /ko -->     
+                  
+              <th class="brdCell"></th>
         </tr>
     </thead>
     <tbody>
-
         <tr class="lbrdRow">
-            <td class="lbrdCell" id="days" style="padding: 0px;">@("Employee name")</td>
-            @for (int i = 0; i < days; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    <th class="dayCell" style="padding: 0px;">@(i + 1)</th>
-                }
-                else
-                {
-                    <th class="dayCell" style="padding: 0px;">@(i + 1)</th>
-                }
-            }
-            <th class="rbrdCell" style="padding: 0px;">@("Total Days")</th>
+            <td class="lbrdCell" id="days" style="padding: 0px;" data-bind="text: tableRowNameEmployee"></td>
+
+            <!-- ko foreach: daysToDisplay  -->
+            <th class="dayCell" style="padding: 0px;" data-bind="text: Value"></th>
+            <!-- /ko -->
+
+            <th class="rbrdCell" style="padding: 0px;" data-bind="text: tableTotalDays"></th>
         </tr>
 
-        @{
-            int k = 0;
-            foreach (EmployeeViewModel e in Model.Employees)
-            {
-                <tr class="lbrdRow">
-                    @Html.Hidden("id", @e.Id, new { @id = @String.Format("{0}{1}", e.Surname, e.Name) })
-                    <td class="empNameCell" style="padding: 3px;">@String.Format("{0} {1}", e.Surname, e.Name)</td>
-
-                    @for (int i = 1; i < days + 1; i++)
-                    {
-                        if (!e.AbsenceList.Any(x => x.Day == i))
-                        {
-                            if (k % 2 == 0)
-                            {
-                                <td class="cell wCell" style="padding: 3px;"></td>
-                            }
-                            else
-                            {
-                                <td class="gCell cell" style="padding: 3px;"></td>
-                            }
-                        }
-                        else
-                        {
-                            if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 1)
-                            {
-                                <td class="gCell cell vacclr" style="padding: 3px;;">V</td>
-                            }
-                            else if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 2)
-                            {
-                                <td class="gCell sickclr cell" style="padding: 3px;">S</td>
-                            }
-                            else if ((int)e.AbsenceList.First(x => x.Day == i).Reason == 3)
-                            {
-                                <td class="gCell cell perclr" style="padding: 3px">P</td>
-                            }
-                        }
-                    }
-                    <td class="resWCell " style="padding: 3px;"></td>
-                </tr>
-                k++;
-            }
-        }
+        <!-- ko foreach: employees  -->
+            <tr class="lbrdRow">
+                <input  type="hidden" name="id" data-bind = "attr: {'id': HidVal }, value: Id"  />
+                <td class="empNameCell" style="padding: 3px;" data-bind="text: DataValue"></td>
+                 <!-- ko foreach: AbsenceList  -->
+                     <td class="cell" style="padding: 3px;" data-bind="attr: {'class': Style}, text: Text"></td>
+                 <!-- /ko -->  
+                <td class="resWCell " style="padding: 3px;"></td>
+            </tr>
+        <!-- /ko -->  
 
         <tr id="horizontal_rez" class="lbrdRow">
-            <td class="monthTotal" style="padding: 0px;">@("Month total")</td>
+            <td class="monthTotal" style="padding: 0px;" data-bind="text: tableMonthTotal"></td>
 
-            @for (int i = 0; i < days; i++)
-            {
-                <td class="greenCell" style="padding: 0px;"></td>
-            }
+            <!-- ko foreach: daysToDisplay  -->
+            <td class="greenCell" style="padding: 0px;"></td>
+            <!-- /ko -->
 
             <td class="bigGreenCell" id="totalDays"></td>
         </tr>
     </tbody>
 </table>
-@Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = Request["month"], year = Request["year"], page, sort = Request["sort"] }))
+@Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = Model.Month, year = Model.Year, page, sort = Request["sort"] }))
 
 
 @using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { }))
 {
-    @Html.Hidden("month", Request["month"], new { @id = "monthBox" })
-    @Html.Hidden("year", Request["year"], new { @id = "yearBox" })
+    @Html.Hidden("month", Model.Month, new { @id = "monthBox" })
+    @Html.Hidden("year", Model.Year, new { @id = "yearBox" })
     <input type="submit" class="hiddn" id="datepickSub" tabindex="-1" />
 }
 
@@ -139,9 +81,15 @@
 
 
 <ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
-    <li id="vac" class="vacclr"><a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a></li>
-    <li id="sic" class="sickclr"><a class="cmenufont" style="color:white;" tabindex="-1" href="#">Sick</a></li>
-    <li id="per" class="perclr"><a class="cmenufont" style="color:white;" tabindex="-1" href="#">Personal</a></li>
+    <li id="vac" class="vacclr">
+        <a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a>
+    </li>
+    <li id="sic" class="sickclr">
+        <a class="cmenufont" style="color:white;" tabindex="-1" href="#">Sick</a>
+    </li>
+    <li id="per" class="perclr">
+        <a class="cmenufont" style="color:white;" tabindex="-1" href="#">Personal</a>
+    </li>
 </ul>
 @section Scripts{
     @Scripts.Render("~/bundles/jq")
@@ -185,8 +133,8 @@
             function setDataFields(id, val)
             {
                 $('#userIdBox').val(id);
-                $('#monthValueBox').val("@((int)(Model.Month))");
-                $('#yearValueBox').val("@Model.Year");
+                $('#monthValueBox').val(Model.Month);
+                $('#yearValueBox').val(Model.Year);
                 $('#dayValueBox').val(column - 1);
                 $('#reasonValueBox').val(val);
                 $('#applyChanges').click();
@@ -344,38 +292,135 @@
         });
     };
 
-    var month = { Name: "@(Model.Month)", Code: "@((int)Model.Month)" };
-    var year = { Name: "@(Model.Year)" };
+    function indexOf(monthCode, monthList)
+    {
+        for (var i = 0; i < monthList.length; i++)
+        {
+            if (monthList[i].Code == monthCode)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    var Model = @Html.Raw(Json.Encode(Model));
+    var months = [
+        { Name: "January", Code: "1" },
+        { Name: "February", Code: "2" },
+        { Name: "March", Code: "3" },
+        { Name: "April", Code: "4" },
+        { Name: "May", Code: "5" },
+        { Name: "June", Code: "6" },
+        { Name: "July", Code: "7" },
+        { Name: "August", Code: "8" },
+        { Name: "September", Code: "9" },
+        { Name: "October", Code: "10" },
+        { Name: "November", Code: "11" },
+        { Name: "December", Code: "12" }
+    ];
+
+    var daysEnum = [
+       {Name : "Sun", Code : "0" },
+       {Name : "Mon", Code : "1" },
+       {Name : "Tue", Code : "2" },
+       {Name : "Wed", Code : "3" },
+       {Name : "Thu", Code : "4" },
+       {Name : "Fri", Code : "5" },
+       {Name : "Sat", Code : "6" }
+    ];
+
+    var daysToDisplayC = []
+
+    for (var i = Model.FirstDay; i < Model.DayLimit + Model.FirstDay; i++ )
+    {
+        var j = i%7;
+        daysToDisplayC[i-Model.FirstDay] = {
+            Name: daysEnum[j].Name , 
+            Value: i - Model.FirstDay + 1, 
+            Style: i%2}
+    }
+
+    var index = indexOf(Model.Month, months);
+    var month = { Name: months[index].Name , Code: Model.Month };
+    var year = { Name: Model.Year };
     var years = [];
 
-    for (var i = @Model.StartYear; i <= @DateTime.Now.Year; i++)
+
+    for (var i = Model.StartYear; i <= Model.Year; i++)
     {
         years.push({Name: i});
     }
     years = years.reverse();
 
-        var months = [
-    { Name: "@((Month)(1))", Code: "1" },
-    { Name: "@((Month)(2))", Code: "2" },
-    { Name: "@((Month)(3))", Code: "3" },
-    { Name: "@((Month)(4))", Code: "4" },
-    { Name: "@((Month)(5))", Code: "5" },
-    { Name: "@((Month)(6))", Code: "6" },
-    { Name: "@((Month)(7))", Code: "7" },
-    { Name: "@((Month)(8))", Code: "8" },
-    { Name: "@((Month)(9))", Code: "9" },
-    { Name: "@((Month)(10))", Code: "10" },
-    { Name: "@((Month)(11))", Code: "11" },
-    { Name: "@((Month)(12))", Code: "12" }
-    ];
+    var employeesT = [];
 
-        function ViewModel() {
-            this.months = ko.observableArray($.grep(months, function(e){ return e.Code != month.Code }));
-            this.month = month.Name;
-            this.year = year;
-            this.years =  ko.observableArray($.grep(years, function(e){ return e.Name != year.Name }));
+    for (var i = 0; i < Model.Employees.length; i++)
+    {
+        var cellValues = new Array(Model.DayLimit);
+        for (var j = 0; j < Model.DayLimit;  j++)
+        {
+            cellValues[j] =  {Reason: -1, Style: '', Text: ''};
+        }
+
+        for (var j = 0; j < Model.Employees[i].AbsenceList.length;  j++)
+        {
+            var absence = Model.Employees[i].AbsenceList[j];
+            cellValues[absence.Day - 1] =  {Reason: absence.Reason, Style: '', Text: ''};
+        }
+
+        for (var j = 0; j < Model.DayLimit;  j++)
+        {
+            if (cellValues[j].Reason == -1)
+            {
+                if (i%2 == 0)
+                {
+                    cellValues[j].Style = 'cell wCell';
+                }
+                else
+                {
+                    cellValues[j].Style = 'gCell cell';                   
+                }
+            }
+            else if (cellValues[j].Reason == 1)
+            {
+                cellValues[j].Style = 'gCell cell vacclr';
+                cellValues[j].Text = 'V';
+            }
+            else if (cellValues[j].Reason == 2)
+            {
+                cellValues[j].Style = 'gCell sickclr cell';
+                cellValues[j].Text = 'S';
+            }
+            else if (cellValues[j].Reason == 3)
+            {
+                cellValues[j].Style = 'gCell cell perclr';
+                cellValues[j].Text = 'P';
+            }
+        }
+
+        employeesT[i] = {
+            DataValue: Model.Employees[i].Name + " " +  Model.Employees[i].Surname,
+            Id: Model.Employees[i].Id,
+            HidVal: Model.Employees[i].Name + Model.Employees[i].Surname,
+            AbsenceList: cellValues,
+            RowColor: i%2
+        };
+    }
+
+
+    function ViewModel() {
+        this.months = ko.observableArray($.grep(months, function(e){ return e.Code != month.Code}));
+        this.month = month.Name;
+        this.year = year;
+        this.years =  ko.observableArray($.grep(years, function(e){ return e.Name != year.Name }));
+        this.employees = employeesT;
+        this.tableRowNameEmployee = "Employee name";
+        this.tableMonthTotal = "Month total";
+        this.tableTotalDays = "Total days";
+        this.daysToDisplay = daysToDisplayC;
     };
-     ko.applyBindings(new ViewModel());
+    ko.applyBindings(new ViewModel());
 
 </script>
 
