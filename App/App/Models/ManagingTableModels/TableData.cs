@@ -20,6 +20,10 @@ namespace App.Models.ManagingTableModels
 
         public int StartYear { get; set; }
 
+        public int EndYear { get; set; }
+
+        public int Sort { get; set; }
+
         public TableData()
         {
         }
@@ -28,6 +32,7 @@ namespace App.Models.ManagingTableModels
         {
             int year = (request.Year ?? DateTime.Now.Year);
             int month = (request.Month ?? DateTime.Now.Month);
+            int sort = (request.Sort ?? 1);
 
             Employees = employees;
             Month = (Month)month;
@@ -35,6 +40,8 @@ namespace App.Models.ManagingTableModels
             DayLimit = DateTime.DaysInMonth(year, month);
             FirstDay = (DayEnum)(int)(new DateTime(year, month, 1)).DayOfWeek;
             StartYear = 2010;
+            EndYear = 2015;
+            Sort = sort;
         }
     }
 }
