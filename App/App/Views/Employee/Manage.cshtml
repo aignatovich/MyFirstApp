@@ -49,7 +49,7 @@
             <!-- ko foreach: $parent.daysToDisplay  -->
             <td class="cell" style="padding: 3px;" data-bind="attr: {'class': ComputeCellStyle($parent, $index)}, text: ComputeCellContent($parent, $index)"></td>
             <!-- /ko -->
-            <td class="resWCell " style="padding: 3px;" data-bind="text: $parent.totalEmployeeAbsence()[$index()]()"></td>
+            <td class="resWCell " style="padding: 3px;" data-bind="text: $parent.totalEmployeeAbsence()[$index()].Value"></td>
         </tr>
         <!-- /ko -->
 
@@ -57,10 +57,10 @@
             <td class="monthTotal" style="padding: 3px;" data-bind="text: tableMonthTotal"></td>
 
             <!-- ko foreach: daysToDisplay  -->
-            <td class="greenCell" style="padding: 3px;" data-bind="text: GetTotalDayAbsenceValue($index())"></td>
+            <td class="greenCell" style="padding: 3px;" data-bind="text: $parent.totalDayAbsence[$index()]"></td>
             <!-- /ko -->
 
-            <td class="bigGreenCell" style="padding: 3px;" id="totalDays" data-bind="text: absenceSummary()"></td>
+            <td class="bigGreenCell" style="padding: 3px;" id="totalDays" data-bind="text: absenceSummary().Value"></td>
         </tr>
     </tbody>
 </table>
@@ -119,23 +119,21 @@
                 var employees = myViewModel.employees;
                 var employee = $.grep(employees, function(e){ return e.Id == id});
                 employee = employee[0];
-                employee.AbsenceList().push({UserId : id, Month: Model.Month, Year: Model.Year, Day: column, Reason: val});
+                employee.AbsenceList.push({UserId : id, Month: Model.Month, Year: Model.Year, Day: column, Reason: val});
+                myViewModel.totalDayAbsence[column - 1](myViewModel.totalDayAbsence[column - 1]() + 1);
             }
 
             function contextClickVacation(o, empName, empSurname) {
                 if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {                   
-                    $(o).css("background-color", "#600000");
-                    $(o).text("V");
                     var employees = myViewModel.employees;
-                    var id = $.grep(employees, function(e){ return e.DataValue == name + " " + surname})[0].Id;
+                    var employee = $.grep(employees, function(e){ return e.DataValue == name + " " + surname})[0];
+                    var id = employee.Id;
                     pushData(id,1);
                 }
             }
 
             function contextClickSick(o, empName, empSurname) {
                 if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
-                    $(o).css("background-color", "#339933");
-                    $(o).text("S");
                     var employees = myViewModel.employees;
                     var id = $.grep(employees, function(e){ return e.DataValue == name + " " + surname})[0].Id;
                     pushData(id,2);
@@ -144,14 +142,11 @@
 
             function contextClickPersonal(o, empName, empSurname) {
                 if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
-                    $(o).css("background-color", "#FFCC66");
-                    $(o).text("P");
                     var employees = myViewModel.employees;
                     var id = $.grep(employees, function(e){ return e.DataValue == name + " " + surname})[0].Id;
                     pushData(id,3);
                 }
             }
-
 
             $('.cell').on('click', function () {
                 $(this).contextmenu();
@@ -286,8 +281,7 @@
     var years = [];
     var employeesToAppend = [];
 
-    for (var i = Model.FirstDay; i < Model.DayLimit + Model.FirstDay; i++ )
-    {
+    for (var i = Model.FirstDay; i < Model.DayLimit + Model.FirstDay; i++ ){
         var j = i%7;
         daysToAppend[i-Model.FirstDay] = {
             Name: daysEnum[j].Name ,
@@ -295,14 +289,12 @@
         }
     }
 
-    for (var i = Model.StartYear; i <= Model.EndYear; i++)
-    {
+    for (var i = Model.StartYear; i <= Model.EndYear; i++){
         years.push({Name: i});
     }
     years = years.reverse();
 
-    for (var i = 0; i < Model.Employees.length; i++)
-    {
+    for (var i = 0; i < Model.Employees.length; i++){
         employeesToAppend[i] = {
             DataValue: Model.Employees[i].Name + " " +  Model.Employees[i].Surname,
             Id: Model.Employees[i].Id,
@@ -310,7 +302,6 @@
             RowColor: i%2
         };
     }
-
 
     function ViewModel() {
         var self = this;
@@ -321,74 +312,61 @@
 
         self.employees = employeesToAppend;
         self.daysToDisplay = daysToAppend;
-        self.totalEmployeeAbsence = function()
+
+        self.totalEmployeeAbsence = ko.computed(function() {
+            return ko.utils.arrayMap(self.employees, function(item) {
+                return { Value: item.AbsenceList().length  };
+            });
+        });
+
+        for (var i = 0; i < self.employees.length; i++)
         {
-            var totalAbsenceList = Array(self.employees.length);
-
-            for (var i = 0; i < self.employees.length; i++)
-            {
-                totalAbsenceList[i] = ko.computed(function(){
-                    var emps = self.employees;
-                    var currEmp = emps[i];
-                    return currEmp.AbsenceList().length;
-                }, self);
-            }
-
-            return totalAbsenceList;
+            self.employees[i].AbsenceList.subscribe(function(newValue){
+                var lastAdded = newValue[newValue.length - 1];
+                var index = lastAdded.Day;
+                var employees = self.employees;
+                var employee = $.grep(employees, function(e){ return e.Id == lastAdded.UserId});
+                employee = employee[0];
+                ComputeCellStyle(employee, index)
+            });
         }
 
-        self.totalDayAbsence = function()
+        var employees = self.employees;
+        var totalAbsence = []
+        for (var i = 0; i < self.daysToDisplay.length; i++)
         {
-            var totalAbsenceList = Array(self.employees.length);
             var employees = self.employees;
-            for (var i = 0; i < self.daysToDisplay.length; i++)
+            var count = 0;
+            for (var j = 0; j < self.employees.length; j++)
             {
-                totalAbsenceList[i] = ko.computed(function(){  
-                    count = 0;
-                    for (var j = 0; j < self.employees.length; j++)
-                    {
-                        var currentEmployee = employees[j];
-                        var currentEmployeeAbsenceList = currentEmployee.AbsenceList();
-                        var days = $.grep(currentEmployeeAbsenceList, function(e){ return e.Day == i+1 });
-                        count += days.length == 0 ? 0 : 1;                            
-                    }
-                    return count;
-                }, self);
-            }            
-        return totalAbsenceList;
-    }
-  
-        self.absenceSummary = function(){
+                var currentEmployee = employees[j];
+                var currentEmployeeAbsenceList = currentEmployee.AbsenceList();
+                var days = $.grep(currentEmployeeAbsenceList, function(e){ return e.Day == i+1 });
+                count += days.length == 0 ? 0 : 1;                            
+            }      
+            totalAbsence[i] = ko.observable(count);
+        }
 
-            count = 0;
+        self.totalDayAbsence = totalAbsence;
+      
+        self.absenceSummary = ko.computed(function(){
+            var count = 0;
             var employees = self.employees;
             for (var i = 0; i < employees.length; i++)
             {
-                count += employees[i].AbsenceList().length;
+                var list = employees[i].AbsenceList();
+                count += list.length;
             }
-            return count;
-        };
+            return {Value: count};
+        });
+
         self.tableRowNameEmployee = "Employee name";
         self.tableMonthTotal = "Month total";
-        self.tableTotalDays = "Total days";
-       
+        self.tableTotalDays = "Total days";     
     };
 
     var myViewModel = new ViewModel();
     ko.applyBindings(myViewModel);
-
-    function ComputeHorizontalCellValue(absenceList)
-    {
-        var count = 0;
-        for (var j = 0; j < absenceList().length; j++)
-        {
-            if (absenceList().Month == Model.Month)
-            {
-                count ++;
-            }
-        }
-        return count;
-    }
 
     ko.observableArray.fn.find = function (prop, data) {
         var valueToMatch = data[prop];
@@ -421,28 +399,10 @@
         return -1;
     }
 
-    function ComputeVerticalCellValue(absenceList)
-    {
-        var arr = $.grep(absenceList(), function(e){ return e.Month == Model.Month });
-        return arr.length;
-    }
-
-    function ComputeHorizontalCellValue(employees, day)
-    {
-        var count = 0;
-        for (var i = 0; i < employees.count; i++)
-        {
-            var arr = $.grep(employees[i].AbsenceList(), function(e){ return (e.Month == Model.Month && e.Day == day) });
-            count += arr.length;
-        }
-
-        return count;
-    }
-
     function ComputeCellStyle(employee, index)
     {
         var List = employee.AbsenceList();
-        var day = index()  + 1;
+        var day = (isFunction(index) ?  index() : index) + 1;
         var value = $.grep(List, function(e){ return (e.Day == day) });
         var style = '';
 
@@ -473,6 +433,11 @@
             }
         }
         return style;
+    }
+
+    function isFunction(functionToCheck) {
+        var getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
     }
 
     function ComputeCellContent(employee, index)
