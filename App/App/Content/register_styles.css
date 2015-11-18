@@ -3,14 +3,14 @@
 }
 
 .clrWsm {
-    background-color: whitesmoke;
+    background-color: #F1F2E8;
     border-radius:2px;
 }
 
 .brdCell {
     width: 10%;
     padding: 2px;
-    background-color: whitesmoke;
+    background-color: #F1F2E8;
     color: white;
 }
 
@@ -30,7 +30,7 @@
     font-weight: bold;
     border-left: 1px solid white;
     border-right: 1px solid white;
-    background-color: whitesmoke;
+    background-color: #F1F2E8;
     text-align: center;
     width: 2%;
     padding: 0px;
@@ -56,7 +56,7 @@
     padding: 2px;
     border-bottom: 1px solid white;
     border-right: 1px solid white;
-    background-color: darkred;
+    background-color: #4B180E;
     text-align: center;
     color: white;
 }
@@ -153,13 +153,13 @@
 }
 
 .vacclr {
-    background-color:#600000;
+    background-color:#A53423;
 }
 
 .sickclr {
-    background-color:#339933;
+    background-color:#9BB05D;
 }
 
 .perclr {
-    background-color:#FFCC66;
+    background-color:#E68130;
 }

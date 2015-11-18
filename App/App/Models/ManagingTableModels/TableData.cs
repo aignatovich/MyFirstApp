@@ -32,7 +32,7 @@ namespace App.Models.ManagingTableModels
         {
             int year = (request.Year ?? DateTime.Now.Year);
             int month = (request.Month ?? DateTime.Now.Month);
-            int sort = (request.Sort ?? 1);
+            int sort = (request.Sort ?? 2);
 
             Employees = employees;
             Month = (Month)month;
