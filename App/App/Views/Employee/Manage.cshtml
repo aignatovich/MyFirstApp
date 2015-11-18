@@ -9,62 +9,67 @@
 <div>
     <br />
 </div>
-<div class="row pad5 clrWsm">
-    <div class="col-xs-5">
-        <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month.Code, optionsCaption: month"></select>
+<div>
+    <div class="row pad5 clrWsm">
+        <div style="padding: 5px;">
+            <div class="col-xs-4" style="padding-left:0px;">
+                <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month.Code, optionsCaption: month"></select>
+            </div>
+        </div>
+        <div class="col-xs-4" style="padding-left:65px;">
+            <h3 style="margin-top:0px;">Dates of Absence</h3>
+        </div>
+        <div class="col-xs-3" style="padding-left:250px;">
+            <select id="selectYear" data-bind="options: years, optionsText: 'Name', optionsValue: 'Name', value: year.Name, optionsCaption: year.Name"></select>
+        </div>
+
     </div>
-    <div class="col-xs-5">
-        <h4>Dates of Absence</h4>
-    </div>
-    <div class="col-xs-1 pad5">
-        <select id="selectYear" data-bind="options: years, optionsText: 'Name', optionsValue: 'Name', value: year.Name, optionsCaption: year.Name"></select>
-    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="brdCell"></th>
+
+                <!-- ko foreach: daysToDisplay  -->
+                <td style="padding:0px;" data-bind="attr: {'class': ComputeDayCellStyle(Value)}, text: Name"></td>
+                <!-- /ko -->
+
+                <th class="brdCell"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="lbrdRow">
+                <td class="lbrdCell" id="days" style="padding: 0px;" data-bind="text: tableRowNameEmployee"></td>
+
+                <!-- ko foreach: daysToDisplay  -->
+                <th class="dayCell" style="padding: 0px;" data-bind="text: Value"></th>
+                <!-- /ko -->
+
+                <th class="rbrdCell" style="padding: 0px;" data-bind="text: tableTotalDays"></th>
+            </tr>
+
+            <!-- ko foreach: employees  -->
+            <tr class="lbrdRow">
+                <td class="empNameCell active" style="padding: 0px;" data-bind="text: DataValue"></td>
+                <!-- ko foreach: $parent.daysToDisplay  -->
+                <td class="cell" style="padding: 3px;" data-bind="attr: {'class': ComputeCellStyle($parent, $index)}, text: ComputeCellContent($parent, $index)"></td>
+                <!-- /ko -->
+                <td class="resWCell  active" style="padding: 3px;" data-bind="text: $parent.totalEmployeeAbsence()[$index()].Value"></td>
+            </tr>
+            <!-- /ko -->
+
+            <tr id="horizontal_rez" class="lbrdRow">
+                <td class="bigGreenCell" style="padding: 3px;" data-bind="text: tableMonthTotal"></td>
+
+                <!-- ko foreach: daysToDisplay  -->
+                <td class="greenCell" style="padding: 3px;" data-bind="text: $parent.totalDayAbsence[$index()]"></td>
+                <!-- /ko -->
+
+                <td class="bigGreenCell" style="padding: 3px;" id="totalDays" data-bind="text: absenceSummary().Value"></td>
+            </tr>
+        </tbody>
+    </table>
+    @Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = (int)Model.Month, year = Model.Year, page, sort = Model.Sort }))
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th class="brdCell"></th>
-
-            <!-- ko foreach: daysToDisplay  -->
-            <td style="padding:0px;" data-bind="attr: {'class': ComputeDayCellStyle(Value)}, text: Name"></td>
-            <!-- /ko -->
-
-            <th class="brdCell"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr class="lbrdRow">
-            <td class="lbrdCell" id="days" style="padding: 0px;" data-bind="text: tableRowNameEmployee"></td>
-
-            <!-- ko foreach: daysToDisplay  -->
-            <th class="dayCell" style="padding: 0px;" data-bind="text: Value"></th>
-            <!-- /ko -->
-
-            <th class="rbrdCell" style="padding: 0px;" data-bind="text: tableTotalDays"></th>
-        </tr>
-
-        <!-- ko foreach: employees  -->
-        <tr class="lbrdRow">
-            <td class="empNameCell" style="padding: 0px;" data-bind="text: DataValue"></td>
-            <!-- ko foreach: $parent.daysToDisplay  -->
-            <td class="cell" style="padding: 3px;" data-bind="attr: {'class': ComputeCellStyle($parent, $index)}, text: ComputeCellContent($parent, $index)"></td>
-            <!-- /ko -->
-            <td class="resWCell " style="padding: 3px;" data-bind="text: $parent.totalEmployeeAbsence()[$index()].Value"></td>
-        </tr>
-        <!-- /ko -->
-
-        <tr id="horizontal_rez" class="lbrdRow">
-            <td class="monthTotal" style="padding: 3px;" data-bind="text: tableMonthTotal"></td>
-
-            <!-- ko foreach: daysToDisplay  -->
-            <td class="greenCell" style="padding: 3px;" data-bind="text: $parent.totalDayAbsence[$index()]"></td>
-            <!-- /ko -->
-
-            <td class="bigGreenCell" style="padding: 3px;" id="totalDays" data-bind="text: absenceSummary().Value"></td>
-        </tr>
-    </tbody>
-</table>
-@Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = (int)Model.Month, year = Model.Year, page, sort = Model.Sort }))
 
 
 @using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { }))
@@ -239,6 +244,7 @@
             $('#per').on("click", function () {
                 contextClickPersonal(cell, name, surname);
             })
+
         })();
     </script>
 }
