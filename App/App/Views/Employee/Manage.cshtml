@@ -13,14 +13,14 @@
     <div class="row pad5 clrWsm">
         <div style="padding: 5px;">
             <div class="col-xs-4" style="padding-left:0px;">
-                <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month.Code, optionsCaption: month().Name"></select>
+                <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month"></select>
             </div>
         </div>
         <div class="col-xs-5" style="padding-left:65px;">
             <h3 style="margin-top:0px;">Dates of Absence</h3>
         </div>
         <div class="col-xs-1" style="float:right; margin-right:70px;">
-            <select id="selectYear" data-bind="options: years(), optionsText: 'Name', optionsValue: 'Name', value: year().Name,  optionsCaption: year().Name"></select>
+            <select id="selectYear" data-bind="options: years(), optionsText: 'Name', optionsValue: 'Name', value: year"></select>
         </div>
 
     </div>
@@ -52,10 +52,11 @@
                 <td class="empNameCell active" style="padding: 0px;" data-bind="text: DataValue"></td>
                 <!-- ko foreach: $parent.daysToDisplay()  -->
                 <td class="cell" style="padding: 3px;" data-bind="
-                                attr: {'class': $root.computeCellStyle($parent, $index)},
-                                text: $root.computeCellContent($parent, $index)"></td>
+                                attr: {'class': $root.computeCellStyle($parent, $index())},
+                                text: $root.computeCellContent($parent, $index),
+                                event: { contextmenu: $root.formData($element)}"></td>
                 <!-- /ko -->
-                <td class="resWCell active" style="padding: 3px;" data-bind="text: $parent.totalEmployeeAbsence()[$index()].Value"></td>
+                <td class="resWCell active" style="padding: 3px;" data-bind="text: TotalAbsence"></td>
             </tr>
             <!-- /ko -->
 
@@ -164,8 +165,7 @@
 
             $(".cell").contextMenu({
                 menuSelector: "#contextMenu",
-                menuSelected: function (invokedOn, selectedMenu) {
-                }
+                menuSelected: function (invokedOn, selectedMenu) {}
             });
 
             $('select').on('change', function () {
@@ -174,24 +174,17 @@
                 $('#datepickSub').click();
             });
 
-            //have no idea how to get rid of this
-            //cause failed when trying to data-bind over oncontextmenu event
-
-            $(".cell").on("contextmenu", function () {
-                myViewModel.currentColumn = $(this).parent().children().index(this);
-                myViewModel.currentRow = $(this).parent().parent().children().index(this.parentNode);
-                myViewModel.currentCell = $(this);
-                myViewModel.currentEmployee = myViewModel.employees[myViewModel.currentRow - 1];
-            })
-
         })();
     </script>
 }
 
 <script src="~/Scripts/knockout-3.3.0.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"> </script>
-<script type="text/javascript">
 
+<script type="text/javascript">
+    
+
+    ko.bindingHandlers.cl
 
     var Model = @Html.Raw(Json.Encode(Model));
     var months = [
@@ -223,15 +216,17 @@
 
         var self = this;
 
-        self.month = function(){
-            return { Name: months[indexOf(Model.Month, months)].Name , Code: Model.Month }
-        };
+        self.reasons = {
+            Vacation: 1,
+            Sick: 2,
+            Personal: 3
+        }
 
-        self.months = ($.grep(months, function(e){ return e.Code != self.month().Code}));
+        self.month = ko.observable(Model.Month);
 
-        self.year = function() {
-            return { Name: Model.Year };
-        };
+        self.months = months;
+
+        self.year = ko.observable(Model.Year);
 
         self.years = function() {
             var years = [];
@@ -272,24 +267,19 @@
             return daysToAppend;
         }
 
-        self.totalEmployeeAbsence = ko.computed(function() {
-            return ko.utils.arrayMap(self.employees, function(item) {
-                return { Value: item.AbsenceList().length  };
-            });
-        });
-
         self.totalDayAbsence = function(){
             var employees = self.employees;
             var totalAbsence = [];
             for (var i = 0; i < self.daysToDisplay().length; i++)
             {
-                var employees = self.employees;
                 var count = 0;
-                for (var j = 0; j < self.employees.length; j++)
+                for (var j = 0; j < employees.length; j++)
                 {
                     var currentEmployee = employees[j];
                     var currentEmployeeAbsenceList = currentEmployee.AbsenceList();
-                    var days = $.grep(currentEmployeeAbsenceList, function(e){ return e.Day == i+1 });
+                    var days = $.grep(currentEmployeeAbsenceList, function(e){ 
+                        return e.Day == i+1 
+                    });
                     count += days.length == 0 ? 0 : 1;
                 }
                 totalAbsence[i] = ko.computed(function(){
@@ -317,21 +307,13 @@
         self.computeCellContent = function(employee, index){
             var List = employee.AbsenceList();
             var day = index()  + 1;
-            var value = $.grep(List, function(e){ return (e.Day == day) });
+            var value = $.grep(List, function(e){ 
+                return (e.Day == day)
+            });
+
             var text = '';
 
-            if (value == '')
-            {
-                if (employee.RowColor%2 == 0)
-                {
-                    text = '';
-                }
-                else
-                {
-                    text = '';
-                }
-            }
-            else if (value != '')
+            if (value != '')
             {
                 if (value[0].Reason == 1)
                 {
@@ -351,8 +333,8 @@
 
         self.computeCellStyle = function(employee, index)
         {
-            var List = employee.AbsenceList();
-            var day = (isFunction(index) ?  index() : index) + 1;
+            var List = employee.AbsenceList();  
+            var day = index + 1;
             var value = $.grep(List, function(e){ return (e.Day == day) });
             var style = '';
 
@@ -392,21 +374,21 @@
         self.contextClickVacation = function () {
             var o = self.currentCell;
             if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
-                self.postData(self.currentEmployee, 1);
+                self.postData(self.currentEmployee, self.reasons.Vacation);
             }
         }
 
         self.contextClickSick = function () {
             var o = self.currentCell;
             if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
-                self.postData(self.currentEmployee, 2);
+                self.postData(self.currentEmployee, self.reasons.Sick);
             }
         }
 
         self.contextClickPersonal = function () {
             var o = self.currentCell;
             if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
-                self.postData(self.currentEmployee, 3);
+                self.postData(self.currentEmployee, self.reasons.Personal);
             }
         }
 
@@ -422,29 +404,18 @@
             return -1;
         }
 
-        function indexOf(monthCode, monthList)
-        {
-            for (var i = 0; i < monthList.length; i++)
-            {
-                if (monthList[i].Code == monthCode)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        function isFunction(functionToCheck) {
-            var getType = {};
-            return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-        }
-
-
         self.currentColumn = '';
         self.currentRow = '';
         self.currentCell = '';
         self.currentEmployee = '';
 
+        self.formData = function(context){
+            var o = context;
+            myViewModel.currentColumn = $(o).parent().children().index(o);
+            myViewModel.currentRow = $(o).parent().parent().children().index(o.parentNode);
+            myViewModel.currentCell = $(o);
+            myViewModel.currentEmployee = myViewModel.employees[myViewModel.currentRow - 1];
+        }
 
         self.postData = function (employee, reason){
 
