@@ -54,7 +54,7 @@
                 <td class="cell" style="padding: 3px;" data-bind="
                                 attr: {'class': $root.computeCellStyle($parent, $index())},
                                 text: $root.computeCellContent($parent, $index),
-                                event: { contextmenu: $root.formData($element)}"></td>
+                                event: { contextmenu: $root.formData($element, $context)}"></td>
                 <!-- /ko -->
                 <td class="resWCell active" style="padding: 3px;" data-bind="text: TotalAbsence"></td>
             </tr>
@@ -404,33 +404,30 @@
             return -1;
         }
 
-        self.currentColumn = '';
-        self.currentRow = '';
+        self.currentDay = '';
         self.currentCell = '';
         self.currentEmployee = '';
 
-        self.formData = function(context){
-            var o = context;
-            myViewModel.currentColumn = $(o).parent().children().index(o);
-            myViewModel.currentRow = $(o).parent().parent().children().index(o.parentNode);
+        self.formData = function(element, context){
+            var o = element;
+            myViewModel.currentDay = context.$data.Value;
             myViewModel.currentCell = $(o);
-            myViewModel.currentEmployee = myViewModel.employees[myViewModel.currentRow - 1];
+            myViewModel.currentEmployee = context.$parent;
         }
 
         self.postData = function (employee, reason){
 
-            var column = self.currentColumn;
             $.ajax({
                 type: "POST",
                 url: "/Employee/ApplyChanges",
-                data: {userId : employee.Id, month: Model.Month, year: Model.Year, day: column, reason: reason},
+                data: {userId : employee.Id, month: Model.Month, year: Model.Year, day: self.currentDay, reason: reason},
                 datatype: "html",
                 success: function (data) {
                     $('#result').html(data);
                 }
             });
 
-            employee.AbsenceList.push({UserId : employee.Id, Month: Model.Month, Year: Model.Year, Day: column, Reason: reason});
+            employee.AbsenceList.push({UserId : employee.Id, Month: Model.Month, Year: Model.Year, Day: self.currentDay, Reason: reason});
         };
 
     };
