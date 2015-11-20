@@ -16,7 +16,7 @@
 <div>
     <div class="row pad5 clrWsm">
         <div style="padding: 5px;">
-            <div class="col-xs-3" style="padding-left:0px;">
+            <div class="col-xs-4" style="padding-left:0px;">
                 <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month"></select>
             </div>
         </div>
@@ -260,7 +260,9 @@
             var employee = {
                 DataValue: item.Name + " " +  item.Surname,
                 Id: item.Id,
-                AbsenceList: ko.observableArray(item.AbsenceList),
+                AbsenceList: ko.observableArray($.grep(item.AbsenceList, function(e){ 
+                    return e.ProjectId == Model.ProjectId;
+                })),
                 RowColor: index%2,
                 TotalAbsence: ''
             }
@@ -438,14 +440,14 @@
             $.ajax({
                 type: "POST",
                 url: "/Employee/ApplyChanges",
-                data: {userId : employee.Id, month: Model.Month, year: Model.Year, day: self.currentDay, reason: reason},
+                data: {userId : employee.Id, month: Model.Month, year: Model.Year, day: self.currentDay, reason: reason, projectid: Model.ProjectId},
                 datatype: "html",
                 success: function (data) {
                     $('#result').html(data);
                 }
             });
 
-            employee.AbsenceList.push({UserId : employee.Id, Month: Model.Month, Year: Model.Year, Day: self.currentDay, Reason: reason});
+            employee.AbsenceList.push({UserId : employee.Id, Month: Model.Month, Year: Model.Year, Day: self.currentDay, Reason: reason, projectid: Model.ProjectId});
         };
 
     };

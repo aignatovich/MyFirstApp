@@ -127,7 +127,8 @@ namespace App.Service
                 Day = model.Day,
                 Month = model.Month,
                 Year = model.Year,
-                Reason = (Reason)model.Reason
+                Reason = (Reason)model.Reason,
+                ProjectId = model.ProjectId
             });
         }
     }
