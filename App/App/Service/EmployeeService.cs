@@ -12,6 +12,7 @@ namespace App.Service
     public class EmployeeService
     {
         private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
+        private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
         private int pageSize = 25;
 
         public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
@@ -67,8 +68,9 @@ namespace App.Service
             int sortingOrder = (request.Sort ?? 2);
             int month = (request.Month ?? DateTime.Now.Month);
             int year = (request.Year ?? DateTime.Now.Year);
+            int? projectId = request.ProjectId;
 
-            return GetIPagedList(month, year, pageNumber, sortingOrder);
+            return GetIPagedList(month, year, pageNumber, sortingOrder, projectId);
         }
 
         public IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? monthTransfered, int? yearTransfered, int? page, int? sorting)
@@ -77,14 +79,17 @@ namespace App.Service
             int sortingOrder = (sorting ?? 2);
             int month = (monthTransfered ?? 0);
             int year = (yearTransfered ?? 0);
+            int? projectId = null;
 
-            return GetIPagedList(month, year, pageNumber, sortingOrder);
+            return GetIPagedList(month, year, pageNumber, sortingOrder, projectId);
 
         }
 
-        public IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder)
+        public IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder, int? id)
         {
-            List<EmployeeViewModel> employees = GetAllViewModels().ToList();
+            int projectId = (id ?? projectDataAccessObject.GetLastProjectId());
+            ProjectViewModel project = ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
+            ICollection<EmployeeViewModel> employees = project.CurrentEmployees;
             List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
 
             switch (sortingOrder)
@@ -109,11 +114,6 @@ namespace App.Service
 
         public TableData GetTableData(ManagingRequest request)
         {
-            int? year = request.Year;          
-            int? month = request.Month;
-            int? page = request.Page;
-            int? sorting = request.Sort;
-
             return new TableData(GetAllAsIPagedList(request),request);
         }
 

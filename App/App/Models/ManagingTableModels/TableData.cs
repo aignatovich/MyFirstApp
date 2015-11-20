@@ -1,5 +1,6 @@
 ﻿using PagedList;
 using System;
+using App.Service;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ namespace App.Models.ManagingTableModels
 {
     public class TableData
     {
+        public int? ProjectId { get; set; }
         public IPagedList<EmployeeViewModel> Employees { get; set; }
 
         public Month Month { get; set; }
@@ -24,16 +26,21 @@ namespace App.Models.ManagingTableModels
 
         public int Sort { get; set; }
 
+        public ICollection<ProjectViewModel> Projects { get; set; }
+
         public TableData()
         {
         }
 
         public  TableData(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
         {
+            ProjectService projectService = new ProjectService();
+
             int year = (request.Year ?? DateTime.Now.Year);
             int month = (request.Month ?? DateTime.Now.Month);
             int sort = (request.Sort ?? 2);
 
+            Projects = projectService.GetAllViewModels();
             Employees = employees;
             Month = (Month)month;
             Year = year;
@@ -42,6 +49,7 @@ namespace App.Models.ManagingTableModels
             StartYear = 2010;
             EndYear = 2015;
             Sort = sort;
+            ProjectId = request.ProjectId;
         }
     }
 }

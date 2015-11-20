@@ -26,5 +26,19 @@
     <td width="50">
         <input type="submit"  value="Edit" class="btn btn-primary"/>
     </td>
-}          
+}         
+
+@using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { @class = "", role = "" }))
+{
+    @Html.Hidden("month");
+    @Html.Hidden("year");
+    @Html.Hidden("page")
+    @Html.Hidden("sort");
+    @Html.Hidden("projectId", item.Id);
+    <td width="50">
+        <input type="submit" value="Manage" class="btn btn-primary" />
+    </td>
+}
+
+ 
 

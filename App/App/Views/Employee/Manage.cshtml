@@ -6,17 +6,21 @@
     int days = Model.DayLimit;
     int startYear = Model.StartYear;
 }
+
 <div>
     <br />
+    <br />
+    <br />
 </div>
+
 <div>
     <div class="row pad5 clrWsm">
         <div style="padding: 5px;">
-            <div class="col-xs-4" style="padding-left:0px;">
+            <div class="col-xs-3" style="padding-left:0px;">
                 <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month"></select>
             </div>
         </div>
-        <div class="col-xs-5" style="padding-left:65px;">
+        <div class="col-xs-4" style="padding-left:65px;">
             <h3 style="margin-top:0px;">Dates of Absence</h3>
         </div>
         <div class="col-xs-1" style="float:right; margin-right:70px;">
@@ -71,7 +75,7 @@
             </tr>
         </tbody>
     </table>
-    @Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = (int)Model.Month, year = Model.Year, page, sort = Model.Sort }))
+    @Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = (int)Model.Month, year = Model.Year, page, sort = Model.Sort, projectId = Model.ProjectId }))
 </div>
 
 
@@ -79,6 +83,9 @@
 {
     @Html.Hidden("month", "", new { @id = "monthBox" })
     @Html.Hidden("year", "", new { @id = "yearBox" })
+    @Html.Hidden("page", "", new { @id = "" })
+    @Html.Hidden("sort", "", new { @id = "" })
+    @Html.Hidden("projectId", "", new { @id = "projectIdBox" })
     <input type="submit" class="hiddn" id="datepickSub" tabindex="-1" />
 }
 
@@ -106,6 +113,7 @@
 
             $('#selectMonth').niceSelect();
             $('#selectYear').niceSelect();
+            $('#selectProject').niceSelect();
 
             (function ($, window) {
 
@@ -171,6 +179,7 @@
             $('select').on('change', function () {
                 $('#monthBox').val(myViewModel.getMonthIndex($(".option.selected").eq(0).text()));
                 $('#yearBox').val($(".option.selected").eq(1).text());
+                $('#projectIdBox').val(Model.ProjectId);
                 $('#datepickSub').click();
             });
 
@@ -220,6 +229,15 @@
             Vacation: 1,
             Sick: 2,
             Personal: 3
+        }
+
+        self.projects = function(){
+            var projectList = [];
+            for (var i = 0; i < Model.Projects.length; i++)
+            {
+                projectList[i] = {Name: Model.Projects[i].Name, Id: Model.Projects[i].Id};
+            }
+            return projectList;
         }
 
         self.month = ko.observable(Model.Month);

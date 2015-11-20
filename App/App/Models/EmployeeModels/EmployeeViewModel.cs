@@ -44,8 +44,6 @@ namespace App.Models
             foreach (ProjectModel project in employee.ActualProjects)
             {
                 //ActualProjects.Add(new ProjectViewModel(project));
-                //preventing circulative constructor calls
-                //need to solve
             }
 
         }

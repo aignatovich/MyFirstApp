@@ -7,7 +7,7 @@ using System.Web;
 
 namespace App.DAL
 {
-    public class ProjectDataAccessObject:IOperations<ProjectModel>
+    public class ProjectDataAccessObject : IOperations<ProjectModel>
     {
         public void Add(ProjectModel project)
         {
@@ -40,12 +40,17 @@ namespace App.DAL
             return project;
         }
 
-        public  bool Exists(ProjectModel project)
+        public bool Exists(ProjectModel project)
         {
             return (DatabaseModelContainer.Current.ProjectSet.Any(x =>
                                x.Name.Equals(project.Name) &&
                                x.StartDate.Equals(project.StartDate) &&
                                x.EndDate == (project.EndDate) && !(x.Id == project.Id)));
+        }
+
+        public int GetLastProjectId()
+        {
+            return DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault().Id;
         }
     }
 }
