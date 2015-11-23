@@ -4,14 +4,22 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using App.Service;
 using App.ModelBinding;
+using App.Service.Interfaces;
 
 namespace App.Controllers
 {
     public class ProjectController : Controller
     {
-        private ProjectService projectService = new ProjectService();
-        private EmployeeService employeeService = new EmployeeService();
-        private ExtendedProjectService extendedProjectService = new ExtendedProjectService();
+        private IProjectService projectService;
+        private IEmployeeService employeeService;
+        private IExtendedProjectService extendedProjectService;
+
+        public ProjectController(IProjectService projectService, IEmployeeService employeeService, IExtendedProjectService extendedProjectService)
+        {
+            this.extendedProjectService = extendedProjectService;
+            this.employeeService = employeeService;
+            this.projectService = projectService;
+        }
 
         [HttpGet]
         public ActionResult CreateProject()

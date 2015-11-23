@@ -1,5 +1,6 @@
 ﻿using App.ModelBinding;
 using App.Models;
+using App.Util;
 using CodeFirst;
 using FluentValidation.Mvc;
 using System;
@@ -20,6 +21,7 @@ namespace App
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutofacConfig.ConfigureContainer();
 
             ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());
         }

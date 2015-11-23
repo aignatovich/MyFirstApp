@@ -4,6 +4,9 @@ using App.Service;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using App.Service.Interfaces;
+using Autofac;
+using static App.Util.AutofacConfig;
 
 namespace App.Models.ManagingTableModels
 {
@@ -32,10 +35,10 @@ namespace App.Models.ManagingTableModels
         {
         }
 
-        public  TableData(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
+        public TableData(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
         {
-            ProjectService projectService = new ProjectService();
 
+            IProjectService projectService = Container.Resolve<IProjectService>();
             int year = (request.Year ?? DateTime.Now.Year);
             int month = (request.Month ?? DateTime.Now.Month);
             int sort = (request.Sort ?? 2);
@@ -50,6 +53,7 @@ namespace App.Models.ManagingTableModels
             EndYear = 2015;
             Sort = sort;
             ProjectId = request.ProjectId;
+
         }
     }
 }

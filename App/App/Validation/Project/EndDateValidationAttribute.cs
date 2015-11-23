@@ -1,20 +1,13 @@
-﻿using App.DAL;
-using App.Models;
-using App.Service;
-using System;
-using System.Collections.Generic;
+﻿using App.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace App.Validation
 {
     public class EndDateValidationAttribute: ValidationAttribute
     {
-        private ProjectDataAccessObject ProjectDataAccessObject = new ProjectDataAccessObject();
-
         protected override ValidationResult IsValid(object project, ValidationContext validationContext)
         {
+
             ProjectViewModel projectViewModel = validationContext.ObjectInstance as ProjectViewModel;
             ProjectModel projectModel = projectViewModel.AsProjectModel();
 

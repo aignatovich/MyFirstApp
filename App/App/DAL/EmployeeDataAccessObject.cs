@@ -11,7 +11,7 @@ using App.Service;
 
 namespace App.DAL
 {
-    public class EmployeeDataAccessObject:IOperations<EmployeeModel>
+    public class EmployeeDataAccessObject: IEmployeeDAO
     {
         public void Add(EmployeeModel employee)
         {                   

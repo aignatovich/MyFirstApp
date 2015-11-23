@@ -1,5 +1,6 @@
 ﻿using App.DAL;
 using App.Models;
+using App.Service.Interfaces;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,18 @@ using System.Web;
 
 namespace App.Service
 {
-    public class ProjectService
+    public class ProjectService:IProjectService
     {
-        private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
-        private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
-        private EmployeeService employeeService = new EmployeeService();
+        private IEmployeeService employeeService;
+        private IProjectDAO projectDataAccessObject;
+        private IEmployeeDAO employeeDataAccessObject;
+
+        public ProjectService(IEmployeeService employeeService, IProjectDAO projectDataAccessObject, IEmployeeDAO employeeDataAccessObject)
+        {
+            this.employeeService = employeeService;
+            this.projectDataAccessObject = projectDataAccessObject;
+            this.employeeDataAccessObject = employeeDataAccessObject;
+        }
 
         public ICollection<ProjectViewModel> GetAllViewModels()
         {

@@ -1,4 +1,6 @@
-﻿using App.Validation;
+﻿using App.Service;
+using App.Service.Interfaces;
+using App.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

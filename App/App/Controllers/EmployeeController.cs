@@ -4,12 +4,19 @@ using App.Service;
 using PagedList;
 using System;
 using System.Web;
+using App.Service.Interfaces;
 
 namespace App.Controllers
 {
     public class EmployeeController : Controller
     {
-        private EmployeeService service = new EmployeeService();
+
+        private IEmployeeService service;
+
+        public EmployeeController(IEmployeeService employeeService)
+        {
+            this.service = employeeService;
+        }
 
         [HttpGet]
         public ActionResult CreateEmployee()

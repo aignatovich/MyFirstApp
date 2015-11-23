@@ -7,7 +7,7 @@ using System.Web;
 
 namespace App.DAL
 {
-    public class ProjectDataAccessObject : IOperations<ProjectModel>
+    public class ProjectDataAccessObject:IProjectDAO
     {
         public void Add(ProjectModel project)
         {

@@ -1,6 +1,7 @@
 ﻿using App.DAL;
 using App.Models;
 using App.Models.ManagingTableModels;
+using App.Service.Interfaces;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,18 @@ using System.Web;
 
 namespace App.Service
 {
-    public class EmployeeService
+    public class EmployeeService:IEmployeeService
     {
-        private EmployeeDataAccessObject employeeDataAccessObject = new EmployeeDataAccessObject();
-        private ProjectDataAccessObject projectDataAccessObject = new ProjectDataAccessObject();
+        private IEmployeeDAO employeeDataAccessObject;
+        private IProjectDAO projectDataAccessObject;
+
         private int pageSize = 25;
+
+        public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
+        {
+            this.employeeDataAccessObject = employeeDataAccessObject;
+            this.projectDataAccessObject = projectDataAccessObject;
+        }
 
         public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
         {

@@ -1,22 +1,19 @@
 ﻿using App.DAL;
 using App.Models;
-using App.Service;
-using CodeFirst;
-using System;
-using System.Collections.Generic;
+using Autofac;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using static App.Util.AutofacConfig;
 
 namespace App.Validation
 {
     public class EmployeeValidationAttribute: ValidationAttribute
     {
-        private  EmployeeDataAccessObject EmployeeDataAccessObject = new EmployeeDataAccessObject();
+        private IEmployeeDAO employeeDataAccessObject;
 
         protected override  ValidationResult IsValid(object value,  ValidationContext validationContext)
         {
-            if (!EmployeeDataAccessObject.Exists((validationContext.ObjectInstance as EmployeeViewModel).AsEmployeeModel()))
+            employeeDataAccessObject = Container.Resolve<IEmployeeDAO>();
+            if (!employeeDataAccessObject.Exists((validationContext.ObjectInstance as EmployeeViewModel).AsEmployeeModel()))
             {
                 return ValidationResult.Success;
             }
