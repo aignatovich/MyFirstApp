@@ -13,6 +13,7 @@ using App.Models;
 using System.Collections.Generic;
 using Moq;
 using System.Data.Entity;
+using App.Service;
 
 namespace App.Tests
 {
@@ -21,9 +22,12 @@ namespace App.Tests
     {
         private EmployeeDataAccessObject employeeDAO;
         private Mock<IDatabaseContextAccessor> mock;
+        private IEmployeeService employeeService;
+        private Mock<IEmployeeDAO> employeeDataAccessObjectMock;
+        private Mock<IProjectDAO> projectDataAccessObjectMock;
 
         [TestMethod]
-        public void EmployeeDAO()
+        public void EmployeeDAOTest()
         {
             mock = new Mock<IDatabaseContextAccessor>();
             //found no other way to create an instance of DbSet<EmployeeModel>
@@ -41,9 +45,15 @@ namespace App.Tests
         }
 
         [TestMethod]
-        public void Test1()
+        public void EmployeeServiceTest()
         {
-            
+            int employeeId = 5;
+            employeeDataAccessObjectMock = new Mock<IEmployeeDAO>();
+            //if this could be named as a test
+            employeeDataAccessObjectMock.Setup(x => x.GetSingle(It.IsAny<int>())).Returns(() => new EmployeeModel() {  });
+            projectDataAccessObjectMock = new Mock<IProjectDAO>();
+            employeeService = new EmployeeService(employeeDataAccessObjectMock.Object, projectDataAccessObjectMock.Object);
+            employeeService.GetSingle(employeeId);
         }
     }
 }
