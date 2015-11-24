@@ -20,5 +20,7 @@ namespace App.Service.Interfaces
         void Edit(ProjectViewModel projectViewModel);
 
         void Remove(ProjectViewModel project);
+
+        int GetLastProjectId();
     }
 }

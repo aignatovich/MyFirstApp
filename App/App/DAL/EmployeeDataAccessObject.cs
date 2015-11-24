@@ -8,14 +8,25 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using App.Service;
+using static App.Util.AutofacConfig;
+using Autofac;
+using System.Web;
+using App.Models.DatabaseModel;
 
 namespace App.DAL
 {
-    public class EmployeeDataAccessObject: IEmployeeDAO
+    public class EmployeeDataAccessObject : IEmployeeDAO
     {
+        IDatabaseContextAccessor dbAccessor;
+
+        public EmployeeDataAccessObject(IDatabaseContextAccessor dbContextAccessor)
+        {
+            dbAccessor = dbContextAccessor;
+        }
+
         public void Add(EmployeeModel employee)
-        {                   
-            DatabaseModelContainer.Current.EmployeeSet.Add(employee);
+        {
+            dbAccessor.GetEmployeeSet().Add(employee);
         }
 
         public void Edit(EmployeeModel employee)

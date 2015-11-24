@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using App.Service;
+using Autofac;
+using Autofac.Core;
+using Autofac.Integration.Mvc;
+using System.Web.Mvc;
+using App.Service.Interfaces;
+using App.Models;
+using App.DAL;
+using CodeFirst;
+using App.Models.DatabaseModel;
 
 namespace App.Util
 {
-    using Service;
-    using Autofac;
-    using Autofac.Core;
-    using Autofac.Integration.Mvc;
-    using System.Web.Mvc;
-    using Service.Interfaces;
-    using Models;
-    using DAL;
 
     public class AutofacConfig
     {
@@ -31,6 +33,9 @@ namespace App.Util
 
             Builder.RegisterType<EmployeeDataAccessObject>().As<IEmployeeDAO>();
             Builder.RegisterType<ProjectDataAccessObject>().As<IProjectDAO>();
+
+            //Builder.RegisterType<DatabaseModelContainer>().As<IDatabase>().InstancePerRequest();
+            Builder.RegisterType<DatabaseContextAccessor>().As<IDatabaseContextAccessor>();
 
             Container = Builder.Build();
            

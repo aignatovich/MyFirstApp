@@ -42,6 +42,7 @@ namespace App.Models.ManagingTableModels
             int year = (request.Year ?? DateTime.Now.Year);
             int month = (request.Month ?? DateTime.Now.Month);
             int sort = (request.Sort ?? 2);
+            int projectId = (request.ProjectId ?? projectService.GetLastProjectId());
 
             Projects = projectService.GetAllViewModels();
             Employees = employees;
@@ -52,7 +53,8 @@ namespace App.Models.ManagingTableModels
             StartYear = 2010;
             EndYear = 2015;
             Sort = sort;
-            ProjectId = request.ProjectId;
+
+            ProjectId = projectId;
 
         }
     }

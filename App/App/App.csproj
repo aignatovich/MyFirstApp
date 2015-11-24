@@ -65,6 +65,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -212,7 +216,9 @@
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="DAL\EmployeeDataAccessObject.cs" />
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
+    <Compile Include="Models\DatabaseModel\DatabaseContextAccessor.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseModelContainer.cs" />
+    <Compile Include="Models\DatabaseModel\IDatabaseContextAccessor.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />

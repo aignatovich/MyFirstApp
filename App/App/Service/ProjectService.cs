@@ -67,5 +67,10 @@ namespace App.Service
         {
             projectDataAccessObject.Remove(project.Id);
         }
+
+        public int GetLastProjectId()
+        {
+            return projectDataAccessObject.GetLastProjectId();
+        }
     }
 }
