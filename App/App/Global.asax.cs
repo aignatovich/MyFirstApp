@@ -21,9 +21,8 @@ namespace App
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AutofacConfig.ConfigureContainer();
-
-            ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());
+            AutofacConfig.ConfigureContainer();           
+            ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());     
         }
 
         protected virtual void Application_BeginRequest()

@@ -1,5 +1,6 @@
 ﻿using App.Models;
 using App.Models.DatabaseModel;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Web;
 
@@ -17,7 +18,7 @@ namespace CodeFirst
         public DatabaseModelContainer()
         {
             //Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());
-            Database.SetInitializer<DatabaseModelContainer>(null);
+            Database.SetInitializer<DatabaseModelContainer>(null);            
         }
 
         public DbSet<EmployeeModel> EmployeeSet { get; set; }

@@ -194,13 +194,9 @@
   <ItemGroup>
     <Compile Include="DAL\Interfaces\IEmployeeDAO.cs" />
     <Compile Include="DAL\Interfaces\IProjectDAO.cs" />
-    <Compile Include="Migrations\201511090643427_InitialCreate.cs" />
-    <Compile Include="Migrations\201511090643427_InitialCreate.Designer.cs">
-      <DependentUpon>201511090643427_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511090752231_MigrateDB.cs" />
-    <Compile Include="Migrations\201511090752231_MigrateDB.Designer.cs">
-      <DependentUpon>201511090752231_MigrateDB.cs</DependentUpon>
+    <Compile Include="Migrations\201511251010579_Initial.cs" />
+    <Compile Include="Migrations\201511251010579_Initial.Designer.cs">
+      <DependentUpon>201511251010579_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinding\IdsArrayBinder.cs" />
@@ -466,11 +462,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511090643427_InitialCreate.resx">
-      <DependentUpon>201511090643427_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511090752231_MigrateDB.resx">
-      <DependentUpon>201511090752231_MigrateDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511251010579_Initial.resx">
+      <DependentUpon>201511251010579_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

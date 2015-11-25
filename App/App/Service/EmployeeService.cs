@@ -96,8 +96,8 @@ namespace App.Service
         public IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder, int? id)
         {
             int projectId = (id ?? projectDataAccessObject.GetLastProjectId());
-            ProjectViewModel project = ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
-            ICollection<EmployeeViewModel> employees = project.CurrentEmployees;
+            ProjectViewModel project = projectId == -1 ? new ProjectViewModel() : ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
+            ICollection<EmployeeViewModel> employees = (id == null ? GetAllViewModels() : project.CurrentEmployees);
             List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
 
             switch (sortingOrder)

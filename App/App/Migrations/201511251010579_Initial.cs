@@ -3,7 +3,7 @@ namespace App.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -17,6 +17,23 @@ namespace App.Migrations
                         Position = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ManagingDateModels",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Day = c.Int(nullable: false),
+                        Month = c.Int(nullable: false),
+                        Year = c.Int(nullable: false),
+                        Reason = c.Int(nullable: false),
+                        UserId = c.Int(nullable: false),
+                        ProjectId = c.Int(nullable: false),
+                        EmployeeModel_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.EmployeeModels", t => t.EmployeeModel_Id)
+                .Index(t => t.EmployeeModel_Id);
             
             CreateTable(
                 "dbo.ProjectModels",
@@ -48,10 +65,13 @@ namespace App.Migrations
         {
             DropForeignKey("dbo.ProjectModelEmployeeModels", "EmployeeModel_Id", "dbo.EmployeeModels");
             DropForeignKey("dbo.ProjectModelEmployeeModels", "ProjectModel_Id", "dbo.ProjectModels");
+            DropForeignKey("dbo.ManagingDateModels", "EmployeeModel_Id", "dbo.EmployeeModels");
             DropIndex("dbo.ProjectModelEmployeeModels", new[] { "EmployeeModel_Id" });
             DropIndex("dbo.ProjectModelEmployeeModels", new[] { "ProjectModel_Id" });
+            DropIndex("dbo.ManagingDateModels", new[] { "EmployeeModel_Id" });
             DropTable("dbo.ProjectModelEmployeeModels");
             DropTable("dbo.ProjectModels");
+            DropTable("dbo.ManagingDateModels");
             DropTable("dbo.EmployeeModels");
         }
     }

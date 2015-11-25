@@ -5,6 +5,8 @@ using PagedList;
 using System;
 using System.Web;
 using App.Service.Interfaces;
+using CodeFirst;
+using System.Collections.Generic;
 
 namespace App.Controllers
 {

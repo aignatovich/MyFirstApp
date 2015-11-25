@@ -76,7 +76,7 @@ namespace App.Controllers
                 return RedirectToAction("ShowProjects");
             }
 
-            return View("EditProject");
+            return View("EditProject", project);
         }
 
         [HttpGet]

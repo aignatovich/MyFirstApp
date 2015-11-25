@@ -50,7 +50,8 @@ namespace App.DAL
 
         public int GetLastProjectId()
         {
-            return DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault().Id;
+            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault();
+            return (project == null ? -1 : project.Id);
         }
     }
 }

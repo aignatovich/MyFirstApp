@@ -30,7 +30,6 @@ namespace App.Tests
         public void EmployeeDAOTest()
         {
             mock = new Mock<IDatabaseContextAccessor>();
-            //found no other way to create an instance of DbSet<EmployeeModel>
             mock.Setup(x => x.GetEmployeeSet()).Returns(() => new DatabaseModelContainer().EmployeeSet);
             employeeDAO = new EmployeeDataAccessObject(mock.Object);
             employeeDAO.Add(new Models.EmployeeModel()
@@ -49,11 +48,11 @@ namespace App.Tests
         {
             int employeeId = 5;
             employeeDataAccessObjectMock = new Mock<IEmployeeDAO>();
-            //if this could be named as a test
             employeeDataAccessObjectMock.Setup(x => x.GetSingle(It.IsAny<int>())).Returns(() => new EmployeeModel() {  });
             projectDataAccessObjectMock = new Mock<IProjectDAO>();
             employeeService = new EmployeeService(employeeDataAccessObjectMock.Object, projectDataAccessObjectMock.Object);
-            employeeService.GetSingle(employeeId);
+            EmployeeViewModel employee = employeeService.GetSingle(employeeId);
+            Assert.IsNotNull(employee);
         }
     }
 }

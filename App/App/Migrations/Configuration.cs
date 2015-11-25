@@ -21,12 +21,13 @@ namespace App.Migrations
         {
             for (int i = 1; i < 300; i++)
             {
-                context.EmployeeSet.Add(new EmployeeModel() {
+                context.EmployeeSet.Add(new EmployeeModel()
+                {
                     Name = "qwe" + i.ToString(),
                     Surname = "zxc" + i.ToString(),
                     Position = positionsService.GetValue(i % 5),
                     ActualProjects = new List<ProjectModel>(),
-                    AbsenceList = new List<ManagingDateModel>()               
+                    AbsenceList = new List<ManagingDateModel>()
                 });
             }
         }
