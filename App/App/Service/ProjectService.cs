@@ -72,5 +72,16 @@ namespace App.Service
         {
             return projectDataAccessObject.GetLastProjectId();
         }
+
+        public ICollection<ProjectViewModel> Search(ProjectViewModel project)
+        {
+            ICollection<ProjectViewModel> projects = GetAllViewModels();
+            ICollection<ProjectViewModel> toTransfer = new List<ProjectViewModel>();
+
+            toTransfer = projects.Where(x => (x.Name.Equals(project.Name) || 
+            x.StartDate.Equals(project.StartDate) || x.EndDate.Equals(project.EndDate))).ToList();            
+            return toTransfer;
+        }
+
     }
 }

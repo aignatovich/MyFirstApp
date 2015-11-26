@@ -92,5 +92,12 @@ namespace App.Controllers
             projectService.EmployInProject(projectId, ids);
             return RedirectToAction("ShowProjects");
         }
+
+        [HttpPost]
+        public ActionResult Search(ProjectViewModel project)
+        {
+            ICollection<ProjectViewModel> toTransfer = projectService.Search(project);
+            return View("ShowProjects", toTransfer);
+        }
     }
 }

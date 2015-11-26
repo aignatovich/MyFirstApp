@@ -4,36 +4,54 @@
     ViewBag.Title = "Show Projects";
     ICollection<ProjectViewModel> ProjectList = Model;
 }
+<br /><br />
 
-<h2>Projects</h2>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ProjectList)
-        {
+<div class="col-xs-3">
+    @using (Html.BeginForm("Search", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+
+    <br /><br /><br />
+    <h3>Search options</h3>
+    <br />
+
+    @Html.Partial("ProjectSearchPartial", new ProjectViewModel())
+}
+</div>
+<div class="col-xs-5">
+
+    <br /><br /><br />
+    <h2>Projects</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.Name</td>
-                <td>@item.StartDate</td>             
-                <td>@item.EndDate</td>
-                   @Html.Partial("OptionsPartial", item)        
+                <th>Name</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Options</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in ProjectList)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.StartDate</td>
+                    <td>@item.EndDate</td>
+                    @Html.Partial("OptionsPartial", item)
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datepicker")
+    @Styles.Render("~/Content/datepicker-styles")
 
     <script type="text/javascript">
         (function () {
@@ -45,6 +63,9 @@
                         return false;
                     }
                 })
+            });
+            $('.datepicker').datepicker({
+                orientation: 'bottom'
             });
         })();
     </script>

@@ -22,5 +22,7 @@ namespace App.Service.Interfaces
         void Remove(ProjectViewModel project);
 
         int GetLastProjectId();
+
+        ICollection<ProjectViewModel> Search(ProjectViewModel project);
     }
 }

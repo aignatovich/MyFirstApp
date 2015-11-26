@@ -445,6 +445,7 @@
     <Content Include="Views\Project\SetupProject.cshtml" />
     <Content Include="Views\Project\SelectPartial.cshtml" />
     <Content Include="Views\Employee\Manage.cshtml" />
+    <Content Include="Views\Project\ProjectSearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

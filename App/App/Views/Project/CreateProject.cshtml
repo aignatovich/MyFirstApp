@@ -6,14 +6,16 @@
 }
 
 
+<div class="col-md-4">
+    <br /><br /><br /><br />
+    <h2>Add Project</h2>
 
-<h2>Add Project</h2>
-
-@using (Html.BeginForm("CreateProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    <h4>Add new project.</h4>
-    @Html.Partial("ProjectInputPartial")
-}
+    @using (Html.BeginForm("CreateProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <h4>Add new project.</h4>
+        @Html.Partial("ProjectInputPartial")
+    }
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

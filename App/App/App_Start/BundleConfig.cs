@@ -30,7 +30,7 @@ namespace App
             bundles.Add(new ScriptBundle("~/bundles/jq").Include("~/Scripts/jquery-1.10.2.min.js"));
 
             
-            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.js"));
             bundles.Add(new StyleBundle("~/Content/datepicker-styles").Include("~/Content/bootstrap-datepicker.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/multiselect").Include("~/Scripts/multiselect.min.js"));
